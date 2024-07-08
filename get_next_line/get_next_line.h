@@ -29,9 +29,9 @@ char	*ft_join(char *s1, char *s2);
 char	*update_stash(char *stash);
 char	*extract_line(char *stash);
 void	*ft_calloc(size_t nmemb, size_t size);
-void	ft_free_all(void);
-void	*ft_malloc(size_t size);
-void	ft_free(void *ptr);
+void	free_all(void);
+void	*malloc(size_t size);
+void	free(void *ptr);
 void	*ft_realloc(void *ptr, size_t size);
 
 #endif

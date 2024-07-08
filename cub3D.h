@@ -13,6 +13,14 @@
 #ifndef CUB3D_H
 # define CUB3D_H
 
+# define ON_DESTROY 17
+
+# include "Libft/libft.h"
+# include "get_next_line/get_next_line.h"
+# include "minilibx/mlx.h"
+# include <X11/X.h>
+# include <X11/Xlib.h>
+# include <X11/keysym.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <stdarg.h>
@@ -23,9 +31,6 @@
 # include <unistd.h> // access - dup2 - execve - fork - pipe - waitpid
 # include <sys/wait.h> // Wait
 # include <fcntl.h>
-# include "minilibx/mlx.h"
-# include <X11/X.h>
-# include <X11/keysym.h>
 # include <math.h>
 
 typedef enum e_texture_index {

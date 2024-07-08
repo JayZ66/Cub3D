@@ -49,7 +49,7 @@ char	*ft_strndup_gnl(const char *str, int size)
 	i = 0;
 	if (!str || size == 0)
 		return (NULL);
-	dest = (char *)ft_malloc(sizeof(char) * (size + 1));
+	dest = (char *)malloc(sizeof(char) * (size + 1));
 	if (dest == NULL)
 		return (NULL);
 	while (i < size)
@@ -74,7 +74,7 @@ char	*ft_join(char *s1, char *s2)
 	if (!s1)
 		return (ft_strndup_gnl(s2, lens));
 	lens = lens + ft_strlen_gnl(s1);
-	dest = (char *)ft_malloc(sizeof(char) * (lens + 1));
+	dest = (char *)malloc(sizeof(char) * (lens + 1));
 	if (dest == NULL)
 		return (NULL);
 	while (s1[i])
@@ -85,7 +85,7 @@ char	*ft_join(char *s1, char *s2)
 	while (s2[j])
 		dest[i++] = s2[j++];
 	dest[i] = '\0';
-	ft_free(s1);
+	free(s1);
 	return (dest);
 }
 

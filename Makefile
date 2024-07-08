@@ -17,15 +17,16 @@ NAME = cub3D
 CC := gcc
 
 # Options de compilation
-CFLAGS := -Wall -Wextra -Werror -Iheaders/ -g
+CFLAGS := -Wall -Wextra -Werror -Iheaders/ -Iminilibx -g
 
 #Liste des fichiers source.
-SRCS = src/parser.c src/init.c /
+SRCS = src/main.c src/parser.c src/init.c \
 
 LIBFT = Libft/libft.a
 GETNEXTLINE = get_next_line/get_next_line.c get_next_line/get_next_line_utils.c
 PRINTF = ft_printf/libftprintf.a
 
+LIBRARY:= -Lminilibx -lmlx -L/usr/X11R6/lib -lXext -lX11 -lbsd
 OBJS = $(SRCS:.c=.o)
 GETNEXTLINE_OBJ := $(GETNEXTLINE:.c=.o)
 
@@ -45,7 +46,7 @@ $(PRINTF):
 
 # Regle pour creer l'executable en liant les objets.
 $(NAME): $(OBJS) $(LIBFT) $(PRINTF) $(GETNEXTLINE_OBJ)
-	$(CC) $(CFLAGS) $(OBJS) $(GETNEXTLINE_OBJ) $(LIBFT) $(PRINTF) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJS) $(LIBRARY) $(GETNEXTLINE_OBJ) $(LIBFT) $(PRINTF) -o $(NAME)
 
 # $(NAME): $(OBJS)
 # 	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)

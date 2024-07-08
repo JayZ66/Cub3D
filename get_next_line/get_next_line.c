@@ -33,7 +33,7 @@ char	*update_stash(char *stash)
 	}
 	else
 		next_line = ft_strndup_gnl(stash + i, ft_strlen_gnl(stash + i));
-	ft_free(stash);
+	free(stash);
 	return (next_line);
 }
 
@@ -66,9 +66,9 @@ char	*get_next_line(int fd)
 	char		*line;
 
 	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) == -1)
-		return (ft_free(stash), stash = NULL, NULL);
+		return (free(stash), stash = NULL, NULL);
 	rd = 1;
-	buffer = (char *)ft_malloc(sizeof(char) * (BUFFER_SIZE + 1));
+	buffer = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!buffer)
 		return (NULL);
 	while (rd != 0)
@@ -79,7 +79,7 @@ char	*get_next_line(int fd)
 		if (ft_strchr_gnl(stash, '\n') == 1)
 			break ;
 	}
-	ft_free(buffer);
+	free(buffer);
 	line = extract_line(stash);
 	stash = update_stash(stash);
 	return (line);
@@ -97,7 +97,7 @@ char	*get_next_line(int fd)
 // 	while (line)
 // 	{
 // 		printf("%s", line);
-// 		ft_free(line);
+// 		free(line);
 // 		line = get_next_line(fd);
 // 	}
 // 	return 0;

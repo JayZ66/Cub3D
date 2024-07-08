@@ -36,6 +36,24 @@
 
 // }
 
+int	free_all2(t_game *game)
+{
+	(void)game;
+	printf("OK free \n");
+	if (game->win != NULL)
+	{
+		mlx_destroy_window(game->mlx, game->win);
+		game->win = NULL;
+	}
+	if (game->mlx != NULL)
+	{
+		mlx_destroy_display(game->mlx);
+		free(game->mlx);
+		exit(0);
+	}
+	return (0);
+}
+
 void	create_window(t_game *game)
 {
 	if (game->mlx == NULL)
@@ -43,7 +61,7 @@ void	create_window(t_game *game)
 		printf("Mlx has not been set up \n");
 		return ;
 	} // Why are we using win_heigth et pas juste les autres dans struct. map ?
-	game->win = mlx_new_window(game->mlx, 100, 100, "Cub3d - A portail's world");
+	game->win = mlx_new_window(game->mlx, 500, 500, "Cub3d - A portail's world");
 	if (!game->win)
 	{
 		printf("Could not create mlx window\n");
@@ -51,7 +69,7 @@ void	create_window(t_game *game)
 	}
 	// FILL THE WINDOW !
 	// mlx_hook(game->win, KeyPress, KeyPressMask, &manage_keypress, game);
-	mlx_hook(game->win, KeyPressMask, &free_all, game);
+	mlx_hook(game->win, 17, KeyPressMask, &free_all2, game);
 	mlx_loop(game->mlx);
 }
 
@@ -68,10 +86,13 @@ int	main(int argc, char *argv[])
 	game.mlx = mlx_init();
 	if (!game.mlx)
 	{
-		printf("Could not start mlx");
+		printf("Could not start mlx\n");
 		exit(EXIT_FAILURE);
 	}
 	mlx_loop(game.mlx);
+	// Check map errors
+	// Init structures
+	create_window(&game);
 	game.win = NULL;
 	
 	
