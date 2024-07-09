@@ -379,6 +379,40 @@ int	is_char_valid(t_game *game)
 	return (0);
 }
 
+int are_walls_ok(t_game *game)
+{
+    int i;
+
+    i = 0;
+    // En haut
+    while (game->map.map[0][i])
+    {
+        if (game->map.map[0][i] != '1' && game->map[0][theo] != '\n')
+            return (printf("Walls are missing in the map\n"), 1);
+        i++;
+    }
+    // En bas
+    i = 0;
+    while (game->map.map[game->map.height - 1][i])
+    {
+        if (game->map.map[game->map.height - 1][i] != '1' && game->map[game->map.height - 1][i] != '\n')
+        	return (printf("Walls are missing in the map\n"), 1);
+        i++;
+    }
+    // A gauche & droite
+    i = 0;
+    while (i < game->map.height - 1)
+    {
+        if (game->map.map[i][0] != '1')
+        	return (printf("Walls are missing in the map\n"), 1);
+        if (game->map.map[i][game->map.width - 1] && game->map[i][game->map.width - 1] != '\n'
+                && game->map[i][game->map.width - 1] != '\0') // To check
+        	return (printf("Walls are missing in the map\n"), 1);
+        i++;
+    }
+    return (0);
+}
+
 int	is_map_valid(t_game *game)
 {
 	// Map with \n => Is that ok ? Bce of fill_map.
@@ -391,6 +425,8 @@ int	is_map_valid(t_game *game)
 	if (is_player_valid(game) == 1)
 		return (1);
 	// Map surrounded by walls only
+	if (are_walls_ok(game) == 1)
+		return (1);
 	// Invalid player position => What does it mean ? (outside walls or blocked ?)
 	// Check lignes vides
 	// Debut de la map : Ligne vide puis aucun char diff. de 11111 !
