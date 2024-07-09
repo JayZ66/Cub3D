@@ -38,8 +38,15 @@
 
 int	free_all2(t_game *game)
 {
-	(void)game;
+	int	i;
+
+	i = 0;
 	printf("OK free \n");
+	while (game->texture_paths[i])
+	{
+		free(game->texture_paths[i]);
+		i++;
+	}
 	if (game->win != NULL)
 	{
 		mlx_destroy_window(game->mlx, game->win);
@@ -76,7 +83,7 @@ void	create_window(t_game *game)
 int	main(int argc, char *argv[])
 {
 	t_game	game;
-	char	*map;
+	const char	*map;
 
 	if (argc != 2)
 		return (printf("Wrong nb of arguments\n"), 1);
@@ -90,10 +97,13 @@ int	main(int argc, char *argv[])
 		exit(EXIT_FAILURE);
 	}
 	mlx_loop(game.mlx);
+	// Create map
+	read_map(&game, map);
+	malloc_map(&game);
+	fill_map(&game, map);
 	// Check map errors
+	manage_errors(&game, map);
 	// Init structures
 	create_window(&game);
 	game.win = NULL;
-	
-	
 }
