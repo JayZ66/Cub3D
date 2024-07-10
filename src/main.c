@@ -13,53 +13,17 @@
 #include "../cub3D.h"
 
 /* CREATE WINDOW
-	1. Check if mlx is null
-	2. Use mlx_new_window
-		a. params : mlx, largeur * 32 (nb de pixels ?),
-		hauteur * 32, Name of the window.
-		b. Check if win is null
-		c. Fonction qui remplit la window
-		d. Use of : 
-			mlx_hook(win, KeyPress, KeyPressMask, &manage_keypress, struct);
-			To close win : mlx_hook(win, KeyPressMask, add. of function that free, struct);
-			mlx_loop(mlx);
 	3. Fill_Window with assets
 		a. Big loop to iterate on lines
 		b. Small loop to iterate on columns
 		c. Conditions depending on the letter/nb on the map.
 			Use of mlx_put_image_to_window => NOT HERE NO ?
-
 */
 
 // void	create_images(t_game *game)
 // {
 
 // }
-
-int	free_all2(t_game *game)
-{
-	int	i;
-
-	i = 0;
-	printf("OK free \n");
-	while (game->texture_paths[i])
-	{
-		free(game->texture_paths[i]);
-		i++;
-	}
-	if (game->win != NULL)
-	{
-		mlx_destroy_window(game->mlx, game->win);
-		game->win = NULL;
-	}
-	if (game->mlx != NULL)
-	{
-		mlx_destroy_display(game->mlx);
-		free(game->mlx);
-		exit(0);
-	}
-	return (0);
-}
 
 void	create_window(t_game *game)
 {
@@ -83,10 +47,11 @@ void	create_window(t_game *game)
 int	main(int argc, char *argv[])
 {
 	t_game	game;
-	const char	*map;
+	char	*map;
 
 	if (argc != 2)
 		return (printf("Wrong nb of arguments\n"), 1);
+	game.win = NULL;
 	map = ft_strdup(argv[1]); // Don't forget to free !
 	if (map == NULL)
 		return (printf("There is no map\n"), 1);
@@ -96,7 +61,7 @@ int	main(int argc, char *argv[])
 		printf("Could not start mlx\n");
 		exit(EXIT_FAILURE);
 	}
-	mlx_loop(game.mlx);
+	init_game(&game);
 	// Create map
 	read_map(&game, map);
 	malloc_map(&game);
@@ -106,4 +71,8 @@ int	main(int argc, char *argv[])
 	// Init structures
 	create_window(&game);
 	game.win = NULL;
+	mlx_loop(game.mlx);
+	free_all2(&game);
+	free(map);
+	return (0);
 }

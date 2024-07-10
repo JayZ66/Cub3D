@@ -12,3 +12,12 @@
 
 #include "../cub3D.h"
 
+void    init_game(t_game *game)
+{
+    game->map.map = NULL;
+    game->map.height = 0;
+    game->map.width = 0;
+    game->player.x = 0; // Should we do it somewhere else ?
+    game->player.y = 0;
+    memset(game->texture_paths, 0, sizeof(game->texture_paths));
+}

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
+#    By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/03 18:59:35 by jeza              #+#    #+#              #
-#    Updated: 2024/07/08 14:53:12 by marvin           ###   ########.fr        #
+#    Updated: 2024/07/10 09:26:16 by jeguerin         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ CC := gcc
 CFLAGS := -Wall -Wextra -Werror -Iheaders/ -Iminilibx -g
 
 #Liste des fichiers source.
-SRCS = src/main.c src/parser.c src/init.c \
+SRCS = src/main.c src/parser.c src/init.c src/utils.c \
 
 LIBFT = Libft/libft.a
 GETNEXTLINE = get_next_line/get_next_line.c get_next_line/get_next_line_utils.c
