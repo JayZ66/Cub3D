@@ -102,6 +102,7 @@ void	manage_errors(t_game *game, const char *file);
 // MAP ERRORS
 int	is_map_valid(t_game *game);
 int	is_map_empty(t_game *game);
+int	is_char_valid(t_game *game);
 
 // FILE ERRORS
 int	is_file_valid(const char *file, t_game *game);

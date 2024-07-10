@@ -36,7 +36,7 @@
 		b. Checking issues on map ways
 */
 
-void	read_map(t_game *game, const char *file) // Which variable is the file (in struct. or not) ?
+void	read_map(t_game *game, const char *file)
 {
 	int		fd;
 	char	*line;
@@ -49,16 +49,18 @@ void	read_map(t_game *game, const char *file) // Which variable is the file (in 
 		printf("Could not open the map file\n");
 		free_all2(game);
 	}
-	line_length = 0;
+	line_length = 0; // Autre on passe les elements + le vide et on arrive a la map.
 	while ((line = get_next_line(fd)) != NULL)
 	{
+		// Si ligne vide => je break la boucle
 		// printf("Height: %d\n", game->map.height);
+		// Check par ordre des lignes donc ligne X est ca.
 		if (check_char(line, '1') == 1 && check_char(line, 'F') == 0 && check_char(line, 'C') == 0) // How to handle if the map is not a square ?
 		{
 			line_length = ft_strlen(line);
             if (line[line_length - 1] == '\n')
                 line_length--;
-            if (line_length > game->map.width)// See if it's good as map is not always a square.
+            if (line_length > game->map.width)
                 game->map.width = line_length; 
 			game->map.height++;
 		}
@@ -97,8 +99,8 @@ void	fill_map(t_game *game, const char *file)
 		printf("Could not open the map file\n");
 		free_all2(game);
 	}
-	memset(game->texture_paths, 0, sizeof(game->texture_paths)); // Init. tab with 0.
-	while ((line = get_next_line(fd)) != NULL)
+	memset(game->texture_paths, 0, sizeof(game->texture_paths));
+	while ((line = get_next_line(fd)) != NULL) // CHECK IF AU MOINS LIGNE DE VIDE AVEC UN FLAG!!!
 	{
 		if (textures != 4 && is_path_textures(game, line) == 0)
 			textures += 1;
@@ -116,6 +118,14 @@ void	fill_map(t_game *game, const char *file)
 		}
 		free(line);
 	}
+	/*
+	While (gnl)
+	{
+		soit compteur pour savoir le nb de ligne
+		OU
+		parse ligne 1 > gnl > parse ligne 2 > gnl > etc.
+	}
+	*/
 	// i = 0;
 	// while (game->map.map[i])
 	// {
@@ -138,7 +148,7 @@ int	parse_rgb(char *line, int *r, int *g, int *b)
 	// printf("r : %d\n", *r);
 	while (ft_isdigit(*line))
 		line++;
-	if (*line == ',') // Should we manage the error or could be a space ?
+	if (*line == ',') // Should we manage the error or could be a space ? Yes !
 		line++;
 	*g = ft_atoi2(line);
 	if (*g == -1)
@@ -161,7 +171,7 @@ int	parse_rgb(char *line, int *r, int *g, int *b)
 	return (0);
 }
 
-// Ligne 5 only authorize (\t \n ' ' ect...) // How to check it with gnl ?
+// Ligne 5 only authorize (\t \n ' ' ect...) // How to check it with gnl ? YES see above
 // AP (a partir de la rien dautoriser hors ' ' 1 0) fin de la map quand une ligne commence par \n,
 // apres cela aucun char autoriser hors \n
 int	is_rgb_code(t_game *game, char *line)
@@ -296,11 +306,11 @@ int	is_player_valid(t_game *game)
 
 	i = 0;
 	player = 0;
-	while (game->map.map[i]) // Or better to do i < game->map.height
+	while (game->map.map[i])
 	{
 		j = 0;
 		printf("Map : %s\n", game->map.map[i]);
-		while (game->map.map[i][j]) // Or better to do j < game->map.width
+		while (game->map.map[i][j])
 		{
 			// printf("Map : %c\n", game->map.map[i][j]);
 			if (game->map.map[i][j] == 'N' || game->map.map[i][j] == 'S'
@@ -343,21 +353,53 @@ int	is_player_valid(t_game *game)
 // 	return (0);
 // }
 
+int	is_char_valid(t_game *game)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (i < game->map.height)
+	{
+		j = 0;
+		while (j < game->map.width)
+		{
+			printf("%c\n", game->map.map[i][j]);
+			if (game->map.map[i][j] != '1' && game->map.map[i][j] != '0' 
+				&& game->map.map[i][j] != 'S' && game->map.map[i][j] != 'N'
+					&& game->map.map[i][j] != 'W' && game->map.map[i][j] != 'E' && game->map.map[i][j] != ' ' && game->map.map[i][j] != '\n')
+			{
+				printf("Invalid character in map\n");
+				return (1);
+			}
+			j++;
+		}
+		i++;
+	}
+	return (0);
+}
+
 int	is_map_valid(t_game *game)
 {
 	// Map with \n => Is that ok ? Bce of fill_map.
 	if (is_map_empty(game) == 1)
 		return (1);
 	// Allowed character in map
+	if (is_char_valid(game) == 1)
+		return (1);
 	// Map has no player position or too many in the map
 	if (is_player_valid(game) == 1)
 		return (1);
 	// Map surrounded by walls only
 	// Invalid player position => What does it mean ? (outside walls or blocked ?)
-
+	// Check lignes vides
+	// Debut de la map : Ligne vide puis aucun char diff. de 11111 !
 	return (0);
 }
 
+/*
+Check si une ligne vide puis wall puis wallpuis vide et si apres pas bon !
+*/
 int	is_file_full(const char *file, t_game *game)
 {
 	int		fd;
@@ -390,6 +432,15 @@ int	is_file_full(const char *file, t_game *game)
 	return (0);
 }
 
+/*
+WALLS AROUND
+On itere sur la premiere ligne -> si dif. de 1 et \n alors erreur
+On itere sur la derniere ligne (map->height) => same
+On itere sur la 1ere colonne donc index < a heigth
+=> On check la 1ere et derniere colonne en meme temps !
+A l'inverse des premier et avec width en x !
+*/
+
 int	is_file_valid(const char *file, t_game *game)
 {
 	// File extension
@@ -402,6 +453,7 @@ int	is_file_valid(const char *file, t_game *game)
 	// Map is not the last element in the file
 	// if (is_file_full(file, game) == 1)
 	// 	return (1);
+	// CHECK TEXTURES && RGB EN DOUBLE
 	return (0);
 }
 
@@ -432,7 +484,7 @@ Validiter du fichier .cub => DONE
 SO pareil => DONE
 WE pareil => DONE
 EA pareil => DONE
-ligne 5 only authorize (\t \n ' ' ect...)
+ligne 5 only authorize (\t \n ' ' etc, ...)
 F int,int,int (compris entre 0 et 255) => DONE
 C ligne 8 only authorize (\t \n ' ' ect...) => DONE
 AP (a partir de la rien dautoriser hors ' ' 1 0) fin de la map quand une ligne commence par \n,
@@ -443,7 +495,7 @@ Message a afficher en cas de probleme d'input :
 
 Manque un espace entre North/South/East/West/Floor/Ceiling et leur valeur
 
-Path invalide pour North/South/East/West => Floodfill !
+Path invalide pour North/South/East/West => Floodfill (aucun 0 qui touche un espace) !
 
 Manque une ligne vide entre les textures et les couleurs (ligne 5)
 
@@ -466,8 +518,7 @@ Voici un exemple de toutes les erreurs qui doivent être traitées dans le ticke
 "One color code is missing" => DONE
 "Invalid floor RGB color" => DONE
 "Invalid ceiling RGB color" => DONE
-"Map description is either wrong or incomplete" => Explanation ?
-"Invalid character in map"
+"Invalid character in map" => DONE
 "Map has more than one player" => DONE
 "Invalid RGB value (min: 0, max: 255)"
 "Missing texture(s)" => DONE

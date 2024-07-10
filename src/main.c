@@ -52,7 +52,7 @@ int	main(int argc, char *argv[])
 	if (argc != 2)
 		return (printf("Wrong nb of arguments\n"), 1);
 	game.win = NULL;
-	map = ft_strdup(argv[1]); // Don't forget to free !
+	map = ft_strdup(argv[1]);
 	if (map == NULL)
 		return (printf("There is no map\n"), 1);
 	game.mlx = mlx_init();
@@ -61,7 +61,7 @@ int	main(int argc, char *argv[])
 		printf("Could not start mlx\n");
 		exit(EXIT_FAILURE);
 	}
-	init_game(&game);
+	init_game(&game); // Init toutes les variables !
 	// Create map
 	read_map(&game, map);
 	malloc_map(&game);
