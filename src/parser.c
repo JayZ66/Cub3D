@@ -20,7 +20,8 @@
 	2. Malloc the map => DONE
 	3. Fill the map =>Same as the first step. => DONE
 		a. Open the file
-		b. Loop to fill our map. On malloc que le contenu et plus la map dans son ensemble !
+		b. Loop to fill our map. 
+		On malloc que le contenu et plus la map dans son ensemble !
 	4. Wall map errors
 		a. Check des caractères sur les murs (non autorisés)
 		b. x 4 pour réaliser tous les murs !
@@ -36,6 +37,7 @@
 		b. Checking issues on map ways
 */
 
+// line_length = 0; Autre on passe les elements + le vide et on arrive a la map.
 void	read_map(t_game *game, const char *file)
 {
 	int		fd;
@@ -45,29 +47,27 @@ void	read_map(t_game *game, const char *file)
 	fd = open(file, O_RDONLY);
 	if (fd == -1)
 	{
-		// game->map.map = NULL;
 		printf("Could not open the map file\n");
 		free_all2(game);
 	}
-	line_length = 0; // Autre on passe les elements + le vide et on arrive a la map.
+	line_length = 0;
 	while ((line = get_next_line(fd)) != NULL)
 	{
 		// Si ligne vide => je break la boucle
 		// printf("Height: %d\n", game->map.height);
 		// Check par ordre des lignes donc ligne X est ca.
-		if (check_char(line, '1') == 1 && check_char(line, 'F') == 0 && check_char(line, 'C') == 0) // How to handle if the map is not a square ?
+		if (check_char(line, '1') == 1 && check_char(line, 'F') == 0
+			&& check_char(line, 'C') == 0)
 		{
 			line_length = ft_strlen(line);
-            if (line[line_length - 1] == '\n')
-                line_length--;
-            if (line_length > game->map.width)
-                game->map.width = line_length; 
+			if (line[line_length - 1] == '\n')
+				line_length--;
+			if (line_length > game->map.width)
+				game->map.width = line_length;
 			game->map.height++;
 		}
 		free(line);
 	}
-	printf("Width: %d\n", game->map.width);
-	printf("Heigth: %d\n", game->map.height);
 	close(fd);
 }
 
@@ -86,7 +86,7 @@ void	fill_map(t_game *game, const char *file)
 {
 	int		i;
 	int		fd;
-	int 	textures;
+	int		textures;
 	int		rgb;
 	char	*line;
 
@@ -100,13 +100,17 @@ void	fill_map(t_game *game, const char *file)
 		free_all2(game);
 	}
 	memset(game->texture_paths, 0, sizeof(game->texture_paths));
-	while ((line = get_next_line(fd)) != NULL) // CHECK IF AU MOINS LIGNE DE VIDE AVEC UN FLAG!!!
+	while (1) // CHECK IF AU MOINS LIGNE DE VIDE AVEC UN FLAG!!!
 	{
+		line = get_next_line(fd);
+		if (line == NULL)
+			break ;
 		if (textures != 4 && is_path_textures(game, line) == 0)
 			textures += 1;
 		else if (rgb != 2 && is_rgb_code(game, line) == 0)
 			rgb += 1;
-		else if ((check_char(line, '1') == 1 || check_char(line, '0') == 1) && (check_char(line, 'F') == 0 && check_char(line, 'C') == 0)) // Pas bon car va me mettre les lignes avec espaces et tout !
+		else if ((check_char(line, '1') == 1 || check_char(line, '0') == 1)
+			&& (check_char(line, 'F') == 0 && check_char(line, 'C') == 0)) // Pas bon car va me mettre les lignes avec espaces et tout !
 		{
 			if (i >= game->map.height)
 			{
@@ -118,7 +122,16 @@ void	fill_map(t_game *game, const char *file)
 		}
 		free(line);
 	}
-	/*
+	printf("RGB : %d\n", rgb);
+	printf("Textures : %d\n", textures);
+	if (rgb != 2 || textures != 4)
+	{
+		printf("Map description is either wrong or incomplete\n");
+		free_all2(game);
+	}
+	close(fd);
+}
+/*
 	While (gnl)
 	{
 		soit compteur pour savoir le nb de ligne
@@ -132,28 +145,23 @@ void	fill_map(t_game *game, const char *file)
 	// 	printf("map : %s\n", game->map.map[i]);
 	// 	i++;
 	// }
-	close(fd);
-	if (rgb != 2 || textures != 4)
-	{
-		printf("Map description is either wrong or incomplete\n");
-		free_all2(game);
-	}
-}
 
+/*
+if (*line == ',')
+=> Should we manage the error or could be a space ? Yes !
+*/
 int	parse_rgb(char *line, int *r, int *g, int *b)
 {
 	*r = ft_atoi2(line);
 	if (*r == -1)
 		return (printf("Red color code is missing\n"), 1);
-	// printf("r : %d\n", *r);
 	while (ft_isdigit(*line))
 		line++;
-	if (*line == ',') // Should we manage the error or could be a space ? Yes !
+	if (*line == ',')
 		line++;
 	*g = ft_atoi2(line);
 	if (*g == -1)
 		return (printf("Green color code is missing\n"), 1);
-	// printf("g : %d\n", *g);
 	while (ft_isdigit(*line))
 		line++;
 	if (*line == ',')
@@ -161,19 +169,18 @@ int	parse_rgb(char *line, int *r, int *g, int *b)
 	*b = ft_atoi2(line);
 	if (*b == -1)
 		return (printf("Blue color code is missing\n"), 1);
-	// printf("b : %d\n", *b);
 	while (ft_isdigit(*line))
 		line++;
-	if (*line != '\0' && *line != '\n') //  && !isspace(*line) - Should we check the end of the line ?
+	if (*line != '\0' && *line != '\n')
 		return (1);
-	if ((*r < 0 || *r > 255 || *g < 0 || *g > 255 || *b < 0 || *b > 255) && ft_isspace(line) != 1)
+	if ((*r < 0 || *r > 255 || *g < 0 || *g > 255 || *b < 0 || *b > 255)
+		&& ft_isspace(line) != 1)
 		return (1);
 	return (0);
 }
+//  && !isspace(*line) - Should we check the end of the line ?
 
-// Ligne 5 only authorize (\t \n ' ' ect...) // How to check it with gnl ? YES see above
-// AP (a partir de la rien dautoriser hors ' ' 1 0) fin de la map quand une ligne commence par \n,
-// apres cela aucun char autoriser hors \n
+// Check si 2 fois same rgb !
 int	is_rgb_code(t_game *game, char *line)
 {
 	int		r;
@@ -181,7 +188,6 @@ int	is_rgb_code(t_game *game, char *line)
 	int		b;
 	char	*rgb_line;
 
-	// printf("Line : %s\n", line);
 	if ((line[0] == 'C' || line[0] == 'F') && line[1] == ' ')
 	{
 		rgb_line = line + 2;
@@ -215,9 +221,9 @@ int	is_rgb_code(t_game *game, char *line)
 	return (1);
 }
 
+// Checker si 2 fois même texture !
 int	is_path_textures(t_game *game, char *line)
 {
-	// printf("LINE\n");
 	if (ft_strncmp(line, "NO", 2) == 0 && line[2] == ' ')
 		game->texture_paths[0] = ft_strdup(line);
 	else if (ft_strncmp(line, "SO", 2) == 0 && line[2] == ' ')
@@ -231,8 +237,7 @@ int	is_path_textures(t_game *game, char *line)
 	}
 	else
 	{
-		printf("Missing texture(s)\n");
-		free_all2(game);
+		return (1);
 	}
 	return (0);
 }
@@ -269,7 +274,6 @@ int	is_map_empty(t_game *game)
 	}
 	if (empty_map == game->map.height)
 	{
-		// printf("height : %d\n", game->map.height);
 		printf("Empty : %d\n", empty_map);
 		printf("Map is empty\n");
 		return (1);
@@ -281,7 +285,7 @@ int	is_file_empty(const char *file, t_game *game)
 {
 	int		fd;
 	char	c;
-	
+
 	fd = open(file, O_RDONLY);
 	if (fd == -1)
 	{
@@ -298,6 +302,8 @@ int	is_file_empty(const char *file, t_game *game)
 	return (0);
 }
 
+// printf("Map : %c\n", game->map.map[i][j]);
+// printf("Map : %s\n", game->map.map[i]);
 int	is_player_valid(t_game *game)
 {
 	size_t	i;
@@ -309,17 +315,15 @@ int	is_player_valid(t_game *game)
 	while (game->map.map[i])
 	{
 		j = 0;
-		printf("Map : %s\n", game->map.map[i]);
 		while (game->map.map[i][j])
 		{
-			// printf("Map : %c\n", game->map.map[i][j]);
 			if (game->map.map[i][j] == 'N' || game->map.map[i][j] == 'S'
 				|| game->map.map[i][j] == 'W' || game->map.map[i][j] == 'E')
-				{
-					game->player.x = j;
-					game->player.y = i;
-					player++;
-				}
+			{
+				game->player.x = j;
+				game->player.y = i;
+				player++;
+			}
 			j++;
 		}
 		i++;
@@ -327,31 +331,9 @@ int	is_player_valid(t_game *game)
 	if (player > 1)
 		return (printf("Map has more than one player\n"), 1);
 	else if (player == 0)
-		return (printf("Map has no player position (expected N, S, E ou W)\n"), 1);
+		return (printf("Map has no player position (N, S, E, W)\n"), 1);
 	return (0);
 }
-
-// int	is_player_valid(t_game *game)
-// {
-// 	size_t	i;
-// 	int		player;
-
-// 	player = 0;
-// 	i = 0;
-// 	while (game->map.map[i])
-// 	{
-// 		if (ft_strncmp(game->map.map[i], "N", 1) == 0 || ft_strncmp(game->map.map[i], "S", 1) == 0
-// 			|| ft_strncmp(game->map.map[i], "E", 1) == 0|| ft_strncmp(game->map.map[i], "W", 1) == 0)
-// 				player++;
-// 		i++;
-// 	}
-// 	if (player > 1)
-// 	{
-// 		printf("Map has more than one player\n");
-// 		return (1);
-// 	}
-// 	return (0);
-// }
 
 int	is_char_valid(t_game *game)
 {
@@ -364,10 +346,11 @@ int	is_char_valid(t_game *game)
 		j = 0;
 		while (j < game->map.width)
 		{
-			printf("%c\n", game->map.map[i][j]);
-			if (game->map.map[i][j] != '1' && game->map.map[i][j] != '0' 
+			if (game->map.map[i][j] != '1' && game->map.map[i][j] != '0'
 				&& game->map.map[i][j] != 'S' && game->map.map[i][j] != 'N'
-					&& game->map.map[i][j] != 'W' && game->map.map[i][j] != 'E' && game->map.map[i][j] != ' ' && game->map.map[i][j] != '\n')
+				&& game->map.map[i][j] != 'W' && game->map.map[i][j] != 'E'
+				&& game->map.map[i][j] != 32 && game->map.map[i][j] != '\0'
+				&& game->map.map[i][j] != '\n')
 			{
 				printf("Invalid character in map\n");
 				return (1);
@@ -379,39 +362,141 @@ int	is_char_valid(t_game *game)
 	return (0);
 }
 
-int are_walls_ok(t_game *game)
-{
-    int i;
+// ASK : Walls check square form or the check adapts itself 
+// to the shape of the map ?
+// ligne y / colonne x
+// Il faut : check tant que ligne à position 0 n'est pas égale à 
+// 1 on avance de y.
 
-    i = 0;
-    // En haut
-    while (game->map.map[0][i])
-    {
-        if (game->map.map[0][i] != '1' && game->map[0][theo] != '\n')
-            return (printf("Walls are missing in the map\n"), 1);
-        i++;
-    }
-    // En bas
-    i = 0;
-    while (game->map.map[game->map.height - 1][i])
-    {
-        if (game->map.map[game->map.height - 1][i] != '1' && game->map[game->map.height - 1][i] != '\n')
-        	return (printf("Walls are missing in the map\n"), 1);
-        i++;
-    }
-    // A gauche & droite
-    i = 0;
-    while (i < game->map.height - 1)
-    {
-        if (game->map.map[i][0] != '1')
-        	return (printf("Walls are missing in the map\n"), 1);
-        if (game->map.map[i][game->map.width - 1] && game->map[i][game->map.width - 1] != '\n'
-                && game->map[i][game->map.width - 1] != '\0') // To check
-        	return (printf("Walls are missing in the map\n"), 1);
-        i++;
-    }
-    return (0);
+int	are_walls_valid(t_game *game)
+{
+	int		i;
+	int		j;
+	int		width;
+	char	*line;
+
+	// Check top line of the map
+	line = game->map.map[0];
+	width = ft_strlen(line);
+	j = 0;
+	while (j < width)
+	{
+		i = 0;
+		while (i < game->map.height && (game->map.map[i][j] == ' '
+			|| game->map.map[i][j] == '\n'))
+		{
+			printf("LINE : %c\n", line[j]);
+			i++;
+		}
+		printf("LINE : %c\n", line[j]);
+		if (i < game->map.height && game->map.map[i][j] != '1')
+			return (printf("Walls are missing at the up side of the map\n", 1));
+		j++;
+	}
+	//Check bottom line of the map
+	line = game->map.map[game->map.height - 1];
+	width = ft_strlen(line);
+	j = 0;
+	while (j < width)
+	{
+		i = game->map.height - 1;
+		while (i >= 0 && (game->map.map[i][j] == ' '
+			|| game->map.map[i][j] == '\n'))
+		{
+			printf("LINE : %c\n", line[j]);
+			i--;
+		}
+		printf("LINE : %c\n", line[j]);
+		if (i >= 0 && game->map.map[i][j] != '1')
+			return (printf("Walls are missing at the bottom side of the map\n")
+				, 1);
+		j++;
+	}
+	//Check left & right of the map.
+	i = 0;
+	while (i < game->map.height)
+	{
+		line = game->map.map[i];
+		width = ft_strlen(line);
+		//Vérifier le premier caractère de la ligne (bord gauche)
+		j = 0;
+		while (line[j] == ' ' || line[j] == '\n')
+			j++;
+		if (line[j] != '1')
+			return (printf("Walls are missing at the left side of the map\n")
+				, 1);
+		//Vérifier le dernier caractère de la ligne (bord droit)
+		j = width - 1;
+		while (j >= 0 && (line[j] == ' ' || line[j] == '\n'))
+			j--;
+		if (j >= 0 && line[j] != '1')
+			return (printf("Walls are missing at the right side of the map\n")
+				, 1);
+		i++;
+	}
+	return (0);
 }
+
+// int are_walls_valid(t_game *game)
+// {
+//     int i;
+
+//     i = 0;
+//     // En haut
+//     while (i < game->map.width - 1)
+//     {
+// 		printf("LINE up : %c\n", game->map.map[0][i]);
+// 		while (game->map.map[0][i] == 32)
+// 			i++;
+//         if (game->map.map[0][i] != '1' && game->map.map[0][i] != '\n'
+// 			&& game->map.map[game->map.height - 1][i] != 32)
+//             return (printf("Walls are missing at the top of the map\n"), 1);
+//         i++;
+//     }
+//     // En bas
+//     i = 0;
+//     while (game->map.map[game->map.height - 1][i])
+//     {
+// 		printf("LINE bottom : %c\n", game->map.map[game->map.height - 1][i]);
+//         if (game->map.map[game->map.height - 1][i] != '1'
+//			&& game->map.map[game->map.height - 1][i] != '\n'
+// 			&& game->map.map[game->map.height - 1][i] != 32)
+//         	return (printf("Walls are missing at the bottom of the map\n"), 1);
+//         i++;
+//     }
+//     // A gauche
+//     i = 0;
+//     while (i < game->map.height - 1)
+//     {
+// 		printf("LINE left: %c\n", game->map.map[i][0]);
+// 		while (game->map.map[i][0] == 32)
+// 			i++;
+//         if (game->map.map[i][0] != '1' && game->map.map[i][0] != 32)
+//         	return (printf("Walls are missing at the left of the map\n"), 1);
+//         // if (game->map.map[i][game->map.width - 1] != '1'
+//				&& game->map.map[i][game->map.width - 1] != '\n'
+//         //         && game->map.map[i][game->map.width - 1] != '\0'
+//						&& game->map.map[game->map.height - 1][i] != 32)
+//         // 	return (printf("Walls are missing at the right of the map\n")
+//						, 1);
+//         i++;
+//     }
+// 	// A droite
+// 	i = 0;
+// 	while (game->map.map[i][game->map.width - 1])
+// 	{
+// 		while (game->map.map[i][game->map.width - 1] == 32)
+// 			i++;
+// 		printf("LINE right: %c\n", game->map.map[i][game->map.width - 1]);
+// 		 if (game->map.map[i][game->map.width - 1] != '1'
+//			&& game->map.map[i][game->map.width - 1] != '\n'
+//          && game->map.map[i][game->map.width - 1] != '\0'
+//			&& game->map.map[i][game->map.width - 1] != 32) // To check
+//         	return (printf("Walls are missing at the right of the map\n"), 1);
+// 		i++;
+// 	}
+//     return (0);
+// }
 
 int	is_map_valid(t_game *game)
 {
@@ -425,13 +510,14 @@ int	is_map_valid(t_game *game)
 	if (is_player_valid(game) == 1)
 		return (1);
 	// Map surrounded by walls only
-	if (are_walls_ok(game) == 1)
+	if (are_walls_valid(game) == 1)
 		return (1);
-	// Invalid player position => What does it mean ? (outside walls or blocked ?)
-	// Check lignes vides
-	// Debut de la map : Ligne vide puis aucun char diff. de 11111 !
 	return (0);
 }
+// Invalid player position => What does it mean ?
+// (outside walls or blocked ?)
+// Check lignes vides
+// Debut de la map : Ligne vide puis aucun char diff. de 11111 !
 
 /*
 Check si une ligne vide puis wall puis wallpuis vide et si apres pas bon !
@@ -440,25 +526,22 @@ int	is_file_full(const char *file, t_game *game)
 {
 	int		fd;
 	int		check;
-	// size_t	i;
-	// size_t	bytes;
 	char	*line;
 
 	check = 0;
-	// bytes = 0;
-	// i = 0;
 	fd = open(file, O_RDONLY);
 	if (fd == -1)
 	{
 		printf("Could not open the map file\n");
 		free_all2(game);
 	}
-	while ((line = get_next_line(fd)) != NULL)
+	while (1)
 	{
+		line = get_next_line(fd);
+		if (line  == NULL)
+			break ;
 		if (ft_strncmp_cub(line, '1', ft_strlen(line)) == 0)
 			check++;
-		// printf("Line : %s\n", line);
-		// printf("Check : %d\n", check);
 		if (check == 2 && line != NULL && *line != '\n')
 		{
 			printf("Map is not the last element in file\n");
@@ -468,15 +551,6 @@ int	is_file_full(const char *file, t_game *game)
 	return (0);
 }
 
-/*
-WALLS AROUND
-On itere sur la premiere ligne -> si dif. de 1 et \n alors erreur
-On itere sur la derniere ligne (map->height) => same
-On itere sur la 1ere colonne donc index < a heigth
-=> On check la 1ere et derniere colonne en meme temps !
-A l'inverse des premier et avec width en x !
-*/
-
 int	is_file_valid(const char *file, t_game *game)
 {
 	// File extension
@@ -485,33 +559,19 @@ int	is_file_valid(const char *file, t_game *game)
 	// Empty file
 	if (is_file_empty(file, game) == 1) // Check if file empty ?
 		return (1);
-	// Missing colors => DONE
-	// Map is not the last element in the file
-	// if (is_file_full(file, game) == 1)
-	// 	return (1);
-	// CHECK TEXTURES && RGB EN DOUBLE
 	return (0);
 }
+// Missing colors => DONE
+// Map is not the last element in the file
+// CHECK TEXTURES && RGB EN DOUBLE
 
 void	manage_errors(t_game *game, const char *file)
 {
-	if (is_file_valid(file, game) == 1) // Check if file empty ?
+	if (is_file_valid(file, game) == 1)
 		free_all2(game);
 	if (is_map_valid(game) == 1)
 		free_all2(game);
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 /* ERRORS TO HANDLE
 Errors map : 
@@ -523,7 +583,8 @@ EA pareil => DONE
 ligne 5 only authorize (\t \n ' ' etc, ...)
 F int,int,int (compris entre 0 et 255) => DONE
 C ligne 8 only authorize (\t \n ' ' ect...) => DONE
-AP (a partir de la rien dautoriser hors ' ' 1 0) fin de la map quand une ligne commence par \n,
+AP (a partir de la rien dautoriser hors ' ' 1 0) fin de la map quand une ligne 
+commence par \n,
 apres cela aucun char autoriser hors \n
 
 
@@ -531,7 +592,8 @@ Message a afficher en cas de probleme d'input :
 
 Manque un espace entre North/South/East/West/Floor/Ceiling et leur valeur
 
-Path invalide pour North/South/East/West => Floodfill (aucun 0 qui touche un espace) !
+Path invalide pour North/South/East/West => Floodfill (aucun 0 qui touche un 
+espace) !
 
 Manque une ligne vide entre les textures et les couleurs (ligne 5)
 
@@ -541,12 +603,14 @@ Map invalide, Char interdit dans la map ( /1/0)
 
 Map invalide, la map doit etre entourer de mur (tips sur lalgo de graph)
 
-Aucun char autoriser apres la fin de la map (apres une premiere ligne vide post map)
+Aucun char autoriser apres la fin de la map (apres une premiere ligne vide 
+post map)
 
 */
 
 /* ERRORS TO HANDLE
-Voici un exemple de toutes les erreurs qui doivent être traitées dans le ticket parsing ou init :
+Voici un exemple de toutes les erreurs qui doivent être traitées dans le ticket 
+parsing ou init :
 
 "Not a .cub file" => OK
 "Not an .xpm file"

@@ -46,24 +46,21 @@ int	free_all2(t_game *game)
 
 	i = 0;
 	printf("OK free \n");
-    if (game->map.map)
-    {
-        while (game->map.map[i])
-        {
-            free(game->map.map[i]);
-            i++;
-        }
-        free(game->map.map);
-    }
-    i = 0;
-    if (game->texture_paths)
-    {
-        while (game->texture_paths[i])
-        {
-            free(game->texture_paths[i]);
-            i++;
-        }
-    }
+	if (game->map.map)
+	{
+		while (game->map.map[i])
+		{
+			free(game->map.map[i]);
+			i++;
+		}
+		free(game->map.map);
+	}
+	i = 0;
+	while (game->texture_paths[i])
+	{
+		free(game->texture_paths[i]);
+		i++;
+	}
 	if (game->win != NULL)
 	{
 		mlx_destroy_window(game->mlx, game->win);
@@ -74,7 +71,7 @@ int	free_all2(t_game *game)
 		mlx_destroy_display(game->mlx);
 		free(game->mlx);
 		exit(0);
-	} // THINK TO MAP AT THE BEGINNING !
+	}
 	exit(EXIT_FAILURE);
 }
 
@@ -115,15 +112,10 @@ int	ft_strncmp_cub(const char *s1, char c, size_t n)
 	size_t	i;
 
 	i = 0;
-	// printf("String : %s\n", s1);
-	// printf("String2 : %s\n", s2);
 	if (n == 0)
 		return (0);
 	while (s1[i] == 32)
-	{
-		// printf("Char : %c\n", s1[i]);
 		i++;
-	}
 	while ((unsigned char)s1[i] && ((unsigned char)s1[i]
 			== (unsigned char)c) && (i < n - 1))
 	{

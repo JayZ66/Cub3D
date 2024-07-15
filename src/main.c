@@ -31,8 +31,9 @@ void	create_window(t_game *game)
 	{
 		printf("Mlx has not been set up \n");
 		return ;
-	} // Why are we using win_heigth et pas juste les autres dans struct. map ?
-	game->win = mlx_new_window(game->mlx, 500, 500, "Cub3d - A portail's world");
+	}
+	game->win = mlx_new_window(game->mlx, 500, 500,
+			"Cub3d - A portail's world");
 	if (!game->win)
 	{
 		printf("Could not create mlx window\n");
@@ -44,6 +45,9 @@ void	create_window(t_game *game)
 	mlx_loop(game->mlx);
 }
 
+// Init structures
+// Create map
+// Check map errors
 int	main(int argc, char *argv[])
 {
 	t_game	game;
@@ -51,7 +55,7 @@ int	main(int argc, char *argv[])
 
 	if (argc != 2)
 		return (printf("Wrong nb of arguments\n"), 1);
-	game.win = NULL;
+	// game.win = NULL;
 	map = ft_strdup(argv[1]);
 	if (map == NULL)
 		return (printf("There is no map\n"), 1);
@@ -61,14 +65,11 @@ int	main(int argc, char *argv[])
 		printf("Could not start mlx\n");
 		exit(EXIT_FAILURE);
 	}
-	init_game(&game); // Init toutes les variables !
-	// Create map
+	init_game(&game);
 	read_map(&game, map);
 	malloc_map(&game);
 	fill_map(&game, map);
-	// Check map errors
 	manage_errors(&game, map);
-	// Init structures
 	create_window(&game);
 	game.win = NULL;
 	mlx_loop(game.mlx);

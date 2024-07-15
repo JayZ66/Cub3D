@@ -1,0 +1,13 @@
+
+1. Erreur gestion char dans la map => DONE
+2. Tester la fonction de check des murs => DONE
+3. Vérifier les doublons (CHECK TEXTURES && RGB EN DOUBLE)
+4. Pas plusieurs maps
+5. Bonne value par rapport a chaque key value (key value = NO for ex.)
+6. Definir la map sur le file => Check pseudo code on discord pour renforcer
+la vérification
+7. Pas quelque chose après la map dans le file : 
+=> Check si une ligne vide puis wall puis wall puis vide et si apres pas bon !
+8. Mettre au propre + norm !
+9. Check if the nb of textures & rgb are not good => DONE
+10. Init everything in the init function()
