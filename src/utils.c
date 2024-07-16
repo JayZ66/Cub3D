@@ -44,21 +44,24 @@ int	free_all2(t_game *game)
 {
 	int	i;
 
-	i = 0;
 	printf("OK free \n");
 	if (game->map.map)
 	{
-		while (game->map.map[i])
+		i = 0;
+		while (i < game->map.height)
 		{
-			free(game->map.map[i]);
+			// printf("Line %s\n", game->map.map[i]);
+			if (game->map.map[i])
+				free(game->map.map[i]);
 			i++;
 		}
 		free(game->map.map);
 	}
 	i = 0;
-	while (game->texture_paths[i])
+	while (i < 4)
 	{
-		free(game->texture_paths[i]);
+		if (game->texture_paths[i])
+			free(game->texture_paths[i]);
 		i++;
 	}
 	if (game->win != NULL)
@@ -70,7 +73,6 @@ int	free_all2(t_game *game)
 	{
 		mlx_destroy_display(game->mlx);
 		free(game->mlx);
-		exit(0);
 	}
 	exit(EXIT_FAILURE);
 }

@@ -65,15 +65,15 @@ int	main(int argc, char *argv[])
 		printf("Could not start mlx\n");
 		exit(EXIT_FAILURE);
 	}
-	init_game(&game);
+	init_cub(&game);
 	read_map(&game, map);
 	malloc_map(&game);
 	fill_map(&game, map);
 	manage_errors(&game, map);
 	create_window(&game);
-	game.win = NULL;
+	// game.win = NULL;
 	mlx_loop(game.mlx);
-	free_all2(&game);
 	free(map);
+	free_all2(&game);
 	return (0);
 }
