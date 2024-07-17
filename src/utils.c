@@ -26,6 +26,32 @@ int	check_char(char const *set, char c)
 	return (0);
 }
 
+int only_space2(char *line) {
+    while (*line) {
+        if (*line != ' ' && *line != '\t' && *line != '\n' && *line != '\r') {
+            return (0);
+        }
+        line++;
+    }
+    return (1);
+}
+
+int	only_space(char *line)
+{
+	int	i;
+	
+
+	i = 0;
+	while (line[i])
+	{
+        if (!isspace(line[i]))
+            return (0);
+        i++;
+    }
+    return (1);
+	
+}
+
 int	ft_isspace(char *line)
 {
 	size_t	i;

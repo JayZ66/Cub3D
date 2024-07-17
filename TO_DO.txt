@@ -2,12 +2,42 @@
 2. Tester la fonction de check des murs => DONE
 3. Vérifier les doublons (CHECK TEXTURES && RGB EN DOUBLE) => DONE
 4. Check les paths des textures (access) => DONE
-4. Pas plusieurs maps
+4. Pas plusieurs maps => DONE
+5. Si map au début du file => DONE
 5. Bonne value par rapport a chaque key value (key value = NO for ex.)
-6. Definir la map sur le file => Check pseudo code on discord pour renforcer
+6. Definir la map sur le file => DONE
+> Check pseudo code on discord pour renforcer
 la vérification
-7. Pas quelque chose après la map dans le file : 
-=> Check si une ligne vide puis wall puis wall puis vide et si apres pas bon !
+    => Renforcer check pour déterminer la map !
+7. Pas quelque chose après la map dans le file : DONE
+=> Check si ligne vide > wall start > wall end > vide
 8. Mettre au propre + norm ! => DONE
 9. Check if the nb of textures & rgb are not good => DONE
 10. Init everything in the init function() => DONE
+11. Virgule entre codes rgb + Space entre position et path => DONE
+12. Create mlx image !
+13. Tests données file : 
+- Textures (toutes, pas de doublon, ordre(s))
+- RGB : codes couleurs, chiffres int, F/C, doublons, virgules entre codes
+- Map : position player, char autorisés, murs, map en premier, map en double, 
+
+ASK JB : 
+- Init position du joueur : x & y ok mais le rest IDK ???
+
+
+TASK : Chargement des textures et des couleurs : 
+
+ -   Charger les textures pour les murs (Nord, Sud, Est, Ouest) à partir des chemins spécifiés dans le fichier de configuration.
+ -   Configurer les couleurs du plafond et du sol à partir des valeurs RGB spécifiées.
+ -   Gérer les erreurs de chargement.
+
+ Exemple : 
+ void load_textures(t_game *game)
+ {
+    for (int i = 0; i < 4; i++) {
+        game->textures[i].img = mlx_xpm_file_to_image(game->mlx, game->texture_paths[i], &game->textures[i].width, &game->textures[i].height);
+        if (!game->textures[i].img)
+            exit_with_error(ERROR_INVALID_TEXTURES);
+        game->textures[i].addr = (int *)mlx_get_data_addr(game->textures[i].img, &game->textures[i].pixel_bits, &game->textures[i].size_line, &game->textures[i].endian);
+    }
+}

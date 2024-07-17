@@ -32,6 +32,7 @@
 # include <sys/wait.h> // Wait
 # include <fcntl.h>
 # include <math.h>
+# include <ctype.h>
 
 typedef enum s_texture_index
 {
@@ -96,6 +97,10 @@ int		ft_isspace(char *line);
 int		check_char(char const *set, char c);
 int		ft_atoi2(const char *nptr);
 int		ft_strncmp_cub(const char *s1, char c, size_t n);
+int	only_space(char *line);
+int	check_map_line(const char *line);
+int only_space2(char *line);
+int is_description_line(const char *line);
 
 // INITIALIZATION OF STRUCTURES
 void	init_cub(t_game *game);

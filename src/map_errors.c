@@ -158,67 +158,6 @@ int	are_walls_valid(t_game *game)
 	return (0);
 }
 
-// int are_walls_valid(t_game *game)
-// {
-//     int i;
-
-//     i = 0;
-//     // En haut
-//     while (i < game->map.width - 1)
-//     {
-// 		printf("LINE up : %c\n", game->map.map[0][i]);
-// 		while (game->map.map[0][i] == 32)
-// 			i++;
-//         if (game->map.map[0][i] != '1' && game->map.map[0][i] != '\n'
-// 			&& game->map.map[game->map.height - 1][i] != 32)
-//             return (printf("Walls are missing at the top of the map\n"), 1);
-//         i++;
-//     }
-//     // En bas
-//     i = 0;
-//     while (game->map.map[game->map.height - 1][i])
-//     {
-// 		printf("LINE bottom : %c\n", game->map.map[game->map.height - 1][i]);
-//         if (game->map.map[game->map.height - 1][i] != '1'
-//			&& game->map.map[game->map.height - 1][i] != '\n'
-// 			&& game->map.map[game->map.height - 1][i] != 32)
-//         	return (printf("Walls are missing at the bottom of the map\n"), 1);
-//         i++;
-//     }
-//     // A gauche
-//     i = 0;
-//     while (i < game->map.height - 1)
-//     {
-// 		printf("LINE left: %c\n", game->map.map[i][0]);
-// 		while (game->map.map[i][0] == 32)
-// 			i++;
-//         if (game->map.map[i][0] != '1' && game->map.map[i][0] != 32)
-//         	return (printf("Walls are missing at the left of the map\n"), 1);
-//         // if (game->map.map[i][game->map.width - 1] != '1'
-//				&& game->map.map[i][game->map.width - 1] != '\n'
-//         //         && game->map.map[i][game->map.width - 1] != '\0'
-//						&& game->map.map[game->map.height - 1][i] != 32)
-//         // 	return (printf("Walls are missing at the right of the map\n")
-//						, 1);
-//         i++;
-//     }
-// 	// A droite
-// 	i = 0;
-// 	while (game->map.map[i][game->map.width - 1])
-// 	{
-// 		while (game->map.map[i][game->map.width - 1] == 32)
-// 			i++;
-// 		printf("LINE right: %c\n", game->map.map[i][game->map.width - 1]);
-// 		 if (game->map.map[i][game->map.width - 1] != '1'
-//			&& game->map.map[i][game->map.width - 1] != '\n'
-//          && game->map.map[i][game->map.width - 1] != '\0'
-//			&& game->map.map[i][game->map.width - 1] != 32) // To check
-//         	return (printf("Walls are missing at the right of the map\n"), 1);
-// 		i++;
-// 	}
-//     return (0);
-// }
-
 int	is_map_valid(t_game *game)
 {
 	// Map with \n => Is that ok ? Bce of fill_map.

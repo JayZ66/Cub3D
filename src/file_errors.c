@@ -154,7 +154,7 @@ int	are_rgb_ids_valid(t_game *game, const char *file)
 		i = 0;
 		while (line[i])
 		{
-			printf("Line char : %c\n", line[i]);
+			// printf("Line char : %c\n", line[i]);
 			if (line[i] == 'C')
 				is_ceiling++;
 			if (line[i] == 'F')
@@ -171,24 +171,100 @@ int	are_rgb_ids_valid(t_game *game, const char *file)
 	return (0);
 }
 
+int is_description_line(const char *line)
+{
+    return (strncmp(line, "NO ", 3) == 0 ||
+            strncmp(line, "SO ", 3) == 0 ||
+            strncmp(line, "WE ", 3) == 0 ||
+            strncmp(line, "EA ", 3) == 0 ||
+            strncmp(line, "F ", 2) == 0 ||
+            strncmp(line, "C ", 2) == 0);
+}
+
+int is_there_something_after_map(const char *file)
+{
+    int fd;
+	
+	fd = open(file, O_RDONLY);
+    if (fd == -1)
+        return (printf("Could not open the map file\n"), 1);
+
+    char *line;
+    int map_started;
+    int map_ended;
+	int	description;
+
+	map_started = 0;
+	map_ended = 0;
+	description = 0;
+    while ((line = get_next_line(fd)) != NULL)
+	{
+        if (!map_started)
+		{
+            // Pass all the description of the map.
+            if (is_description_line(line))
+			{
+                free(line);
+				description = 1;
+                continue;
+            }
+			else if (check_map_line(line))
+			{
+				if (description == 0)
+					return (printf("Map is not at the end of the file\n"), 1);
+                map_started = 1;
+			}
+        }
+		else
+		{
+            if (map_ended)
+			{
+                if (!only_space(line))
+				{
+                    printf("Map is not the last element in file\n");
+                    free(line);
+                    close(fd);
+                    return (1);
+                }
+            }
+			else
+			{
+                if (only_space(line))
+                    map_ended = 1;
+				else if (!check_map_line(line))
+				{
+                    printf("Invalid character found in map\n");
+                    free(line);
+                    close(fd);
+                    return (1);
+                }
+            }
+        }
+
+        free(line);
+    }
+
+    close(fd);
+    return (0);
+}
+
 int	is_file_valid(const char *file, t_game *game)
 {
-	// File extension
 	if (is_file_extension_valid(file) == 1)
 		return (1);
-	// Empty file
 	if (is_file_empty(file, game) == 1) // Check if file empty ?
 		return (1);
     if (are_file_textures_valid(game) == 1)
 		return (1);
 	if (are_rgb_ids_valid(game, file) == 1)
 		return (1);
+	if (is_there_something_after_map(file) == 1)
+		return (1);
+	// if (is_there_one_map(file) == 1)
+	// 	return (1);
 	// if (are_paths_textures_valid(game) == 1)
 	// { PB : What's a valid path ???
 	// 	return (1);
 	// }
 	return (0);
 }
-// Missing colors => DONE
-// Map is not the last element in the file
-// CHECK TEXTURES && RGB EN DOUBLE
