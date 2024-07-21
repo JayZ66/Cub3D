@@ -37,9 +37,9 @@
 typedef enum s_texture_index
 {
 	NORTH = 0,
-	SOUTH = 1,
-	EAST = 2,
-	WEST = 3
+	EAST = 1,
+	WEST = 2,
+	SOUTH = 3
 }	t_texture_index;
 
 typedef struct s_texture
@@ -71,8 +71,8 @@ typedef struct s_player
 {
 	double	x;
 	double	y;
-	double	dir_x;
-	double	dir_y;
+	float	dir_x; // ENUM : NORTH/SOUTH
+	float	dir_y;
 	double	plane_x;
 	double	plane_y;
 }	t_player;
@@ -121,7 +121,7 @@ int		are_walls_valid(t_game *game);
 int		is_file_valid(const char *file, t_game *game);
 int		parse_rgb(char *line, int *r, int *g, int *b);
 int		is_rgb_code(t_game *game, char *line);
-int		is_path_textures(t_game *game, char *line, int textures);
+int		is_path_textures(t_game *game, char *line);
 int		are_file_textures_valid(t_game *game);
 int		is_file_full(const char *file, t_game *game);
 int		are_paths_textures_valid(t_game *game);

@@ -15,7 +15,7 @@ la vérification
 9. Check if the nb of textures & rgb are not good => DONE
 10. Init everything in the init function() => DONE
 11. Virgule entre codes rgb + Space entre position et path => DONE
-12. Create mlx image !
+12. Create mlx image ! => DONE
 13. Tests données file : 
 - Textures (toutes, pas de doublon, ordre(s))
 - RGB : codes couleurs, chiffres int, F/C, doublons, virgules entre codes
@@ -41,3 +41,29 @@ TASK : Chargement des textures et des couleurs :
         game->textures[i].addr = (int *)mlx_get_data_addr(game->textures[i].img, &game->textures[i].pixel_bits, &game->textures[i].size_line, &game->textures[i].endian);
     }
 }
+
+Check textures !
+Murs (4)
+Vidéo : cub3d portal => Check same textures !
+Pas le sol ni plafond.
+
+SOURIS :
+Direction du joueur : mettre de base les valeurs 
+Doit etre un float qui va de 0 a 3,99
+0 => NORTH
+1 => WEST
+2 => Sud
+3 => EAST
+
+Si bouge la souris vers la gauche => Tend vers 1 donc pour l'Ouest
+Et si il tend vers 3,99 => repart à 0
+
+DEFAUT : 
+pour tester il faut aller loin dans l'init de la mini
+il faudra une fenêtre qui garde le curseur au milieu pour tester 
+haut, bas, gauche, droite.
+
+
+TO DO !!!!!
+- ENUM pour path textures + retirer NO au debut de la ligne du file => DONE
+- Initialiser le dir_x > avec condition si NO on met 0. + dir_y à 1 (devant) => DONE TO TEST

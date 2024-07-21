@@ -43,12 +43,24 @@ int	is_player_valid(t_game *game)
 			{
 				game->player.x = j;
 				game->player.y = i;
+				if (game->map.map[i][j] == 'N')
+					game->player.dir_x = 0;
+				else if (game->map.map[i][j] == 'E')
+					game->player.dir_x = 1;
+				else if (game->map.map[i][j] == 'W')
+					game->player.dir_x = 2;
+				else if (game->map.map[i][j] == 'S')
+					game->player.dir_x = 3;
+				// game->player.dir_x = ; // si NO on met 0 ou autre (voir ENUM).
+				game->player.dir_y = 1; // TO DO : protection pour le retournement !!
 				player++;
 			}
 			j++;
 		}
 		i++;
 	}
+	printf("dir_x : %f\n", game->player.dir_x);
+	printf("dir_y : %f\n", game->player.dir_y);
 	if (player > 1)
 		return (printf("Map has more than one player\n"), 1);
 	else if (player == 0)
