@@ -150,7 +150,10 @@ int	are_rgb_ids_valid(t_game *game, const char *file)
 	{
 		line = get_next_line(fd);
 		if (line == NULL)
+		{
+			free(line);
 			break ;
+		}
 		i = 0;
 		while (line[i])
 		{
@@ -161,6 +164,7 @@ int	are_rgb_ids_valid(t_game *game, const char *file)
 				is_floor++;
 			i++;
 		}
+		free(line);
 	}
 	printf("Ceiling : %d\n", is_ceiling);
 	printf("Floor : %d\n", is_floor);

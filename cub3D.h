@@ -37,9 +37,9 @@
 typedef enum s_texture_index
 {
 	NORTH = 0,
-	SOUTH = 1,
-	EAST = 2,
-	WEST = 3
+	EAST = 1,
+	WEST = 2,
+	SOUTH = 3
 }	t_texture_index;
 
 typedef struct s_texture
@@ -106,6 +106,7 @@ int is_description_line(const char *line);
 void	init_cub(t_game *game);
 void	init_game(t_game *game);
 void	create_window(t_game *game);
+void	create_images(t_game *game);
 void	read_map(t_game *game, const char *file);
 void	malloc_map(t_game *game);
 void	fill_map(t_game *game, const char *file);
@@ -116,12 +117,15 @@ int		is_map_valid(t_game *game);
 int		is_map_empty(t_game *game);
 int		is_char_valid(t_game *game);
 int		are_walls_valid(t_game *game);
+char	**get_map(t_game *game);
+int	flood_fill(t_game *game, char **map, int x, int y);
+
 
 // FILE ERRORS
 int		is_file_valid(const char *file, t_game *game);
 int		parse_rgb(char *line, int *r, int *g, int *b);
 int		is_rgb_code(t_game *game, char *line);
-int		is_path_textures(t_game *game, char *line, int textures);
+int		is_path_textures(t_game *game, char *line);
 int		are_file_textures_valid(t_game *game);
 int		is_file_full(const char *file, t_game *game);
 int		are_paths_textures_valid(t_game *game);

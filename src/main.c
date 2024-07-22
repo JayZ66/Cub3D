@@ -20,10 +20,24 @@
 			Use of mlx_put_image_to_window => NOT HERE NO ?
 */
 
-// void	create_images(t_game *game)
-// {
+void	create_images(t_game *game)
+{
+	int	i;
 
-// }
+	i = 0;
+	while (i < 4)
+	{
+		game->textures[i].img = mlx_xpm_file_to_image(game->mlx, game->texture_paths[i], &game->textures[i].width, &game->textures[i].height);
+		// game->textures[i].img = mlx_xpm_file_to_image(game->mlx, game->texture_paths[i], &size, &size);
+		if (!game->textures[i].img)
+		{
+			printf("Could not create mlx image\n");
+			free_all2(game);
+		}
+		game->textures[i].addr = (int *)mlx_get_data_addr(game->textures[i].img, &game->textures[i].pixel_bits, &game->textures[i].size_line, &game->textures[i].endian);
+		i++;
+	}
+}
 
 void	create_window(t_game *game)
 {
@@ -40,7 +54,7 @@ void	create_window(t_game *game)
 		return ;
 	}
 	// FILL THE WINDOW !
-	// mlx_hook(game->win, KeyPress, KeyPressMask, &manage_keypress, game);
+	// mlx_hook(game->win, KeyPress, KeyPressMask, &manage_keypress, game); // Manage Keypress
 	mlx_hook(game->win, 17, KeyPressMask, &free_all2, game);
 	mlx_loop(game->mlx);
 }
@@ -66,6 +80,7 @@ int	main(int argc, char *argv[])
 		exit(EXIT_FAILURE);
 	}
 	init_cub(&game);
+	// create_images(&game);
 	read_map(&game, map);
 	malloc_map(&game);
 	fill_map(&game, map);

@@ -4,7 +4,6 @@
 4. Check les paths des textures (access) => DONE
 4. Pas plusieurs maps => DONE
 5. Si map au début du file => DONE
-5. Bonne value par rapport a chaque key value (key value = NO for ex.)
 6. Definir la map sur le file => DONE
 > Check pseudo code on discord pour renforcer
 la vérification
@@ -15,11 +14,10 @@ la vérification
 9. Check if the nb of textures & rgb are not good => DONE
 10. Init everything in the init function() => DONE
 11. Virgule entre codes rgb + Space entre position et path => DONE
-12. Create mlx image !
-13. Tests données file : 
-- Textures (toutes, pas de doublon, ordre(s))
-- RGB : codes couleurs, chiffres int, F/C, doublons, virgules entre codes
-- Map : position player, char autorisés, murs, map en premier, map en double, 
+12. Create mlx image ! => DONE
+13. ENUM pour path textures + retirer NO au debut de la ligne du file => DONE
+14. Initialiser le dir_x > avec condition si NO on met 0. + dir_y à 1 (devant) => DONE TO TEST
+
 
 ASK JB : 
 - Init position du joueur : x & y ok mais le rest IDK ???
@@ -31,13 +29,33 @@ TASK : Chargement des textures et des couleurs :
  -   Configurer les couleurs du plafond et du sol à partir des valeurs RGB spécifiées.
  -   Gérer les erreurs de chargement.
 
- Exemple : 
- void load_textures(t_game *game)
- {
-    for (int i = 0; i < 4; i++) {
-        game->textures[i].img = mlx_xpm_file_to_image(game->mlx, game->texture_paths[i], &game->textures[i].width, &game->textures[i].height);
-        if (!game->textures[i].img)
-            exit_with_error(ERROR_INVALID_TEXTURES);
-        game->textures[i].addr = (int *)mlx_get_data_addr(game->textures[i].img, &game->textures[i].pixel_bits, &game->textures[i].size_line, &game->textures[i].endian);
-    }
-}
+
+5. Bonne value par rapport a chaque key value (key value = NO for ex.)
+
+--------- TESTS ----------
+File : 
+- Textures (toutes, pas de doublon, ordre(s))
+- RGB : codes couleurs, chiffres int, F/C, doublons, virgules entre codes
+- Map : position player, char autorisés, murs, map en premier, map en double, 
+
+------------- TO DO LATER -------------
+Check textures !
+Murs (4)
+Vidéo : cub3d portal => Check same textures !
+Pas le sol ni plafond.
+
+SOURIS :
+Direction du joueur : mettre de base les valeurs 
+Doit etre un float qui va de 0 a 3,99
+0 => NORTH
+1 => WEST
+2 => Sud
+3 => EAST
+
+Si bouge la souris vers la gauche => Tend vers 1 donc pour l'Ouest
+Et si il tend vers 3,99 => repart à 0
+
+DEFAUT : 
+pour tester il faut aller loin dans l'init de la mini
+il faudra une fenêtre qui garde le curseur au milieu pour tester 
+haut, bas, gauche, droite.

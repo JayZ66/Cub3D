@@ -159,7 +159,7 @@ void	fill_map(t_game *game, const char *file)
 		if (line == NULL)
 			break ;
 		// printf("map : %s\n", line);
-		if (textures != 4 && is_path_textures(game, line, textures) == 0)
+		if (textures != 4 && is_path_textures(game, line) == 0)
 			textures += 1;
 		else if (rgb != 2 && is_rgb_code(game, line) == 0)
 			rgb += 1;
@@ -266,20 +266,16 @@ int	is_rgb_code(t_game *game, char *line)
 	return (1);
 }
 
-int	is_path_textures(t_game *game, char *line, int textures)
+int	is_path_textures(t_game *game, char *line)
 {
-	(void)textures;
 	if (ft_strncmp(line, "NO", 2) == 0 && line[2] == ' ')
-		game->texture_paths[0] = ft_strdup(line);
+		game->texture_paths[NORTH] = ft_strdup(line + 3);
 	else if (ft_strncmp(line, "SO", 2) == 0 && line[2] == ' ')
-		game->texture_paths[1] = ft_strdup(line);
+		game->texture_paths[SOUTH] = ft_strdup(line + 3);
 	else if (ft_strncmp(line, "WE", 2) == 0 && line[2] == ' ')
-		game->texture_paths[2] = ft_strdup(line);
+		game->texture_paths[WEST] = ft_strdup(line + 3);
 	else if (ft_strncmp(line, "EA", 2) == 0 && line[2] == ' ')
-	{
-		game->texture_paths[3] = ft_strdup(line);
-		game->texture_paths[4] = NULL;
-	}
+		game->texture_paths[EAST] = ft_strdup(line + 3);
 	// else
 	// {
 	// 	printf("Invalid/Missing texture(s)\n");
@@ -288,6 +284,10 @@ int	is_path_textures(t_game *game, char *line, int textures)
 	// }
 	else
 		return (1);
+	// printf("Textures : %s\n", game->texture_paths[NORTH]);
+	// printf("Textures : %s\n", game->texture_paths[SOUTH]);
+	// printf("Textures : %s\n", game->texture_paths[WEST]);
+	// printf("Textures : %s\n", game->texture_paths[EAST]);
 	return (0);
 }
 
@@ -338,7 +338,7 @@ parsing ou init :
 "Missing color(s)" => DONE
 "Missing map" => DONE but i wrote Map is empty.
 "Map is not surrounded by walls" => DONE
-"Map is not the last element in file"
+"Map is not the last element in file" => DONE
 "Invalid player position"
 "Map has no player position (expected N, S, E ou W)" => DONE
 "Could not allocate memory" => OK
