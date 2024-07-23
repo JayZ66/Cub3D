@@ -6,7 +6,7 @@
 /*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/10 09:24:13 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/07/10 19:41:50 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/07/23 15:37:20 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ int	free_all2(t_game *game)
 		while (i < game->map.height)
 		{
 			// printf("Line %s\n", game->map.map[i]);
-			if (game->map.map[i])
+			if (game->map.map[i] != NULL)
 				free(game->map.map[i]);
 			i++;
 		}

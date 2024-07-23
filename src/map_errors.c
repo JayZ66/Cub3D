@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   map_errors.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/07/23 17:26:00 by jeguerin          #+#    #+#             */
+/*   Updated: 2024/07/23 17:26:02 by jeguerin         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../cub3D.h"
 
@@ -93,72 +104,11 @@ int	is_char_valid(t_game *game)
 	return (0);
 }
 
-// int	are_walls_valid(t_game *game)
-// {
-// 	int		i;
-// 	int		j;
-// 	int		width;
-// 	char	*line;
-
-// 	// Check top line of the map
-// 	line = game->map.map[0];
-// 	width = ft_strlen(line);
-// 	j = 0;
-// 	while (j < width)
-// 	{
-// 		i = 0;
-// 		while (i < game->map.height && (game->map.map[i][j] == ' '
-// 			|| game->map.map[i][j] == '\n'))
-// 			i++;
-// 		if (i < game->map.height && game->map.map[i][j] != '1')
-// 			return (printf("Walls are missing at the up side of the map\n"), 1);
-// 		j++;
-// 	}
-// 	//Check bottom line of the map
-// 	line = game->map.map[game->map.height - 1];
-// 	width = ft_strlen(line);
-// 	j = 0;
-// 	while (j < width)
-// 	{
-// 		i = game->map.height - 1;
-// 		while (i >= 0 && (game->map.map[i][j] == ' '
-// 			|| game->map.map[i][j] == '\n'))
-// 			i--;
-// 		if (i >= 0 && game->map.map[i][j] != '1')
-// 			return (printf("Walls are missing at the bottom side of the map\n")
-// 				, 1);
-// 		j++;
-// 	}
-// 	//Check left & right of the map.
-// 	i = 0;
-// 	while (i < game->map.height)
-// 	{
-// 		line = game->map.map[i];
-// 		width = ft_strlen(line);
-// 		//Vérifier le premier caractère de la ligne (bord gauche)
-// 		j = 0;
-// 		while (line[j] == ' ' || line[j] == '\n')
-// 			j++;
-// 		if (line[j] != '1')
-// 			return (printf("Walls are missing at the left side of the map\n")
-// 				, 1);
-// 		//Vérifier le dernier caractère de la ligne (bord droit)
-// 		j = width - 1;
-// 		while (j >= 0 && (line[j] == ' ' || line[j] == '\n'))
-// 			j--;
-// 		if (j >= 0 && line[j] != '1')
-// 			return (printf("Walls are missing at the right side of the map\n")
-// 				, 1);
-// 		i++;
-// 	}
-// 	return (0);
-// }
-
 // ligne y / colonne x
 int	flood_fill(t_game *game, char **map, int x, int y)
 {
-	printf("Height : %d\n", game->map.height);
-	printf("Width : %d\n", game->map.width);
+	// printf("Height : %d\n", game->map.height);
+	// printf("Width : %d\n", game->map.width);
 	if (x < 0 || y < 0 || x >= game->map.width || y >= game->map.height)
 		return (1);
 	if (map[y][x] == '1' || map[y][x] == 'X')
@@ -170,11 +120,15 @@ int	flood_fill(t_game *game, char **map, int x, int y)
 				return (printf("X: %d\n", x), printf("Y: %d\n", y), 1);
 	}
 	map[y][x] = 'X';
-	if (flood_fill(game, map, x, y - 1) == 1 ||
-        flood_fill(game, map, x, y + 1) == 1 ||
-        flood_fill(game, map, x - 1, y) == 1 ||
-        flood_fill(game, map, x + 1, y) == 1)
-			return (1);
+if (flood_fill(game, map, x - 1, y - 1) == 1 || // Haut-Gauche
+    flood_fill(game, map, x, y - 1) == 1 ||     // Haut
+    flood_fill(game, map, x + 1, y - 1) == 1 || // Haut-Droite
+    flood_fill(game, map, x - 1, y) == 1 ||     // Gauche
+    flood_fill(game, map, x + 1, y) == 1 ||     // Droite
+    flood_fill(game, map, x - 1, y + 1) == 1 || // Bas-Gauche
+    flood_fill(game, map, x, y + 1) == 1 ||     // Bas
+    flood_fill(game, map, x + 1, y + 1) == 1)   // Bas-Droite
+		return 1;
 	return (0);
 }
 
@@ -210,17 +164,6 @@ int	flood_fill(t_game *game, char **map, int x, int y)
 //         return 1;
 //     return 0;
 // }
-
-/*
-Check si hors de la map
-Check le type de caractere
-	Si je croise ce caractere je modifie par tel caractere (si espace vide non visite => on met un caractere)
-Check si type de caractere => Modification de la map ou verification
-Si 0 alors echec de la verification => Map pas valide
-Penser au caractere de depart du player.
-Recursivite pour les cases autours !
-Free la map temp !
-*/
 
 char	**get_map(t_game *game)
 {

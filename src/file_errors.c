@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   file_errors.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/07/23 17:25:48 by jeguerin          #+#    #+#             */
+/*   Updated: 2024/07/23 18:14:36 by jeguerin         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../cub3D.h"
 
@@ -58,7 +69,7 @@ int	is_file_full(const char *file, t_game *game)
 	while (1)
 	{
 		line = get_next_line(fd);
-		if (line  == NULL)
+		if (line == NULL)
 			break ;
 		if (ft_strncmp_cub(line, '1', ft_strlen(line)) == 0)
 			check++;
@@ -73,21 +84,21 @@ int	is_file_full(const char *file, t_game *game)
 
 // Manage if we've a doublon in start position & orientation of the player.
 // So : NO/SO/WE/EA
-int are_file_textures_valid(t_game *game)
+int	are_file_textures_valid(t_game *game)
 {
-    int i;
+	int	i;
 
-    i = 0;
-    while (i < 4)
-    {
-        if (game->texture_paths[i] == NULL)
-        {
-             printf("Duplicate texture path\n");
-             return (1);
+	i = 0;
+	while (i < 4)
+	{
+		if (game->texture_paths[i] == NULL)
+		{
+			printf("Duplicate texture path\n");
+			return (1);
 		}
-        i++;
-    }
-    return (0);
+		i++;
+	}
+	return (0);
 }
 
 int	are_paths_textures_valid(t_game *game)

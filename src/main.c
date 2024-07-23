@@ -12,14 +12,6 @@
 
 #include "../cub3D.h"
 
-/* CREATE WINDOW
-	3. Fill_Window with assets
-		a. Big loop to iterate on lines
-		b. Small loop to iterate on columns
-		c. Conditions depending on the letter/nb on the map.
-			Use of mlx_put_image_to_window => NOT HERE NO ?
-*/
-
 void	create_images(t_game *game)
 {
 	int	i;
@@ -28,7 +20,6 @@ void	create_images(t_game *game)
 	while (i < 4)
 	{
 		game->textures[i].img = mlx_xpm_file_to_image(game->mlx, game->texture_paths[i], &game->textures[i].width, &game->textures[i].height);
-		// game->textures[i].img = mlx_xpm_file_to_image(game->mlx, game->texture_paths[i], &size, &size);
 		if (!game->textures[i].img)
 		{
 			printf("Could not create mlx image\n");

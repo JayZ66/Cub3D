@@ -13,8 +13,6 @@
 #ifndef CUB3D_H
 # define CUB3D_H
 
-# define ON_DESTROY 17
-
 # include "Libft/libft.h"
 # include "get_next_line/get_next_line.h"
 # include "minilibx/mlx.h"
@@ -34,6 +32,25 @@
 # include <math.h>
 # include <ctype.h>
 
+# define KEY_ESC 65307
+# define KEY_UP 65362
+# define KEY_DOWN 65364
+// # define KEY_LEFT 65361
+// # define KEY_RIGHT 65363
+// # define KEY_W 119
+// # define KEY_S 115
+// # define KEY_A 97
+// # define KEY_D 100
+#define KEY_W 13
+#define KEY_A 0
+#define KEY_S 1
+#define KEY_D 2
+#define KEY_LEFT 123
+#define KEY_RIGHT 124
+# define SZ 32
+# define ON_DESTROY 17
+# define MOUSE_LEFT_CLICK 1
+
 typedef enum s_texture_index
 {
 	NORTH = 0,
@@ -41,6 +58,16 @@ typedef enum s_texture_index
 	WEST = 2,
 	SOUTH = 3
 }	t_texture_index;
+
+typedef struct s_input
+{
+	int keys[256];
+	int mouse_left_pressed;
+	int mouse_x;
+	int mouse_y;
+	int last_mouse_x;
+	int last_mouse_y;
+}	t_input;
 
 typedef struct s_texture
 {
@@ -88,7 +115,9 @@ typedef struct s_game
 	t_texture	textures[4];
 	t_color		floor;
 	t_color		ceiling;
+	t_input		input;
 	char		*texture_paths[4];
+	int         running;
 }	t_game;
 
 // UTILS

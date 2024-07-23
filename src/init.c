@@ -56,6 +56,23 @@ void	init_texture(t_texture *texture)
 	texture->height = 0;
 }
 
+void	init_input(t_input *input)
+{
+	int	i;
+
+	i = 0;
+	while (i < 256)
+	{
+		input->keys[i] = 0;
+		i++;
+	}
+	input->last_mouse_x = 0;
+	input->last_mouse_y = 0;
+	input->last_mouse_x = 0;
+	input->last_mouse_y = 0;
+	input->mouse_left_pressed = 0;
+}
+
 void	init_cub(t_game *game)
 {
 	init_game(game);
@@ -64,4 +81,5 @@ void	init_cub(t_game *game)
 	init_color(&game->ceiling);
 	init_texture(game->textures);
 	init_map(&game->map);
+	init_input(&game->input);
 }

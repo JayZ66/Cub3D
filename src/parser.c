@@ -16,9 +16,6 @@
 	5. Map shape errors
 		a. Check si la map est carrée (par contre check JB's tickets car
 		la map n'est pas toujours carrée mais il faut qd même le check).
-	10. Check Floofill errors
-		a. Fill the temp map for floodfill
-		b. Checking issues on map ways
 */
 
 int check_map_line(const char *line)
@@ -83,58 +80,6 @@ void	malloc_map(t_game *game)
 	}
 	game->map.map[game->map.height] = NULL;
 }
-
-// void	fill_map(t_game *game, const char *file)
-// {
-// 	int		i;
-// 	int		fd;
-// 	int		textures;
-// 	int		rgb;
-// 	char	*line;
-
-// 	i = 0;
-// 	fd = open(file, O_RDONLY);
-// 	textures = 0;
-// 	rgb = 0;
-// 	if (fd == -1)
-// 	{
-// 		printf("Could not open the map file\n");
-// 		free_all2(game);
-// 	}
-// 	while (1) // CHECK IF AU MOINS LIGNE DE VIDE AVEC UN FLAG!!!
-// 	{
-// 		line = get_next_line(fd);
-// 		if (line == NULL)
-// 			break ;
-// 		// printf("map : %s\n", line);
-// 		if (textures != 4 && is_path_textures(game, line, textures) == 0)
-// 			textures += 1;
-// 		else if (rgb != 2 && is_rgb_code(game, line) == 0)
-// 			rgb += 1;
-// 		else if ((check_char(line, '1') == 1 || check_char(line, '0') == 1)
-// 			&& (check_char(line, 'F') == 0 && check_char(line, 'C') == 0)) // Pas bon car va me mettre les lignes avec espaces et tout !
-// 		{
-// 			if (i >= game->map.height)
-// 			{
-// 				printf("Error: map height exceeded allocated space\n");
-// 				free(line);
-// 				break ;
-// 			}
-// 			// printf("map : %s\n", line);
-// 			game->map.map[i] = ft_strdup(line);
-// 			i++;
-// 		}
-// 		free(line);
-// 	}
-// 	printf("RGB : %d\n", rgb);
-// 	printf("Textures : %d\n", textures);
-// 	if (rgb != 2 || textures != 4)
-// 	{
-// 		printf("Map description is either wrong or incomplete\n");
-// 		free_all2(game);
-// 	}
-// 	close(fd);
-// }
 
 void	fill_map(t_game *game, const char *file)
 {
@@ -298,52 +243,3 @@ void	manage_errors(t_game *game, const char *file)
 	if (is_map_valid(game) == 1)
 		free_all2(game);
 }
-
-/* ERRORS TO HANDLE
-Message a afficher en cas de probleme d'input :
-
-Manque un espace entre North/South/East/West/Floor/Ceiling et leur valeur
-
-Path invalide pour North/South/East/West => Floodfill (aucun 0 qui touche un 
-espace) !
-
-Manque une ligne vide entre les textures et les couleurs (ligne 5)
-
-Manque une ligne vide entre les couleurs et la map (ligne 8)
-
-Map invalide, Char interdit dans la map ( /1/0)
-
-Map invalide, la map doit etre entourer de mur (tips sur lalgo de graph)
-
-Aucun char autoriser apres la fin de la map (apres une premiere ligne vide 
-post map)
-
-*/
-
-/* ERRORS TO HANDLE
-Voici un exemple de toutes les erreurs qui doivent être traitées dans le ticket 
-parsing ou init :
-
-"Not a .cub file" => OK
-"Not an .xpm file"
-"Invalid floor/ceiling RGB color(s)" => DONE
-"One color code is missing" => DONE
-"Invalid floor RGB color" => DONE
-"Invalid ceiling RGB color" => DONE
-"Invalid character in map" => DONE
-"Map has more than one player" => DONE
-"Invalid RGB value (min: 0, max: 255)" =>> DONE
-"Missing texture(s)" => DONE
-"Invalid texture(s)" => DONE
-"Missing color(s)" => DONE
-"Missing map" => DONE but i wrote Map is empty.
-"Map is not surrounded by walls" => DONE
-"Map is not the last element in file" => DONE
-"Invalid player position"
-"Map has no player position (expected N, S, E ou W)" => DONE
-"Could not allocate memory" => OK
-"Could not start mlx" => OK
-"Could not create mlx window" => OK
-"Could not create mlx image"
-
-*/

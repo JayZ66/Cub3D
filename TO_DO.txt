@@ -1,5 +1,5 @@
 1. Erreur gestion char dans la map => DONE
-2. Tester la fonction de check des murs => DONE
+2. Tester la fonction de check des murs (foodfill) => DONE
 3. Vérifier les doublons (CHECK TEXTURES && RGB EN DOUBLE) => DONE
 4. Check les paths des textures (access) => DONE
 4. Pas plusieurs maps => DONE
@@ -31,12 +31,6 @@ TASK : Chargement des textures et des couleurs :
 
 
 5. Bonne value par rapport a chaque key value (key value = NO for ex.)
-
---------- TESTS ----------
-File : 
-- Textures (toutes, pas de doublon, ordre(s))
-- RGB : codes couleurs, chiffres int, F/C, doublons, virgules entre codes
-- Map : position player, char autorisés, murs, map en premier, map en double, 
 
 ------------- TO DO LATER -------------
 Check textures !
