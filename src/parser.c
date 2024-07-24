@@ -18,28 +18,43 @@
 		la map n'est pas toujours carrée mais il faut qd même le check).
 */
 
-int check_map_line(const char *line)
+int	check_map_line(const char *line)
 {
-    int has_valid_char;
+	int	has_valid_char;
 
 	has_valid_char = 0;
-    while (*line)
+	while (*line)
 	{
-        if (*line == '1' || *line == '0' || *line == 'N' || *line == 'S'
+		if (*line == '1' || *line == '0' || *line == 'N' || *line == 'S'
 			|| *line == 'W' || *line == 'E')
 			has_valid_char = 1;
-		else if (*line != ' ' && *line != '\t' && *line != '\n' && *line != '\r' && is_description_line(line) == 0)
-            return 0;
-        line++;
-    }
-    return (has_valid_char);
+		else if (*line != ' ' && *line != '\t' && *line != '\n' && *line != '\r'
+			&& is_description_line(line) == 0)
+			return (0);
+		line++;
+	}
+	return (has_valid_char);
 }
 
+void	manage_width(t_game *game, char *line)
+{
+	int	line_length;
+
+	line_length = 0;
+	line_length = ft_strlen(line);
+	if (line[line_length - 1] == '\n')
+		line_length--;
+	if (line_length > game->map.width)
+		game->map.width = line_length;
+	game->map.height++;
+}
+
+// printf("height : %d\n", game->map.height);
+// printf("width : %d\n", game->map.width);
 void	read_map(t_game *game, const char *file)
 {
 	int		fd;
 	char	*line;
-	int		line_length;
 
 	fd = open(file, O_RDONLY);
 	if (fd == -1)
@@ -47,31 +62,21 @@ void	read_map(t_game *game, const char *file)
 		printf("Could not open the map file\n");
 		free_all2(game);
 	}
-	line_length = 0;
 	while (1)
 	{
 		line = get_next_line(fd);
 		if (line == NULL)
 			break ;
 		if (check_map_line(line) == 1)
-		{
-			line_length = ft_strlen(line);
-			if (line[line_length - 1] == '\n')
-				line_length--;
-			if (line_length > game->map.width)
-				game->map.width = line_length;
-			game->map.height++;
-		}
+			manage_width(game, line);
 		free(line);
 	}
-	// printf("height : %d\n", game->map.height);
-	// printf("width : %d\n", game->map.width);
 	close(fd);
 }
 
+// printf("Height : %d\n", game->map.height);
 void	malloc_map(t_game *game)
 {
-	// printf("Height : %d\n", game->map.height);
 	game->map.map = (char **)malloc(sizeof(char *) * (game->map.height + 1));
 	if (game->map.map == NULL)
 	{
@@ -81,6 +86,7 @@ void	malloc_map(t_game *game)
 	game->map.map[game->map.height] = NULL;
 }
 
+// NEED TO CHECK : Ligne vide entre textures, rgb et map !
 void	fill_map(t_game *game, const char *file)
 {
 	int		i;
@@ -98,12 +104,12 @@ void	fill_map(t_game *game, const char *file)
 		printf("Could not open the map file\n");
 		free_all2(game);
 	}
-	while (1) // CHECK IF AU MOINS LIGNE DE VIDE AVEC UN FLAG!!!
+	memset(game->map.map, 0, sizeof(char *) * (game->map.height));
+	while (1)
 	{
 		line = get_next_line(fd);
 		if (line == NULL)
 			break ;
-		// printf("map : %s\n", line);
 		if (textures != 4 && is_path_textures(game, line) == 0)
 			textures += 1;
 		else if (rgb != 2 && is_rgb_code(game, line) == 0)
@@ -116,14 +122,11 @@ void	fill_map(t_game *game, const char *file)
 				free(line);
 				break ;
 			}
-			// printf("map : %s\n", line);
 			game->map.map[i] = ft_strdup(line);
 			i++;
 		}
 		free(line);
 	}
-	// printf("RGB : %d\n", rgb);
-	// printf("Textures : %d\n", textures);
 	if (rgb != 2 || textures != 4)
 	{
 		printf("Map description is either wrong or incomplete\n");
@@ -168,7 +171,6 @@ int	parse_rgb(char *line, int *r, int *g, int *b)
 		return (1);
 	return (0);
 }
-//  && !isspace(*line) - Should we check the end of the line ?
 
 int	is_rgb_code(t_game *game, char *line)
 {
@@ -213,28 +215,26 @@ int	is_rgb_code(t_game *game, char *line)
 
 int	is_path_textures(t_game *game, char *line)
 {
-	if (ft_strncmp(line, "NO", 2) == 0 && line[2] == ' ')
+	if (game->texture_paths[NORTH] == 0 && ft_strncmp(line, "NO", 2) == 0
+		&& line[2] == ' ')
 		game->texture_paths[NORTH] = ft_strdup(line + 3);
-	else if (ft_strncmp(line, "SO", 2) == 0 && line[2] == ' ')
+	else if (game->texture_paths[SOUTH] == 0 && ft_strncmp(line, "SO", 2) == 0
+		&& line[2] == ' ')
 		game->texture_paths[SOUTH] = ft_strdup(line + 3);
-	else if (ft_strncmp(line, "WE", 2) == 0 && line[2] == ' ')
+	else if (game->texture_paths[WEST] == 0 && ft_strncmp(line, "WE", 2) == 0
+		&& line[2] == ' ')
 		game->texture_paths[WEST] = ft_strdup(line + 3);
-	else if (ft_strncmp(line, "EA", 2) == 0 && line[2] == ' ')
+	else if (game->texture_paths[EAST] == 0 && ft_strncmp(line, "EA", 2) == 0
+		&& line[2] == ' ')
 		game->texture_paths[EAST] = ft_strdup(line + 3);
-	// else
-	// {
-	// 	printf("Invalid/Missing texture(s)\n");
-	// 	free(line);
-	// 	free_all2(game);
-	// }
 	else
 		return (1);
-	// printf("Textures : %s\n", game->texture_paths[NORTH]);
-	// printf("Textures : %s\n", game->texture_paths[SOUTH]);
-	// printf("Textures : %s\n", game->texture_paths[WEST]);
-	// printf("Textures : %s\n", game->texture_paths[EAST]);
 	return (0);
 }
+// printf("Textures : %s\n", game->texture_paths[NORTH]);
+// printf("Textures : %s\n", game->texture_paths[SOUTH]);
+// printf("Textures : %s\n", game->texture_paths[WEST]);
+// printf("Textures : %s\n", game->texture_paths[EAST]);
 
 void	manage_errors(t_game *game, const char *file)
 {

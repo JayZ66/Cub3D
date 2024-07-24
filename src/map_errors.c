@@ -36,6 +36,7 @@ int	is_map_empty(t_game *game)
 
 // printf("Map : %c\n", game->map.map[i][j]);
 // printf("Map : %s\n", game->map.map[i]);
+// game->player.dir_y = 1; // TO DO : protection pour le retournement !!
 int	is_player_valid(t_game *game)
 {
 	size_t	i;
@@ -62,8 +63,7 @@ int	is_player_valid(t_game *game)
 					game->player.dir_x = 2;
 				else if (game->map.map[i][j] == 'S')
 					game->player.dir_x = 3;
-				// game->player.dir_x = ; // si NO on met 0 ou autre (voir ENUM).
-				game->player.dir_y = 1; // TO DO : protection pour le retournement !!
+				game->player.dir_y = 1;
 				player++;
 			}
 			j++;
@@ -105,33 +105,35 @@ int	is_char_valid(t_game *game)
 }
 
 // ligne y / colonne x
+// printf("Height : %d\n", game->map.height);
+// printf("Width : %d\n", game->map.width);
 int	flood_fill(t_game *game, char **map, int x, int y)
 {
-	// printf("Height : %d\n", game->map.height);
-	// printf("Width : %d\n", game->map.width);
 	if (x < 0 || y < 0 || x >= game->map.width || y >= game->map.height)
 		return (1);
 	if (map[y][x] == '1' || map[y][x] == 'X')
 		return (0);
 	if (map[y][x] == '0')
 	{
-		if ((y > 0 && map[y - 1][x] == ' ') || (y < game->map.height - 1 && map[y + 1][x] == ' ') ||
-            (x > 0 && map[y][x - 1] == ' ') || (x < game->map.width - 1 && map[y][x + 1] == ' ')) // Check diagonales aussi avec x + 1 / y + 1 et etc.
-				return (printf("X: %d\n", x), printf("Y: %d\n", y), 1);
+		if ((y > 0 && map[y - 1][x] == ' ')
+			|| (y < game->map.height - 1 && map[y + 1][x] == ' ')
+			|| (x > 0 && map[y][x - 1] == ' ')
+			|| (x < game->map.width - 1 && map[y][x + 1] == ' '))
+			return (printf("X: %d\n", x), printf("Y: %d\n", y), 1);
 	}
 	map[y][x] = 'X';
-if (flood_fill(game, map, x - 1, y - 1) == 1 || // Haut-Gauche
-    flood_fill(game, map, x, y - 1) == 1 ||     // Haut
-    flood_fill(game, map, x + 1, y - 1) == 1 || // Haut-Droite
-    flood_fill(game, map, x - 1, y) == 1 ||     // Gauche
-    flood_fill(game, map, x + 1, y) == 1 ||     // Droite
-    flood_fill(game, map, x - 1, y + 1) == 1 || // Bas-Gauche
-    flood_fill(game, map, x, y + 1) == 1 ||     // Bas
-    flood_fill(game, map, x + 1, y + 1) == 1)   // Bas-Droite
-		return 1;
+	if (flood_fill(game, map, x - 1, y - 1) == 1
+		|| flood_fill(game, map, x, y - 1) == 1
+		|| flood_fill(game, map, x + 1, y - 1) == 1
+		|| flood_fill(game, map, x - 1, y) == 1
+		|| flood_fill(game, map, x + 1, y) == 1
+		|| flood_fill(game, map, x - 1, y + 1) == 1
+		|| flood_fill(game, map, x, y + 1) == 1
+		|| flood_fill(game, map, x + 1, y + 1) == 1)
+		return (1);
 	return (0);
 }
-
+// Check diagonales aussi avec x + 1 / y + 1 et etc.
 //         if (flood_fill(game, map, x - 1, y - 1) || // Haut-Gauche
 //             flood_fill(game, map, x - 1, y) ||    // Haut
 //             flood_fill(game, map, x - 1, y + 1) ||// Haut-Droite
@@ -150,10 +152,10 @@ if (flood_fill(game, map, x - 1, y - 1) == 1 || // Haut-Gauche
 //         return 0; // Case visitée ou mur
 //     if (map[y][x] == '0')
 //     {
-//         if ((y > 0 && map[y - 1][x] == ' ') || // Case au-dessus
-//             (y < game->map.height - 1 && map[y + 1][x] == ' ') || // Case en-dessous
+//         if ((y > 0 && map[y - 1][x] == ' ') ||
+//             (y < game->map.height - 1 && map[y + 1][x] == ' ') ||
 //             (x > 0 && map[y][x - 1] == ' ') || // Case à gauche
-//             (x < game->map.width - 1 && map[y][x + 1] == ' ')) // Case à droite
+//             (x < game->map.width - 1 && map[y][x + 1] == ' '))
 //             return 1; // Contact avec un espace vide
 //     }
 //     map[y][x] = 'X';
@@ -189,27 +191,25 @@ char	**get_map(t_game *game)
 	return (map);
 }
 
-int are_walls_valid(t_game *game)
+int	are_walls_valid(t_game *game)
 {
-    char **map;
-    int i;
+	char	**map;
+	int		i;
 
-    map = get_map(game);
-    if (map == NULL)
-        return (printf("Can't copy map\n"), 1);
-    if (flood_fill(game, map, game->player.x, game->player.y) == 1)
-        return (printf("Map is not surrounded by walls\n"), 1);
-    i = 0;
-    while (map[i])
-    {
-        free(map[i]);
-        i++;
-    }
-    free(map);
-    return 0;
+	map = get_map(game);
+	if (map == NULL)
+		return (printf("Can't copy map\n"), 1);
+	if (flood_fill(game, map, game->player.x, game->player.y) == 1)
+		return (printf("Map is not surrounded by walls\n"), 1);
+	i = 0;
+	while (map[i])
+	{
+		free(map[i]);
+		i++;
+	}
+	free(map);
+	return (0);
 }
-
-
 
 // int are_walls_valid(t_game *game)
 // {
@@ -248,21 +248,14 @@ int are_walls_valid(t_game *game)
 //     return 0;
 // }
 
-
 int	is_map_valid(t_game *game)
 {
-	// Map with \n => Is that ok ? Bce of fill_map.
 	if (is_map_empty(game) == 1)
 		return (1);
-	// Allowed character in map
 	if (is_char_valid(game) == 1)
 		return (1);
-	// Map has no player position or too many in the map
 	if (is_player_valid(game) == 1)
 		return (1);
-	// Map surrounded by walls only
-	// if (are_walls_valid(game) == 1)
-	// 	return (1);
 	if (are_walls_valid(game) == 1)
 		return (1);
 	return (0);

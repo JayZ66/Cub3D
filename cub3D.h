@@ -41,12 +41,12 @@
 // # define KEY_S 115
 // # define KEY_A 97
 // # define KEY_D 100
-#define KEY_W 13
-#define KEY_A 0
-#define KEY_S 1
-#define KEY_D 2
-#define KEY_LEFT 123
-#define KEY_RIGHT 124
+# define KEY_W 13
+# define KEY_A 0
+# define KEY_S 1
+# define KEY_D 2
+# define KEY_LEFT 123
+# define KEY_RIGHT 124
 # define SZ 32
 # define ON_DESTROY 17
 # define MOUSE_LEFT_CLICK 1
@@ -61,12 +61,12 @@ typedef enum s_texture_index
 
 typedef struct s_input
 {
-	int keys[256];
-	int mouse_left_pressed;
-	int mouse_x;
-	int mouse_y;
-	int last_mouse_x;
-	int last_mouse_y;
+	int	keys[256];
+	int	mouse_left_pressed;
+	int	mouse_x;
+	int	mouse_y;
+	int	last_mouse_x;
+	int	last_mouse_y;
 }	t_input;
 
 typedef struct s_texture
@@ -117,7 +117,7 @@ typedef struct s_game
 	t_color		ceiling;
 	t_input		input;
 	char		*texture_paths[4];
-	int         running;
+	int			running;
 }	t_game;
 
 // UTILS
@@ -126,10 +126,10 @@ int		ft_isspace(char *line);
 int		check_char(char const *set, char c);
 int		ft_atoi2(const char *nptr);
 int		ft_strncmp_cub(const char *s1, char c, size_t n);
-int	only_space(char *line);
-int	check_map_line(const char *line);
-int only_space2(char *line);
-int is_description_line(const char *line);
+int		only_space(char *line);
+int		check_map_line(const char *line);
+int		only_space2(char *line);
+int		is_description_line(const char *line);
 
 // INITIALIZATION OF STRUCTURES
 void	init_cub(t_game *game);
@@ -147,8 +147,7 @@ int		is_map_empty(t_game *game);
 int		is_char_valid(t_game *game);
 int		are_walls_valid(t_game *game);
 char	**get_map(t_game *game);
-int	flood_fill(t_game *game, char **map, int x, int y);
-
+int		flood_fill(t_game *game, char **map, int x, int y);
 
 // FILE ERRORS
 int		is_file_valid(const char *file, t_game *game);
@@ -159,5 +158,15 @@ int		are_file_textures_valid(t_game *game);
 int		is_file_full(const char *file, t_game *game);
 int		are_paths_textures_valid(t_game *game);
 int		are_rgb_ids_valid(t_game *game, const char *file);
+
+// EVENTS MANAGEMENT
+void	setup_hooks(t_game *game, t_input *input);
+void	manage_keypress(t_game *game, t_input *input);
+int		mouse_move(int x, int y, t_input *input);
+int		mouse_release(int button, int x, int y, t_input *input);
+int		mouse_press(int button, int x, int y, t_input *input);
+int		key_release(int keycode, t_input *input);
+int		key_press(int keycode, t_input *input);
+void	game_loop(t_game *game, t_input *input);
 
 #endif

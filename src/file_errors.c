@@ -101,6 +101,8 @@ int	are_file_textures_valid(t_game *game)
 	return (0);
 }
 
+// 	if (access(texture, X_OK) == -1)
+// Maybe we must modify our paths to just get the real path (not NO).
 int	are_paths_textures_valid(t_game *game)
 {
 	int		i;
@@ -108,21 +110,6 @@ int	are_paths_textures_valid(t_game *game)
 	char	*texture;
 
 	i = 0;
-	// while (game->texture_paths[i])
-	// {
-	// 	texture = game->texture_paths[i];
-	// 	j = 0;
-	// 	while (texture[j])
-	// 	{
-	// 		while (ft_isalpha(texture[j]) == 1 && texture[j] == 32)
-	// 			j++;
-	// 		if (access(texture + j, X_OK) == -1) // Maybe we must modify our paths to just get the real path (not NO).
-	// 		{
-	// 			printf("Texture path is wrong\n");
-	// 			return (1);
-	// 		}
-	// 	}
-	// }
 	while (game->texture_paths[i])
 	{
 		texture = game->texture_paths[i];
@@ -130,8 +117,7 @@ int	are_paths_textures_valid(t_game *game)
 		while (ft_isalpha(texture[j]) == 1 || texture[j] == 32)
 			j++;
 		texture += j;
-		// printf("texture path2 : %s\n", texture);
-		if (access(texture, X_OK) == -1) // Maybe we must modify our paths to just get the real path (not NO).
+		if (access(texture, X_OK) == -1)
 		{
 			printf("Texture path is wrong\n");
 			return (1);
@@ -168,7 +154,6 @@ int	are_rgb_ids_valid(t_game *game, const char *file)
 		i = 0;
 		while (line[i])
 		{
-			// printf("Line char : %c\n", line[i]);
 			if (line[i] == 'C')
 				is_ceiling++;
 			if (line[i] == 'F')
@@ -186,100 +171,99 @@ int	are_rgb_ids_valid(t_game *game, const char *file)
 	return (0);
 }
 
-int is_description_line(const char *line)
+int	is_description_line(const char *line)
 {
-    return (strncmp(line, "NO ", 3) == 0 ||
-            strncmp(line, "SO ", 3) == 0 ||
-            strncmp(line, "WE ", 3) == 0 ||
-            strncmp(line, "EA ", 3) == 0 ||
-            strncmp(line, "F ", 2) == 0 ||
-            strncmp(line, "C ", 2) == 0);
+	return (strncmp(line, "NO ", 3) == 0
+		|| strncmp(line, "SO ", 3) == 0
+		|| strncmp(line, "WE ", 3) == 0
+		|| strncmp(line, "EA ", 3) == 0
+		|| strncmp(line, "F ", 2) == 0
+		|| strncmp(line, "C ", 2) == 0);
 }
 
-int is_there_something_after_map(const char *file)
+int	is_there_something_after_map(const char *file)
 {
-    int fd;
-	
+	int		fd;
+	int		map_started;
+	int		map_ended;
+	int		description;
+	char	*line;
+
 	fd = open(file, O_RDONLY);
-    if (fd == -1)
-        return (printf("Could not open the map file\n"), 1);
-
-    char *line;
-    int map_started;
-    int map_ended;
-	int	description;
-
+	if (fd == -1)
+		return (printf("Could not open the map file\n"), 1);
 	map_started = 0;
 	map_ended = 0;
 	description = 0;
-    while ((line = get_next_line(fd)) != NULL)
+	while (1)
 	{
-        if (!map_started)
+		line = get_next_line(fd);
+		if (line == NULL)
+			break ;
+		if (!map_started)
 		{
-            // Pass all the description of the map.
-            if (is_description_line(line))
+			if (is_description_line(line))
 			{
-                free(line);
+				free(line);
 				description = 1;
-                continue;
-            }
+				continue ;
+			}
 			else if (check_map_line(line))
 			{
 				if (description == 0)
 					return (printf("Map is not at the end of the file\n"), 1);
-                map_started = 1;
+				map_started = 1;
 			}
-        }
+		}
 		else
 		{
-            if (map_ended)
+			if (map_ended)
 			{
-                if (!only_space(line))
+				if (!only_space(line))
 				{
-                    printf("Map is not the last element in file\n");
-                    free(line);
-                    close(fd);
-                    return (1);
-                }
-            }
+					printf("Map is not the last element in file\n");
+					free (line);
+					close(fd);
+					return (1);
+				}
+			}
 			else
 			{
-                if (only_space(line))
-                    map_ended = 1;
+				if (only_space(line))
+					map_ended = 1;
 				else if (!check_map_line(line))
 				{
-                    printf("Invalid character found in map\n");
-                    free(line);
-                    close(fd);
-                    return (1);
-                }
-            }
-        }
-
-        free(line);
-    }
-
-    close(fd);
-    return (0);
+					printf("Invalid character found in map\n");
+					free (line);
+					close (fd);
+					return (1);
+				}
+			}
+		}
+		free (line);
+	}
+	close(fd);
+	return (0);
 }
 
 int	is_file_valid(const char *file, t_game *game)
 {
 	if (is_file_extension_valid(file) == 1)
 		return (1);
-	if (is_file_empty(file, game) == 1) // Check if file empty ?
+	if (is_file_empty(file, game) == 1)
 		return (1);
-    if (are_file_textures_valid(game) == 1)
+	if (are_file_textures_valid(game) == 1)
 		return (1);
 	if (are_rgb_ids_valid(game, file) == 1)
 		return (1);
 	if (is_there_something_after_map(file) == 1)
 		return (1);
-	// if (is_there_one_map(file) == 1)
-	// 	return (1);
-	// if (are_paths_textures_valid(game) == 1)
-	// { PB : What's a valid path ???
-	// 	return (1);
-	// }
+	if (are_paths_textures_valid(game) == 1)
+	{
+		return (1);
+	}
 	return (0);
 }
+// if (is_there_one_map(file) == 1)
+	// 	return (1);
+// Texture paths : What's a valid path ???

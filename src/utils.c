@@ -26,30 +26,29 @@ int	check_char(char const *set, char c)
 	return (0);
 }
 
-int only_space2(char *line) {
-    while (*line) {
-        if (*line != ' ' && *line != '\t' && *line != '\n' && *line != '\r') {
-            return (0);
-        }
-        line++;
-    }
-    return (1);
+int	only_space2(char *line)
+{
+	while (*line)
+	{
+		if (*line != ' ' && *line != '\t' && *line != '\n' && *line != '\r')
+			return (0);
+		line++;
+	}
+	return (1);
 }
 
 int	only_space(char *line)
 {
 	int	i;
-	
 
 	i = 0;
 	while (line[i])
 	{
-        if (!isspace(line[i]))
-            return (0);
-        i++;
-    }
-    return (1);
-	
+		if (!isspace(line[i]))
+			return (0);
+		i++;
+	}
+	return (1);
 }
 
 int	ft_isspace(char *line)
@@ -66,6 +65,7 @@ int	ft_isspace(char *line)
 	return (0);
 }
 
+// printf("Line %s\n", game->map.map[i]);
 int	free_all2(t_game *game)
 {
 	int	i;
@@ -76,7 +76,6 @@ int	free_all2(t_game *game)
 		i = 0;
 		while (i < game->map.height)
 		{
-			// printf("Line %s\n", game->map.map[i]);
 			if (game->map.map[i] != NULL)
 				free(game->map.map[i]);
 			i++;

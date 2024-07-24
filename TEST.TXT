@@ -1,17 +1,16 @@
 -------------------------------------------------- FILE ----------------------------------------------
 - Manque un espace entre les textures ou rgb et leur valeur => OK
-- Manque un espace entre le groupe rgb et textures => KO
-- Manque une ligne vide entre les couleurs et la map => KO
+- Manque un espace entre le groupe rgb et textures => KO : TO FIX
+- Manque une ligne vide entre les couleurs et la map => KO : TO FIX
 - Quelque chose (autre que vide) apres la map => OK
 - Not .cub file => OK
 - Not an xpm file => TO TEST WITH A VALID IMAGE !
 - Couleurs rgb sol invalides
 - Couleurs rgb plafond invalides
 - Une couleur rgb manque => OK
-    - Invalid plafond color => Works but segfault because of free map (not filled) + double error message
-    - Invalid sol color => Works but segfault because of free map (not filled) + pas double message ??
+    - Invalid plafond color => Double error message > Check what we keep !
 - Valeur RGB invalide (min: 0, max: 255) => OK
-    - Invalid sol color => Works but segfault because of free map (not filled)
+    - Invalid sol color => OK
 - Textures manquantes => OK
 - Textures paths invalides (path + directory)
       - OK but need to test with a real image !
@@ -26,11 +25,11 @@
 - Pas de type file => OK
 - Textures en double 
     => OK if same texture ID (NO / SO / etc.)
-    => KO > Marche mais pas d'erreur si texture en plus ! (textures identiques)
+    => OK > Map description error
 
 -------------------------------------------------- MAP ----------------------------------------------
 - Map interdite
-    - KO > No error even if player is stuck
+    - Player coincé => OSEF
 - Map en premier => OK
 - Map au milieu => OK
 - Pas de map => OK
@@ -47,8 +46,3 @@
 - Trou dans le mur diagonale => OK
 - Char interdit dans la map => OK
 - Map \n => OK
-
-
-- Textures (toutes, pas de doublon, ordre(s))
-- RGB : codes couleurs, chiffres int, F/C, doublons, virgules entre codes
-- Map : position player, char autorisés, murs, map en premier, map en double, 
