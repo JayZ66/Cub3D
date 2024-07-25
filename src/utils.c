@@ -6,50 +6,11 @@
 /*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/10 09:24:13 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/07/23 15:37:20 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/07/25 11:52:52 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3D.h"
-
-int	check_char(char const *set, char c)
-{
-	int	i;
-
-	i = 0;
-	while (set[i])
-	{
-		if (set[i] == c)
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
-int	only_space2(char *line)
-{
-	while (*line)
-	{
-		if (*line != ' ' && *line != '\t' && *line != '\n' && *line != '\r')
-			return (0);
-		line++;
-	}
-	return (1);
-}
-
-int	only_space(char *line)
-{
-	int	i;
-
-	i = 0;
-	while (line[i])
-	{
-		if (!isspace(line[i]))
-			return (0);
-		i++;
-	}
-	return (1);
-}
 
 int	ft_isspace(char *line)
 {
@@ -64,42 +25,22 @@ int	ft_isspace(char *line)
 	}
 	return (0);
 }
+// Exit useful ?
 
-// printf("Line %s\n", game->map.map[i]);
-int	free_all2(t_game *game)
+int	how_many_signs(const char *nptr, int sign, int i)
 {
-	int	i;
+	if (nptr[i + 1] == 45 || nptr[i + 1] == 43)
+		return (0);
+	if (nptr[i] == 45)
+		sign = -1;
+	return (sign);
+}
 
-	printf("OK free \n");
-	if (game->map.map)
-	{
-		i = 0;
-		while (i < game->map.height)
-		{
-			if (game->map.map[i] != NULL)
-				free(game->map.map[i]);
-			i++;
-		}
-		free(game->map.map);
-	}
-	i = 0;
-	while (i < 4)
-	{
-		if (game->texture_paths[i])
-			free(game->texture_paths[i]);
+int	skip_spaces(const char *nptr, int i)
+{
+	while (nptr[i] == 32 || (nptr[i] >= 9 && nptr[i] <= 13))
 		i++;
-	}
-	if (game->win != NULL)
-	{
-		mlx_destroy_window(game->mlx, game->win);
-		game->win = NULL;
-	}
-	if (game->mlx != NULL)
-	{
-		mlx_destroy_display(game->mlx);
-		free(game->mlx);
-	}
-	exit(EXIT_FAILURE);
+	return (i);
 }
 
 int	ft_atoi2(const char *nptr)
@@ -113,26 +54,24 @@ int	ft_atoi2(const char *nptr)
 	sign = 1;
 	result = 0;
 	check = -1;
-	while (nptr[i] == 32 || (nptr[i] >= 9 && nptr[i] <= 13))
-		i++;
+	i = skip_spaces(nptr, i);
 	if (nptr[i] == 43 || nptr[i] == 45)
 	{
-		if (nptr[i + 1] == 45 || nptr[i + 1] == 43)
-			return (0);
-		if (nptr[i] == 45)
-			sign = -1;
+		sign = how_many_signs(nptr, sign, i);
+		if (sign == 0)
+			return (1);
 		i++;
 	}
 	while (nptr[i] >= 48 && nptr[i] <= 57)
 	{
-		result = result * 10 + (nptr[i] - '0');
+		result = result * 10 + (nptr[i++] - '0');
 		check = 0;
-		i++;
 	}
 	if (check == -1)
 		return (-1);
 	return (result * sign);
 }
+// TO TEST WITH THE i !!
 
 int	ft_strncmp_cub(const char *s1, char c, size_t n)
 {

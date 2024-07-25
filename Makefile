@@ -6,7 +6,7 @@
 #    By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/03 18:59:35 by jeza              #+#    #+#              #
-#    Updated: 2024/07/23 17:26:30 by jeguerin         ###   ########.fr        #
+#    Updated: 2024/07/25 11:52:34 by jeguerin         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ CFLAGS := -Wall -Wextra -Werror -Iheaders/ -Iminilibx -g
 
 #Liste des fichiers source.
 SRCS = src/main.c src/parser.c src/init.c src/utils.c src/map_errors.c \
-		src/file_errors.c src/events.c src/init2.c \
+		src/file_errors.c src/events.c src/init2.c src/utils2.c \
 
 LIBFT = Libft/libft.a
 GETNEXTLINE = get_next_line/get_next_line.c get_next_line/get_next_line_utils.c

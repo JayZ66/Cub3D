@@ -34,6 +34,8 @@ void	create_images(t_game *game)
 	}
 }
 
+// TO ADD : mlx_mouse_hook(data.window, handle_mouse, &data);
+// Handle mouse events (left click to select)
 void	create_window(t_game *game)
 {
 	if (game->mlx == NULL)
@@ -49,10 +51,9 @@ void	create_window(t_game *game)
 		printf("Could not create mlx window\n");
 		return ;
 	}
-	mlx_hook(game->win, 2, 1L<<0, manage_keypress, game);
-	mlx_hook(game->win, 3 1L<<1, manage_keyrelease, game);
+	mlx_hook(game->win, 2, 1L << 0, manage_keypress, game);
+	mlx_hook(game->win, 3, 1L << 1, manage_keyrelease, game);
 	mlx_hook(game->win, 17, KeyPressMask, &free_all2, game);
-	// mlx_mouse_hook(data.window, handle_mouse, &data); // Handle mouse events (left click to select)
 	mlx_loop(game->mlx);
 }
 //TEST WITH KeyPressMask if it works !

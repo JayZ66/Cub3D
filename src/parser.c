@@ -86,7 +86,54 @@ void	malloc_map(t_game *game)
 	game->map.map[game->map.height] = NULL;
 }
 
+int	error(t_game *game, char *str)
+{
+	printf(str);
+	free_all2(game);
+}
+
+int	check_textures_and_rgb(t_game *game, char *line, int *textures, int *rgb)
+{
+	if (*textures != 4 && is_path_textures(game, line) == 0)
+	{
+		*textures += 1;
+		return (1);
+	}
+	else if (*rgb != 2 && is_rgb_code(game, line) == 0)
+	{
+		*rgb += 1;
+		return (1);
+	}
+}
+
+void	am_i_going_to_far(t_game *game, char *line, int i)
+{
+	if (i >= game->map.height)
+	{
+		printf("Error: map height exceeded allocated space\n");
+		free(line);
+		free_all2(game);
+	}
+}
+
+void	check_nb_of_rgb_textures(int rgb, int textures, t_game *game, int fd)
+{
+	if (rgb != 2 || textures != 4)
+		error(game, "Map description is either wrong or incomplete\n");
+	close(fd);
+}
+
+void	fd_error(int fd, t_game *game)
+{
+	if (fd == -1)
+		error(game, "Could not open the map file\n");
+}
+
 // NEED TO CHECK : Ligne vide entre textures, rgb et map !
+// CHECK ERROR FUNCTION 
+// + CHECK THE DIFF TO FREE_ALL in am_i_going_to_far function
+// THAN JUST BREAK IN THE LOOP !
+// CHECK IF I IN LAST ELSE IF IT'S GOOD
 void	fill_map(t_game *game, const char *file)
 {
 	int		i;
@@ -96,74 +143,64 @@ void	fill_map(t_game *game, const char *file)
 	char	*line;
 
 	i = 0;
-	fd = open(file, O_RDONLY);
 	textures = 0;
 	rgb = 0;
-	if (fd == -1)
-	{
-		printf("Could not open the map file\n");
-		free_all2(game);
-	}
+	fd = open(file, O_RDONLY);
+	fd_error(fd, game);
 	memset(game->map.map, 0, sizeof(char *) * (game->map.height));
 	while (1)
 	{
 		line = get_next_line(fd);
 		if (line == NULL)
 			break ;
-		if (textures != 4 && is_path_textures(game, line) == 0)
-			textures += 1;
-		else if (rgb != 2 && is_rgb_code(game, line) == 0)
-			rgb += 1;
+		if (check_textures_and_rgb(game, line, &textures, &rgb) == 1)
+			continue ;
 		else if (check_map_line(line) == 1)
 		{
-			if (i >= game->map.height)
-			{
-				printf("Error: map height exceeded allocated space\n");
-				free(line);
-				break ;
-			}
-			game->map.map[i] = ft_strdup(line);
-			i++;
+			am_i_going_to_far(game, line, i);
+			game->map.map[i++] = ft_strdup(line);
 		}
 		free(line);
 	}
-	if (rgb != 2 || textures != 4)
-	{
-		printf("Map description is either wrong or incomplete\n");
-		free_all2(game);
-	}
-	close(fd);
+	check_nb_of_rgb_textures(rgb, textures, game, fd);
 }
 
-/*
-if (*line == ',')
-=> Should we manage the error ? Yes !
-*/
+char	*error_line(char *line)
+{
+	if (*line == ',')
+		return (line + 1);
+	else
+		return (NULL);
+}
+
+void	increment_if_digit(char **line)
+{
+	while (ft_isdigit(**line))
+		(*line++);
+}
+
+// Test comma error + line is incremented ?
+// Test if line is well incremented when digit
 int	parse_rgb(char *line, int *r, int *g, int *b)
 {
 	*r = ft_atoi2(line);
 	if (*r == -1)
 		return (printf("Red color code is missing\n"), 1);
-	while (ft_isdigit(*line))
-		line++;
-	if (*line == ',')
-		line++;
-	else
+	increment_if_digit(&line);
+	line = error_line(line);
+	if (line == NULL)
 		return (1);
 	*g = ft_atoi2(line);
 	if (*g == -1)
 		return (printf("Green color code is missing\n"), 1);
-	while (ft_isdigit(*line))
-		line++;
-	if (*line == ',')
-		line++;
-	else
+	increment_if_digit(&line);
+	line = error_line(line);
+	if (line == NULL)
 		return (1);
 	*b = ft_atoi2(line);
 	if (*b == -1)
 		return (printf("Blue color code is missing\n"), 1);
-	while (ft_isdigit(*line))
-		line++;
+	increment_if_digit(&line);
 	if (*line != '\0' && *line != '\n')
 		return (1);
 	if ((*r < 0 || *r > 255 || *g < 0 || *g > 255 || *b < 0 || *b > 255)
@@ -172,6 +209,28 @@ int	parse_rgb(char *line, int *r, int *g, int *b)
 	return (0);
 }
 
+void	invalid_rgb(char *line, t_game *game)
+{
+	printf("Invalid id for RGB color\n");
+	free(line);
+	free_all2(game);
+}
+
+void	init_ceiling_colors(t_game *game, int r, int g, int b)
+{
+	game->ceiling.r = r;
+	game->ceiling.g = g;
+	game->ceiling.b = b;
+}
+
+void	init_floor_colors(t_game *game, int r, int g, int b)
+{
+	game->floor.r = r;
+	game->floor.g = g;
+	game->floor.b = b;
+}
+
+// TEST INITIALIZATION OF RGB COLORS !
 int	is_rgb_code(t_game *game, char *line)
 {
 	int		r;
@@ -191,25 +250,13 @@ int	is_rgb_code(t_game *game, char *line)
 			free_all2(game);
 		}
 		if (line[0] == 'F')
-		{
-			game->floor.r = r;
-			game->floor.g = g;
-			game->floor.b = b;
-		}
+			init_floor_colors(game, r, g, b);
 		else if (line[0] == 'C')
-		{
-			game->ceiling.r = r;
-			game->ceiling.g = g;
-			game->ceiling.b = b;
-		}
+			init_ceiling_colors(game, r, g, b);
 		return (0);
 	}
 	else if (check_char(line, 32) != 1 && check_char(line, '\n') != 1)
-	{
-		printf("Invalid id for RGB color\n");
-		free(line);
-		free_all2(game);
-	}
+		invalid_rgb(line, game);
 	return (1);
 }
 
