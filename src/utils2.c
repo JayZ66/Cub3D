@@ -36,7 +36,7 @@ void	free_everything(t_game *game)
 }
 
 // printf("Line %s\n", game->map.map[i]);
-void	free_all2(t_game *game)
+int	free_all2(t_game *game)
 {
 	int	i;
 
@@ -53,7 +53,7 @@ void	free_all2(t_game *game)
 		free(game->map.map);
 	}
 	free_everything(game);
-	exit(EXIT_FAILURE);
+	return (0);
 }
 
 int	check_char(char const *set, char c)

@@ -53,7 +53,8 @@ void	create_window(t_game *game)
 	}
 	mlx_hook(game->win, 2, 1L << 0, manage_keypress, game);
 	mlx_hook(game->win, 3, 1L << 1, manage_keyrelease, game);
-	mlx_hook(game->win, 17, KeyPressMask, &free_all2, game);
+	mlx_hook(game->win, 17, KeyPressMask, free_all2, game);
+	mlx_loop_hook(game->mlx, game_loop, game);
 	mlx_loop(game->mlx);
 }
 //TEST WITH KeyPressMask if it works !

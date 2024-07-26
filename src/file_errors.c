@@ -154,7 +154,7 @@ int	ceiling(int is_ceiling, char c)
 	return (is_ceiling);
 }
 
-int	floor(int is_floor, char c)
+int	if_floor(int is_floor, char c)
 {
 	if (c == 'F')
 		is_floor++;
@@ -169,6 +169,7 @@ int	are_rgb_ids_valid(t_game *game, const char *file)
 	int		i;
 	char	*line;
 
+	fd = 0;
 	fd = open_file(file, fd, game);
 	is_floor = 0;
 	is_ceiling = 0;
@@ -181,7 +182,7 @@ int	are_rgb_ids_valid(t_game *game, const char *file)
 		while (line[++i])
 		{
 			is_ceiling = ceiling(is_ceiling, line[i]);
-			is_floor = floor(is_floor, line[i]);
+			is_floor = if_floor(is_floor, line[i]);
 		}
 		free(line);
 	}
@@ -199,31 +200,32 @@ int	is_description_line(const char *line)
 		|| strncmp(line, "F ", 2) == 0
 		|| strncmp(line, "C ", 2) == 0);
 }
-// int	is_end_of_map(char *line, int fd)
-// {
-// 	if (!only_space(line))
-// 	{
-// 		printf("Map is not the last element in file\n");
-// 		free (line);
-// 		close(fd);
-// 		return (1);
-// 	}
-// 	return (0);
-// }
 
-// int	check_map(char *line, int fd, int map_ended)
-// {
-// 	if (only_space(line))
-// 		map_ended = 1;
-// 	else if (!check_map_line(line))
-// 	{
-// 		printf("Invalid character found in map\n");
-// 		free (line);
-// 		close (fd);
-// 		return (-1);
-// 	}
-// 	return (map_ended);
-// }
+int	is_end_of_map(char *line, int fd)
+{
+	if (!only_space(line))
+	{
+		printf("Map is not the last element in file\n");
+		free (line);
+		close(fd);
+		return (1);
+	}
+	return (0);
+}
+
+int	check_map(char *line, int fd, int map_ended)
+{
+	if (only_space(line))
+		map_ended = 1;
+	else if (!check_map_line(line))
+	{
+		printf("Invalid character found in map\n");
+		free (line);
+		close (fd);
+		return (-1);
+	}
+	return (map_ended);
+}
 
 int	handle_map_line(char *line, int description)
 {
@@ -357,14 +359,14 @@ int	is_file_valid(const char *file, t_game *game)
 		return (1);
 	if (are_file_textures_valid(game) == 1)
 		return (1);
-	if (are_rgb_ids_valid(game, file) == 1)
-		return (1);
-	if (is_there_something_after_map(file, game) == 1)
-		return (1);
-	if (are_paths_textures_valid(game) == 1)
-	{
-		return (1);
-	}
+	// if (are_rgb_ids_valid(game, file) == 1)
+	// 	return (1);
+	// if (is_there_something_after_map(file, game) == 1)
+	// 	return (1);
+	// if (are_paths_textures_valid(game) == 1)
+	// {
+	// 	return (1);
+	// }
 	return (0);
 }
 // if (is_there_one_map(file) == 1)

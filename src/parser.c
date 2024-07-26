@@ -88,8 +88,10 @@ void	malloc_map(t_game *game)
 
 int	error(t_game *game, char *str)
 {
-	printf(str);
+	while (*str)
+		write(2, str++, 1);
 	free_all2(game);
+	return (1);
 }
 
 int	check_textures_and_rgb(t_game *game, char *line, int *textures, int *rgb)
@@ -104,6 +106,7 @@ int	check_textures_and_rgb(t_game *game, char *line, int *textures, int *rgb)
 		*rgb += 1;
 		return (1);
 	}
+	return (0);
 }
 
 void	am_i_going_to_far(t_game *game, char *line, int i)
@@ -176,7 +179,7 @@ char	*error_line(char *line)
 void	increment_if_digit(char **line)
 {
 	while (ft_isdigit(**line))
-		(*line++);
+		(*line)++;
 }
 
 // Test comma error + line is incremented ?
