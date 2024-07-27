@@ -27,7 +27,7 @@ int	is_map_empty(t_game *game)
 	}
 	if (empty_map == game->map.height)
 	{
-		printf("Empty : %d\n", empty_map);
+		// printf("Empty : %d\n", empty_map);
 		printf("Map is empty\n");
 		return (1);
 	}

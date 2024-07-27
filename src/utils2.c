@@ -53,6 +53,7 @@ int	free_all2(t_game *game)
 		free(game->map.map);
 	}
 	free_everything(game);
+	exit(EXIT_SUCCESS);
 	return (0);
 }
 

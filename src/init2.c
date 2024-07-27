@@ -35,7 +35,7 @@ void	init_input(t_input *input)
 	int	i;
 
 	i = 0;
-	while (i < 65000)
+	while (i < 256)
 	{
 		input->keys[i] = 0;
 		i++;

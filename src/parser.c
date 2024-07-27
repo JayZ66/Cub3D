@@ -17,7 +17,6 @@
 		a. Check si la map est carrée (par contre check JB's tickets car
 		la map n'est pas toujours carrée mais il faut qd même le check).
 */
-
 int	check_map_line(const char *line)
 {
 	int	has_valid_char;
@@ -33,6 +32,7 @@ int	check_map_line(const char *line)
 			return (0);
 		line++;
 	}
+	// printf("has_valid_char : %d\n", has_valid_char);
 	return (has_valid_char);
 }
 

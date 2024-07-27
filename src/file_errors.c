@@ -169,8 +169,9 @@ int	are_rgb_ids_valid(t_game *game, const char *file)
 	int		i;
 	char	*line;
 
-	fd = 0;
-	fd = open_file(file, fd, game);
+	(void)game;
+	fd = open(file, O_RDONLY);
+	// fd = open_file(file, fd, game);
 	is_floor = 0;
 	is_ceiling = 0;
 	while (1)
@@ -229,6 +230,7 @@ int	check_map(char *line, int fd, int map_ended)
 
 int	handle_map_line(char *line, int description)
 {
+	// printf("LINE : %s\n", line);
 	if (check_map_line(line))
 	{
 		if (description == 0)
@@ -242,45 +244,48 @@ int	handle_map_line(char *line, int description)
 	return (0);
 }
 
-// int is_there_something_after_map(const char *file)
-// {
-//     int fd = open_file(file);
+int is_there_something_after_map(const char *file, t_game *game)
+{
+	int map_started;
+    int map_ended;
+    int description;
+    char *line;
 
-//     int map_started;
-//     int map_ended;
-//     int description;
-//     char *line;
+	map_started = 0;
+    map_ended = 0;
+    description = 0;
+	(void)game;
+	int fd;
+	fd = open(file, O_RDONLY);
+	if (fd == -1)
+	 	return (1);
+    while ((line = get_next_line(fd)) != NULL)
+	{
+        if (!map_started)
+		{
+            description = handle_description(line);
+			printf("Description : %d\n", description);
+            if (description)
+				continue ;
 
-// 	map_started = 0;
-//     map_ended = 0;
-//     description = 0;
-// 	if (fd == -1)
-// 	 	return (1);
-//     while ((line = get_next_line(fd)) != NULL)
-// 	{
-//         if (!map_started)
-// 		{
-//             description = handle_description(line);
-//             if (description)
-// 				continue ;
-
-//             int map_start_status = handle_map_line(line, description);
-//             if (map_start_status == 1)
-// 				return (1);
-//             if (map_start_status == 2)
-// 				map_started = 1;
-//         } 
-// 		else
-// 		{
-//             map_ended = process_map(line, fd, map_ended);
-//             if (map_ended == 1)
-// 				return (1);
-//         }
-//         free(line);
-//     }
-//     close(fd);
-//     return (0);
-// }
+            int map_start_status = handle_map_line(line, description);
+			// printf("Description : %d\n", description);
+            if (map_start_status == 1)
+				return (1);
+            if (map_start_status == 2)
+				map_started = 1;
+        } 
+		else
+		{
+            map_ended = process_map(line, fd, map_ended);
+            if (map_ended == 1)
+				return (1);
+        }
+        free(line);
+    }
+    close(fd);
+    return (0);
+}
 
 int	process_map(char *line, int fd, int map_ended)
 {
@@ -308,48 +313,48 @@ int	handle_description(char *line)
 	return (0);
 }
 
-int	is_there_something_after_map(const char *file, t_game *game)
-{
-	int		fd;
-	int		map_started;
-	int		map_ended;
-	int		description;
-	char	*line;
+// int	is_there_something_after_map(const char *file, t_game *game)
+// {
+// 	int		fd;
+// 	int		map_started;
+// 	int		map_ended;
+// 	int		description;
+// 	char	*line;
 
-	fd = open(file, O_RDONLY);
-	if (fd == -1)
-		return (error(game, "Could not open the map file\n"));
-	map_started = 0;
-	map_ended = 0;
-	description = 0;
-	while (1)
-	{
-		line = get_next_line(fd);
-		if (line == NULL)
-			break ;
-		if (!map_started)
-		{
-			description = handle_description(line);
-			if (description)
-				continue ;
-			else if (check_map_line(line))
-			{
-				if (description == 0)
-					return (printf("Map is not at the end of the file\n"), 1);
-				map_started = 1;
-			}
-		}
-		else
-		{
-			map_ended = process_map(line, fd, map_ended);
-			if (map_ended == 1)
-				return (1);
-		}
-		free (line);
-	}
-	close(fd);
-	return (0);
-}
+// 	fd = open(file, O_RDONLY);
+// 	if (fd == -1)
+// 		return (error(game, "Could not open the map file\n"));
+// 	map_started = 0;
+// 	map_ended = 0;
+// 	description = 0;
+// 	while (1)
+// 	{
+// 		line = get_next_line(fd);
+// 		if (line == NULL)
+// 			break ;
+// 		if (!map_started)
+// 		{
+// 			description = handle_description(line);
+// 			if (description)
+// 				continue ;
+// 			else if (check_map_line(line))
+// 			{
+// 				if (description == 0)
+// 					return (printf("Map is not at the end of the file\n"), 1);
+// 				map_started = 1;
+// 			}
+// 		}
+// 		else
+// 		{
+// 			map_ended = process_map(line, fd, map_ended);
+// 			if (map_ended == 1)
+// 				return (1);
+// 		}
+// 		free (line);
+// 	}
+// 	close(fd);
+// 	return (0);
+// }
 
 int	is_file_valid(const char *file, t_game *game)
 {
@@ -359,8 +364,8 @@ int	is_file_valid(const char *file, t_game *game)
 		return (1);
 	if (are_file_textures_valid(game) == 1)
 		return (1);
-	// if (are_rgb_ids_valid(game, file) == 1)
-	// 	return (1);
+	if (are_rgb_ids_valid(game, file) == 1)
+		return (1);
 	// if (is_there_something_after_map(file, game) == 1)
 	// 	return (1);
 	// if (are_paths_textures_valid(game) == 1)

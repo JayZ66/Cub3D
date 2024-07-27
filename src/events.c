@@ -62,9 +62,9 @@ int	manage_keyrelease(int keycode, t_game *game)
 
 int	handle_input(t_game *game)
 {
-	if (game->input.keys[KEY_ESC])
-		free_all2(game);
-	else if (game->input.keys[KEY_UP])
+	// if (game->input.keys[KEY_ESC]) // CREATE ERROR !!
+	// 	free_all2(game);
+	if (game->input.keys[KEY_UP])
 	{
 		printf("OK\n");
 		// move_forward(game);

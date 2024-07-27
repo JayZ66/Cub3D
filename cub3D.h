@@ -32,28 +32,28 @@
 # include <math.h>
 # include <ctype.h>
 
-// # define KEY_ESC 53
-// # define KEY_UP 126
-// # define KEY_DOWN 125
-// # define KEY_W 13
-// # define KEY_A 0
-// # define KEY_S 1
-// # define KEY_D 2
-// # define KEY_LEFT 123
-// # define KEY_RIGHT 124
-// # define SZ 32
-// # define ON_DESTROY 17
+# define KEY_ESC 53
+# define KEY_UP 126
+# define KEY_DOWN 125
+# define KEY_W 13
+# define KEY_A 0
+# define KEY_S 1
+# define KEY_D 2
+# define KEY_LEFT 123
+# define KEY_RIGHT 124
+# define SZ 32
+# define ON_DESTROY 17
 
-#define KEY_ESC     65307  // Échap (Escape)
-#define KEY_UP      65362  // Flèche haut
-#define KEY_DOWN    65364  // Flèche bas
-#define KEY_W       119    // W
-#define KEY_A       97     // A
-#define KEY_S       115    // S
-#define KEY_D       100    // D
-#define KEY_LEFT    65361  // Flèche gauche
-#define KEY_RIGHT   65363  // Flèche droite
-#define SZ          32     // Espace (Space)
+// #define KEY_ESC     65307  // Échap (Escape)
+// #define KEY_UP      65362  // Flèche haut
+// #define KEY_DOWN    65364  // Flèche bas
+// #define KEY_W       119    // W
+// #define KEY_A       97     // A
+// #define KEY_S       115    // S
+// #define KEY_D       100    // D
+// #define KEY_LEFT    65361  // Flèche gauche
+// #define KEY_RIGHT   65363  // Flèche droite
+// #define SZ          32     // Espace (Space)
 
 # define MOUSE_LEFT_CLICK 1
 
@@ -171,6 +171,8 @@ int		are_file_textures_valid(t_game *game);
 int		is_file_full(const char *file, t_game *game);
 int		are_paths_textures_valid(t_game *game);
 int		are_rgb_ids_valid(t_game *game, const char *file);
+int	process_map(char *line, int fd, int map_ended);
+int	handle_description(char *line);
 
 // EVENTS MANAGEMENT
 int		mouse_move(int x, int y, t_input *input);
