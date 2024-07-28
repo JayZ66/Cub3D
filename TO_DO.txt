@@ -53,3 +53,10 @@ DEFAUT :
 pour tester il faut aller loin dans l'init de la mini
 il faudra une fenêtre qui garde le curseur au milieu pour tester 
 haut, bas, gauche, droite.
+
+------ TO DO ------ 29/07/2024
+- Erreur fonction : is there something after map
+- Gérer erreur pas de ligne entre les éléments du file (check sujet)
+- Fonctions de déplacement
+- Gestion mouvements souris
+- Modifier code keys

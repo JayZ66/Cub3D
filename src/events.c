@@ -46,7 +46,7 @@
 // Maybe put a condition to be sure that we are in the tab. 
 int	manage_keypress(int keycode, t_game *game)
 {
-	if (keycode >= 0 && keycode < 256)
+	if (keycode >= 0 && keycode < 65536)
 		game->input.keys[keycode] = 1;
 	printf("Key pressed: %d\n", keycode);
 	return (0);
@@ -54,7 +54,7 @@ int	manage_keypress(int keycode, t_game *game)
 
 int	manage_keyrelease(int keycode, t_game *game)
 {
-	if (keycode >= 0 && keycode < 256)
+	if (keycode >= 0 && keycode < 65536)
 		game->input.keys[keycode] = 0;
 	printf("Key released: %d\n", keycode);
 	return (0);
@@ -62,8 +62,8 @@ int	manage_keyrelease(int keycode, t_game *game)
 
 int	handle_input(t_game *game)
 {
-	// if (game->input.keys[KEY_ESC]) // CREATE ERROR !!
-	// 	free_all2(game);
+	if (game->input.keys[KEY_ESC])
+		free_all2(game);
 	if (game->input.keys[KEY_UP])
 	{
 		printf("OK\n");
