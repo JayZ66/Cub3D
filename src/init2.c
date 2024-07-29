@@ -6,7 +6,7 @@
 /*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 09:36:20 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/07/25 09:36:22 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/07/29 16:50:30 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	init_input(t_input *input)
 	int	i;
 
 	i = 0;
-	while (i < 65536)
+	while (i < 256)
 	{
 		input->keys[i] = 0;
 		i++;
@@ -45,4 +45,18 @@ void	init_input(t_input *input)
 	input->last_mouse_x = 0;
 	input->last_mouse_y = 0;
 	input->mouse_left_pressed = 0;
+}
+
+void	init_ceiling_colors(t_game *game, int r, int g, int b)
+{
+	game->ceiling.r = r;
+	game->ceiling.g = g;
+	game->ceiling.b = b;
+}
+
+void	init_floor_colors(t_game *game, int r, int g, int b)
+{
+	game->floor.r = r;
+	game->floor.g = g;
+	game->floor.b = b;
 }

@@ -55,8 +55,12 @@ il faudra une fenêtre qui garde le curseur au milieu pour tester
 haut, bas, gauche, droite.
 
 ------ TO DO ------ 29/07/2024
-- Erreur fonction : is there something after map
-- Gérer erreur pas de ligne entre les éléments du file (check sujet)
-- Fonctions de déplacement
+- Erreur fonction : is there something after map => DONE
+- Gérer erreur pas de ligne entre les éléments du file (check sujet) => DONE
+- Fonctions de déplacement => IN PROGRESS
 - Gestion mouvements souris
-- Modifier code keys
+- Modifier code keys => DONE
+- Finir norme => DONE 
+- Test map filling to be sure ! => DONE
+- MLX auto repeat
+- Modify int (in map tab) TO double

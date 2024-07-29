@@ -32,28 +32,28 @@
 # include <math.h>
 # include <ctype.h>
 
-// # define KEY_ESC 53
-// # define KEY_UP 126
-// # define KEY_DOWN 125
-// # define KEY_W 13
-// # define KEY_A 0
-// # define KEY_S 1
-// # define KEY_D 2
-// # define KEY_LEFT 123
-// # define KEY_RIGHT 124
-// # define SZ 32
-// # define ON_DESTROY 17
+# define KEY_ESC 53
+# define KEY_UP 126
+# define KEY_DOWN 125
+# define KEY_W 119 // OK
+# define KEY_A 97 // OK
+# define KEY_S 115 // OK
+# define KEY_D 100 // OK
+# define KEY_LEFT 123
+# define KEY_RIGHT 124
+# define SZ 32
+# define ON_DESTROY 17
 
-#define KEY_ESC     65307  // Échap (Escape)
-#define KEY_UP      65362  // Flèche haut
-#define KEY_DOWN    65364  // Flèche bas
-#define KEY_W       119    // W
-#define KEY_A       97     // A
-#define KEY_S       115    // S
-#define KEY_D       100    // D
-#define KEY_LEFT    65361  // Flèche gauche
-#define KEY_RIGHT   65363  // Flèche droite
-#define SZ          32     // Espace (Space)
+// #define KEY_ESC     65307  // Échap (Escape)
+// #define KEY_UP      65362  // Flèche haut
+// #define KEY_DOWN    65364  // Flèche bas
+// #define KEY_W       119    // W
+// #define KEY_A       97     // A
+// #define KEY_S       115    // S
+// #define KEY_D       100    // D
+// #define KEY_LEFT    65361  // Flèche gauche
+// #define KEY_RIGHT   65363  // Flèche droite
+// #define SZ          32     // Espace (Space)
 
 # define MOUSE_LEFT_CLICK 1
 
@@ -67,8 +67,8 @@ typedef enum s_texture_index
 
 typedef struct s_input
 {
-	// int	keys[256];
-	int	keys[65536];
+	int	keys[256];
+	// int	keys[65536];
 	int	mouse_left_pressed;
 	int	mouse_x;
 	int	mouse_y;
@@ -109,6 +109,7 @@ typedef struct s_player
 	double	dir_y;
 	double	plane_x;
 	double	plane_y;
+	double	speed;
 }	t_player;
 
 typedef struct s_game
@@ -135,10 +136,11 @@ int		check_char(char const *set, char c);
 int		ft_atoi2(const char *nptr);
 int		ft_strncmp_cub(const char *s1, char c, size_t n);
 int		only_space(char *line);
-int		check_map_line(const char *line);
+int		check_map_line(char *line);
 int		only_space2(char *line);
 int		is_description_line(const char *line);
 int	error(t_game *game, char *str);
+int	open_file(const char *file, int fd, t_game *game);
 
 // INITIALIZATION OF STRUCTURES
 void	init_cub(t_game *game);
@@ -161,6 +163,12 @@ int		are_walls_valid(t_game *game);
 char	**get_map(t_game *game);
 int		flood_fill(t_game *game, char **map, int x, int y);
 int	is_end_of_map(char *line, int fd);
+int	is_player_valid(t_game *game);
+void	manage_width(t_game *game, char *line);
+void	am_i_going_to_far(t_game *game, char *line, int i);
+void	increment_if_digit(char **line);
+char	*error_line(char *line);
+int	check_map(char *line, int fd, int map_ended);
 
 // FILE ERRORS
 int		is_file_valid(const char *file, t_game *game);
@@ -172,7 +180,19 @@ int		is_file_full(const char *file, t_game *game);
 int		are_paths_textures_valid(t_game *game);
 int		are_rgb_ids_valid(t_game *game, const char *file);
 int	process_map(char *line, int fd, int map_ended);
-int	handle_description(char *line);
+int	handle_description(char *line, int description);
+int	is_file_extension_valid(const char *file);
+int	is_file_empty(const char *file, t_game *game);
+int	is_there_something_after_map(const char *file, t_game *game);
+void	init_type(int *floor, int *ceiling, int *fd);
+int	ceiling(int is_ceiling, char c);
+int	if_floor(int is_floor, char c);
+int	is_nb_of_rgb_good(int is_ceiling, int is_floor);
+int	check_textures_and_rgb(t_game *game, char *line, int *textures, int *rgb);
+void	check_nb_of_rgb_textures(int rgb, int textures, t_game *game, int fd);
+void	init_ceiling_colors(t_game *game, int r, int g, int b);
+void	init_floor_colors(t_game *game, int r, int g, int b);
+
 
 // EVENTS MANAGEMENT
 int		mouse_move(int x, int y, t_input *input);
@@ -182,5 +202,10 @@ int		game_loop(t_game *game);
 int	handle_input(t_game *game);
 int	manage_keyrelease(int keycode, t_game *game);
 int	manage_keypress(int keycode, t_game *game);
+
+// PLAYER POSITION
+void	update_position(t_game *game, double x, double y);
+int	is_outside(t_game *game, double x, double y);
+void	check_map_path(double x, double y, t_game *game);
 
 #endif

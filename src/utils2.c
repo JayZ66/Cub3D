@@ -6,7 +6,7 @@
 /*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 11:52:19 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/07/25 11:53:20 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/07/29 16:21:27 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	free_everything(t_game *game)
 	i = 0;
 	while (i < 4)
 	{
-		if (game->texture_paths[i])
+		if (game->texture_paths && game->texture_paths[i])
 			free(game->texture_paths[i]);
 		i++;
 	}

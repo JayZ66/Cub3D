@@ -6,7 +6,7 @@
 /*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 17:26:16 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/07/25 09:37:20 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/07/29 18:16:36 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@
 // Maybe put a condition to be sure that we are in the tab. 
 int	manage_keypress(int keycode, t_game *game)
 {
-	if (keycode >= 0 && keycode < 65536)
+	if (keycode >= 0 && keycode < 256)
 		game->input.keys[keycode] = 1;
 	printf("Key pressed: %d\n", keycode);
 	return (0);
@@ -54,7 +54,7 @@ int	manage_keypress(int keycode, t_game *game)
 
 int	manage_keyrelease(int keycode, t_game *game)
 {
-	if (keycode >= 0 && keycode < 65536)
+	if (keycode >= 0 && keycode < 256)
 		game->input.keys[keycode] = 0;
 	printf("Key released: %d\n", keycode);
 	return (0);
@@ -64,34 +64,51 @@ int	handle_input(t_game *game)
 {
 	if (game->input.keys[KEY_ESC])
 		free_all2(game);
-	if (game->input.keys[KEY_UP])
-	{
-		printf("OK\n");
-		// move_forward(game);
-	}
-	else if (game->input.keys[KEY_DOWN])
-		printf("Ok1\n");
-		// move_backward(game);
+	// if (game->input.keys[KEY_UP])
+	// 	move_forward(game);
+	// else if (game->input.keys[KEY_DOWN])
+	// 	move_backward(game);
 	else if (game->input.keys[KEY_W])
-		printf("Ok2\n");
-		// move_forward(game);
-	else if (game->input.keys[KEY_A])
-		printf("Ok3\n");
-		// strafe_left(game); // Déplacement à gauche
+	{
+		printf("LOL\n");
+		update_position(game, 0, -game->player.speed);
+	}
+	// else if (game->input.keys[KEY_A])
+	// 	strafe_left(game);
 	else if (game->input.keys[KEY_S])
-		printf("Ok4\n");
-		// move_backward(game);
-	else if (game->input.keys[KEY_D])
-		printf("Ok5\n");
-		// strafe_right(game); // Déplacement à droite
-	else if (game->input.keys[KEY_LEFT])
-		printf("Ok6\n");
-		// move_player_direction_to_left(game);
-	else if (game->input.keys[KEY_RIGHT])
-		printf("Ok7\n");
-		// move_player_direction_to_right(game);
+		update_position(game, 0, game->player.speed);
+	// 	move_backward(game);
+	// else if (game->input.keys[KEY_D])
+	// 	strafe_right(game);
+	// else if (game->input.keys[KEY_LEFT])
+	// 	move_player_direction_to_left(game);
+	// else if (game->input.keys[KEY_RIGHT])
+	// 	move_player_direction_to_right(game);
 	return (0);
 }
+
+// 	int	handle_input(t_game *game)
+// {
+// 	if (game->input.keys[KEY_ESC])
+// 		free_all2(game);
+// 	if (game->input.keys[KEY_UP])
+// 		// move_forward(game);
+// 	else if (game->input.keys[KEY_DOWN])
+// 		// move_backward(game);
+// 	else if (game->input.keys[KEY_W])
+// 		// move_forward(game);
+// 	else if (game->input.keys[KEY_A])
+// 		// strafe_left(game); // Déplacement à gauche
+// 	else if (game->input.keys[KEY_S])
+// 		// move_backward(game);
+// 	else if (game->input.keys[KEY_D])
+// 		// strafe_right(game); // Déplacement à droite
+// 	else if (game->input.keys[KEY_LEFT])
+// 		// move_player_direction_to_left(game);
+// 	else if (game->input.keys[KEY_RIGHT])
+// 		// move_player_direction_to_right(game);
+// 	return (0);
+// }
 
 int	game_loop(t_game *game)
 {
