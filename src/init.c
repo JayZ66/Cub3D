@@ -20,16 +20,17 @@ void	init_player(t_player *player)
 	player->dir_y = 0;
 	player->plane_x = 0;
 	player->plane_y = 0;
-	player->speed = 0.2;
+	player->speed = 0.05;
+	player->rot_speed = 0.03;
 }
 // speed : vitesse du player en pixels.
 
+// memset(game->texture_paths, 0, sizeof(game->texture_paths));
 void	init_game(t_game *game)
 {
 	game->win = NULL;
 	game->win_height = 0;
 	game->win_width = 0;
-	// memset(game->texture_paths, 0, sizeof(game->texture_paths));
 	game->map.map = NULL;
 	game->running = 1;
 }

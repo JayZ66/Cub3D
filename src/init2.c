@@ -32,16 +32,16 @@ void	init_texture(t_texture *texture)
 
 void	init_input(t_input *input)
 {
-	int	i;
+	// int	i;
 
-	i = 0;
-	while (i < 256)
-	{
-		input->keys[i] = 0;
-		i++;
-	}
-	input->last_mouse_x = 0;
-	input->last_mouse_y = 0;
+	// i = 0;
+	// while (i < 256)
+	// {
+	// 	input->keys[i] = 0;
+	// 	i++;
+	// }
+	input->mouse_x = 0;
+	input->mouse_y = 0;
 	input->last_mouse_x = 0;
 	input->last_mouse_y = 0;
 	input->mouse_left_pressed = 0;

@@ -26,13 +26,12 @@ char	**get_map(t_game *game)
 		map[i] = ft_strdup(game->map.map[i]);
 		i++;
 	}
-	map[i] = NULL;
-	i = 0;
-	while (map[i])
-	{
-		printf("Map[i] : %s\n", map[i]);
-		i++;
-	}
+	// i = 0;
+	// while (map[i])
+	// {
+	// 	printf("Map[i] : %s\n", map[i]);
+	// 	i++;
+	// }
 	return (map);
 }
 

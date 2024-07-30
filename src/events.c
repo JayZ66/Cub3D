@@ -44,78 +44,84 @@
 // }
 
 // Maybe put a condition to be sure that we are in the tab. 
+// int	manage_keypress(int keycode, t_game *game)
+// {
+// 	if (keycode >= 0 && keycode < 256)
+// 		game->input.keys[keycode] = 1;
+// 	printf("Key pressed: %d\n", keycode);
+// 	return (0);
+// }
+
 int	manage_keypress(int keycode, t_game *game)
 {
-	if (keycode >= 0 && keycode < 256)
-		game->input.keys[keycode] = 1;
+	if (keycode == KEY_ESC)
+		free_all2(game);
+	// if (keycode == KEY_UP)
+	// 	move_forward(game);
+	// else if (keycode == KEY_DOWN)
+	// 	move_backward(game);
+	else if (keycode == KEY_W)
+	{
+		printf("LOL\n");
+		update_position(game, game->player.dir_x * game->player.speed, game->player.dir_y * game->player.speed);
+	}
+	else if (keycode == KEY_A)
+		update_position(game, -game->player.plane_x * game->player.speed, -game->player.plane_y * game->player.speed);
+	else if (keycode == KEY_S)
+		update_position(game, -game->player.dir_x * game->player.speed, -game->player.dir_y * game->player.speed);
+	else if (keycode == KEY_D)
+		update_position(game, game->player.plane_x * game->player.speed, game->player.plane_y * game->player.speed);
+	// else if (keycode == KEY_LEFT])
+	// 	rotate_player(game, game->player.rot_speed);
+	// else if (keycode == KEY_RIGHT)
+	// 	rotate_player(game, -game->player.rot_speed);
 	printf("Key pressed: %d\n", keycode);
 	return (0);
 }
 
 int	manage_keyrelease(int keycode, t_game *game)
 {
-	if (keycode >= 0 && keycode < 256)
-		game->input.keys[keycode] = 0;
-	printf("Key released: %d\n", keycode);
+	(void)keycode;
+	(void)game;
+	// if (keycode >= 0 && keycode < 256)
+	// 	game->input.keys[keycode] = 0;
+	// printf("Key released: %d\n", keycode);
 	return (0);
 }
 
-int	handle_input(t_game *game)
-{
-	if (game->input.keys[KEY_ESC])
-		free_all2(game);
-	// if (game->input.keys[KEY_UP])
-	// 	move_forward(game);
-	// else if (game->input.keys[KEY_DOWN])
-	// 	move_backward(game);
-	else if (game->input.keys[KEY_W])
-	{
-		printf("LOL\n");
-		update_position(game, 0, -game->player.speed);
-	}
-	// else if (game->input.keys[KEY_A])
-	// 	strafe_left(game);
-	else if (game->input.keys[KEY_S])
-		update_position(game, 0, game->player.speed);
-	// 	move_backward(game);
-	// else if (game->input.keys[KEY_D])
-	// 	strafe_right(game);
-	// else if (game->input.keys[KEY_LEFT])
-	// 	move_player_direction_to_left(game);
-	// else if (game->input.keys[KEY_RIGHT])
-	// 	move_player_direction_to_right(game);
-	return (0);
-}
-
-// 	int	handle_input(t_game *game)
+// int	handle_input(t_game *game)
 // {
 // 	if (game->input.keys[KEY_ESC])
 // 		free_all2(game);
-// 	if (game->input.keys[KEY_UP])
-// 		// move_forward(game);
-// 	else if (game->input.keys[KEY_DOWN])
-// 		// move_backward(game);
+// 	// if (game->input.keys[KEY_UP])
+// 	// 	move_forward(game);
+// 	// else if (game->input.keys[KEY_DOWN])
+// 	// 	move_backward(game);
 // 	else if (game->input.keys[KEY_W])
-// 		// move_forward(game);
-// 	else if (game->input.keys[KEY_A])
-// 		// strafe_left(game); // Déplacement à gauche
+// 	{
+// 		printf("LOL\n");
+// 		update_position(game, 0, -game->player.speed);
+// 	}
+// 	// else if (game->input.keys[KEY_A])
+// 	// 	strafe_left(game);
 // 	else if (game->input.keys[KEY_S])
-// 		// move_backward(game);
-// 	else if (game->input.keys[KEY_D])
-// 		// strafe_right(game); // Déplacement à droite
-// 	else if (game->input.keys[KEY_LEFT])
-// 		// move_player_direction_to_left(game);
-// 	else if (game->input.keys[KEY_RIGHT])
-// 		// move_player_direction_to_right(game);
+// 		update_position(game, 0, game->player.speed);
+// 	// 	move_backward(game);
+// 	// else if (game->input.keys[KEY_D])
+// 	// 	strafe_right(game);
+// 	// else if (game->input.keys[KEY_LEFT])
+// 	// 	move_player_direction_to_left(game);
+// 	// else if (game->input.keys[KEY_RIGHT])
+// 	// 	move_player_direction_to_right(game);
 // 	return (0);
 // }
 
-int	game_loop(t_game *game)
-{
-	handle_input(game);
-	// render_frame(game);
-	return (0);
-}
+// int	game_loop(t_game *game)
+// {
+// 	handle_input(game);
+// 	// render_frame(game);
+// 	return (0);
+// }
 
 // void	render_frame(t_game *game)
 // {

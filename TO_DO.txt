@@ -57,10 +57,16 @@ haut, bas, gauche, droite.
 ------ TO DO ------ 29/07/2024
 - Erreur fonction : is there something after map => DONE
 - Gérer erreur pas de ligne entre les éléments du file (check sujet) => DONE
-- Fonctions de déplacement => IN PROGRESS
+- Fonctions de déplacement => DONE
 - Gestion mouvements souris
 - Modifier code keys => DONE
 - Finir norme => DONE 
 - Test map filling to be sure ! => DONE
-- MLX auto repeat
-- Modify int (in map tab) TO double
+- MLX auto repeat => DONE
+- Modify int (in map tab) TO double => TO SEE IF NECESSARY
+- Tests errors => DONE
+- No error message when something after map ! (no every test)
++ multiple maps => DONE
+- Textures duplicate is not working ! (need to init valeurs
+texture_paths tab to 0) !!
+- Think to xpm error

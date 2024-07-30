@@ -12,6 +12,7 @@
 
 #include "../cub3D.h"
 
+// game->texture_paths && game->texture_paths[i]
 void	free_everything(t_game *game)
 {
 	int	i;
@@ -19,7 +20,7 @@ void	free_everything(t_game *game)
 	i = 0;
 	while (i < 4)
 	{
-		if (game->texture_paths && game->texture_paths[i])
+		if (game->texture_paths[i])
 			free(game->texture_paths[i]);
 		i++;
 	}
