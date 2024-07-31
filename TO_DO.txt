@@ -54,10 +54,11 @@ pour tester il faut aller loin dans l'init de la mini
 il faudra une fenêtre qui garde le curseur au milieu pour tester 
 haut, bas, gauche, droite.
 
------- TO DO ------ 29/07/2024
+------ TO DO ------ 
 - Erreur fonction : is there something after map => DONE
 - Gérer erreur pas de ligne entre les éléments du file (check sujet) => DONE
 - Fonctions de déplacement => DONE
+- Fonction de rotation => DONE
 - Gestion mouvements souris
 - Modifier code keys => DONE
 - Finir norme => DONE 
@@ -67,6 +68,11 @@ haut, bas, gauche, droite.
 - Tests errors => DONE
 - No error message when something after map ! (no every test)
 + multiple maps => DONE
-- Textures duplicate is not working ! (need to init valeurs
-texture_paths tab to 0) !!
+- Textures duplicate is not working ! => DONE (to test !)
 - Think to xpm error
+- Faire fiche de compréhension pour déplacements : 
+    > Comprendre les paramètres envoyés pour se déplacer
+    > Pourquoi on utilise player.dir et pas player.x ?
+    > A quoi sert player.speed et pourquoi on fait pas style y-- ou x++
+    comme sur so_long pour avancer et reculer ?
+    > Comment faire pour rotate ?

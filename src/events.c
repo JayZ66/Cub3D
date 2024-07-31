@@ -63,18 +63,17 @@ int	manage_keypress(int keycode, t_game *game)
 	else if (keycode == KEY_W)
 	{
 		printf("LOL\n");
-		update_position(game, game->player.dir_x * game->player.speed, game->player.dir_y * game->player.speed);
-	}
+        update_position(game, game->player.dir_x * game->player.speed, game->player.dir_y * game->player.speed);	}
 	else if (keycode == KEY_A)
-		update_position(game, -game->player.plane_x * game->player.speed, -game->player.plane_y * game->player.speed);
+	    update_position(game, game->player.dir_y * game->player.speed, -game->player.dir_x * game->player.speed);
 	else if (keycode == KEY_S)
-		update_position(game, -game->player.dir_x * game->player.speed, -game->player.dir_y * game->player.speed);
+	    update_position(game, -game->player.dir_x * game->player.speed, -game->player.dir_y * game->player.speed);
 	else if (keycode == KEY_D)
-		update_position(game, game->player.plane_x * game->player.speed, game->player.plane_y * game->player.speed);
-	// else if (keycode == KEY_LEFT])
-	// 	rotate_player(game, game->player.rot_speed);
-	// else if (keycode == KEY_RIGHT)
-	// 	rotate_player(game, -game->player.rot_speed);
+		update_position(game, -game->player.dir_y * game->player.speed, game->player.dir_x * game->player.speed);
+	else if (keycode == KEY_LEFT)
+		rotate_player(game, game->player.rot_speed);
+	else if (keycode == KEY_RIGHT)
+		rotate_player(game, -game->player.rot_speed);
 	printf("Key pressed: %d\n", keycode);
 	return (0);
 }

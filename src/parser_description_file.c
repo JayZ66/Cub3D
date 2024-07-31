@@ -80,18 +80,46 @@ int	is_rgb_code(t_game *game, char *line)
 
 int	is_path_textures(t_game *game, char *line)
 {
-	if (game->texture_paths[NORTH] == 0 && ft_strncmp(line, "NO", 2) == 0
-		&& line[2] == ' ')
-		game->texture_paths[NORTH] = ft_strdup(line + 3);
-	else if (game->texture_paths[SOUTH] == 0 && ft_strncmp(line, "SO", 2) == 0
-		&& line[2] == ' ')
-		game->texture_paths[SOUTH] = ft_strdup(line + 3);
-	else if (game->texture_paths[WEST] == 0 && ft_strncmp(line, "WE", 2) == 0
-		&& line[2] == ' ')
-		game->texture_paths[WEST] = ft_strdup(line + 3);
-	else if (game->texture_paths[EAST] == 0 && ft_strncmp(line, "EA", 2) == 0
-		&& line[2] == ' ')
-		game->texture_paths[EAST] = ft_strdup(line + 3);
+	if (ft_strncmp(line, "NO", 2) == 0 && line[2] == ' ')
+	{
+		if (game->texture_paths[NORTH] == NULL)
+			game->texture_paths[NORTH] = ft_strdup(line + 3);
+		else
+		{
+			printf("Invalid texture(s) - doublon\n");
+			free_all2(game);
+		}
+	}
+	else if (ft_strncmp(line, "SO", 2) == 0 && line[2] == ' ')
+	{
+		if (game->texture_paths[SOUTH] == NULL)
+			game->texture_paths[SOUTH] = ft_strdup(line + 3);
+		else
+		{
+			printf("Invalid texture(s) - doublon\n");
+			free_all2(game);
+		}
+	}
+	else if (ft_strncmp(line, "WE", 2) == 0 && line[2] == ' ')
+	{
+		if (game->texture_paths[WEST] == NULL)
+			game->texture_paths[WEST] = ft_strdup(line + 3);
+		else
+		{
+			printf("Invalid texture(s) - doublon\n");
+			free_all2(game);
+		}
+	}
+	else if (ft_strncmp(line, "EA", 2) == 0 && line[2] == ' ')
+	{
+		if (game->texture_paths[EAST] == NULL)
+			game->texture_paths[EAST] = ft_strdup(line + 3);
+		else
+		{
+			printf("Invalid texture(s) - doublon\n");
+			free_all2(game);
+		}
+	}
 	else
 		return (1);
 	return (0);
@@ -103,7 +131,8 @@ int	is_path_textures(t_game *game, char *line)
 
 int	check_textures_and_rgb(t_game *game, char *line, int *textures, int *rgb)
 {
-	if (*textures != 4 && is_path_textures(game, line) == 0)
+	printf("Textures  : %d\n", *textures);
+	if (is_path_textures(game, line) == 0)
 	{
 		*textures += 1;
 		return (1);

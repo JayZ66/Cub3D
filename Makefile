@@ -50,7 +50,7 @@ $(PRINTF):
 
 # Regle pour creer l'executable en liant les objets.
 $(NAME): $(OBJS) $(LIBFT) $(PRINTF) $(GETNEXTLINE_OBJ)
-	$(CC) $(CFLAGS) $(OBJS) $(LIBRARY) $(GETNEXTLINE_OBJ) $(LIBFT) $(PRINTF) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJS) $(LIBRARY) $(GETNEXTLINE_OBJ) $(LIBFT) $(PRINTF) -o $(NAME) -lm
 
 # $(NAME): $(OBJS)
 # 	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)

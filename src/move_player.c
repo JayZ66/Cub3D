@@ -25,8 +25,6 @@
 // 	}
 // }
 
-// If i press w key i'll get many moves, at a time, 
-// but then it'll be outside the map.
 int	is_outside(t_game *game, double x, double y)
 {
 	int	map_x;
@@ -41,7 +39,7 @@ int	is_outside(t_game *game, double x, double y)
     if (map_x < 0 || map_x >= game->map.width || map_y < 0 || map_y >= game->map.height)
         return (1); // Collision si hors de la carte
     // Obstacles dans la carte
-    if (game->map.map[map_y][map_x] == '1' || game->map.map[map_y][map_x] == ' ')
+    if (game->map.map[map_y][map_x] == ' ' || game->map.map[map_y][map_x] == '1')
         return (1); // Collision avec un mur ou vide
 
     return (0);
@@ -106,3 +104,30 @@ void update_position(t_game *game, double move_x, double move_y)
 //		&& tmp_y < game->map.height)
 // 		check_map_path();
 // }
+
+void rotate_player(t_game *game, double angle)
+{
+    // Stocker les anciennes valeurs x
+    double	old_dir_x;
+	double	old_dir_y;
+    double	old_plane_x;
+	double	old_plane_y;
+
+	printf("Before rotation:\n");
+    printf("Direction: dir_x = %f, dir_y = %f\n", game->player.dir_x, game->player.dir_y);
+    printf("Plane: plane_x = %f, plane_y = %f\n", game->player.plane_x, game->player.plane_y);
+	old_dir_x = game->player.dir_x;
+	old_dir_y = game->player.dir_y;
+	old_plane_x = game->player.plane_x;
+	old_plane_y = game->player.plane_y;
+    // Calculer les nouvelles valeurs directionnelles
+    game->player.dir_x = old_dir_x * cos(angle) - old_dir_y * sin(angle);
+    game->player.dir_y = old_dir_x * sin(angle) + old_dir_y * cos(angle);
+    // Calculer les nouvelles valeurs du plan caméra
+    game->player.plane_x = old_plane_x * cos(angle) - old_plane_y * sin(angle);
+    game->player.plane_y = old_plane_x * sin(angle) + old_plane_y * cos(angle);
+
+	printf("After rotation:\n");
+    printf("Direction: dir_x = %f, dir_y = %f\n", game->player.dir_x, game->player.dir_y);
+    printf("Plane: plane_x = %f, plane_y = %f\n", game->player.plane_x, game->player.plane_y);
+}

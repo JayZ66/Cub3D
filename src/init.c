@@ -19,7 +19,7 @@ void	init_player(t_player *player)
 	player->dir_x = 0;
 	player->dir_y = 0;
 	player->plane_x = 0;
-	player->plane_y = 0;
+	player->plane_y = 0.66;
 	player->speed = 0.05;
 	player->rot_speed = 0.03;
 }
@@ -28,6 +28,14 @@ void	init_player(t_player *player)
 // memset(game->texture_paths, 0, sizeof(game->texture_paths));
 void	init_game(t_game *game)
 {
+	// int	i;
+
+	// i = 0;
+	// while (i < 4)
+	// {
+	// 	game->texture_paths[i] = NULL;
+	// 	i++;
+	// }
 	game->win = NULL;
 	game->win_height = 0;
 	game->win_width = 0;

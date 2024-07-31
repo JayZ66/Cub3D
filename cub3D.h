@@ -29,7 +29,7 @@
 # include <unistd.h> // access - dup2 - execve - fork - pipe - waitpid
 # include <sys/wait.h> // Wait
 # include <fcntl.h>
-# include <math.h>
+# include <math.h> // cos - sin
 # include <ctype.h>
 
 # define KEY_ESC 65307
@@ -39,8 +39,8 @@
 # define KEY_A 97 // OK
 # define KEY_S 115 // OK
 # define KEY_D 100 // OK
-# define KEY_LEFT 123
-# define KEY_RIGHT 124
+# define KEY_LEFT 65361
+# define KEY_RIGHT 65363
 # define SZ 32
 # define ON_DESTROY 17
 
@@ -208,5 +208,6 @@ int		manage_keypress(int keycode, t_game *game);
 void	update_position(t_game *game, double move_x, double move_y);
 int		is_outside(t_game *game, double x, double y);
 void	check_map_path(double x, double y, t_game *game);
+void	rotate_player(t_game *game, double angle);
 
 #endif

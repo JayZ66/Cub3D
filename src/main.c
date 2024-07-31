@@ -52,10 +52,10 @@ void	create_window(t_game *game)
 		return ;
 	}
 	mlx_hook(game->win, 2, 1L << 0, manage_keypress, game);
-	mlx_hook(game->win, 3, 1L << 1, manage_keyrelease, game);
+	// mlx_hook(game->win, 3, 1L << 1, manage_keyrelease, game); // Is this USEFUL ?
 	mlx_hook(game->win, 17, KeyPressMask, free_all2, game);
-	mlx_do_key_autorepeaton(game->mlx);
 	// mlx_loop_hook(game->mlx, render_frame, game);
+	mlx_do_key_autorepeaton(game->mlx);
 	mlx_loop(game->mlx);
 }
 //TEST WITH KeyPressMask if it works !
