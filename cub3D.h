@@ -209,5 +209,6 @@ void	update_position(t_game *game, double move_x, double move_y);
 int		is_outside(t_game *game, double x, double y);
 void	check_map_path(double x, double y, t_game *game);
 void	rotate_player(t_game *game, double angle);
+int		manage_mouse_movement(int x, t_game *game);
 
 #endif

@@ -88,6 +88,31 @@ int	manage_keyrelease(int keycode, t_game *game)
 	return (0);
 }
 
+int	manage_mouse_movement(int x, t_game *game)
+{
+	static int	last_x;
+	double		angle;
+	int			dx;
+
+	last_x = -1;
+	if (last_x == -1)
+		last_x = x;
+	dx = x - last_x; // Diff. de position de la souris.
+	last_x = x;
+	// Ajuster l'angle de rotation basé sur la différence de position de la souris
+	angle = dx * 0.003;
+	printf("Before rotation:\n");
+    printf("Mouse dx = %d, Angle = %f\n", dx, angle);
+    printf("Direction: dir_x = %f, dir_y = %f\n", game->player.dir_x, game->player.dir_y);
+    printf("Plane: plane_x = %f, plane_y = %f\n", game->player.plane_x, game->player.plane_y);
+	rotate_player(game, angle);
+	printf("After rotation:\n");
+    printf("Mouse dx = %d, Angle = %f\n", dx, angle);
+    printf("Direction: dir_x = %f, dir_y = %f\n", game->player.dir_x, game->player.dir_y);
+    printf("Plane: plane_x = %f, plane_y = %f\n", game->player.plane_x, game->player.plane_y);
+	return (0);
+}
+
 // int	handle_input(t_game *game)
 // {
 // 	if (game->input.keys[KEY_ESC])

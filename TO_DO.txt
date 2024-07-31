@@ -68,11 +68,14 @@ haut, bas, gauche, droite.
 - Tests errors => DONE
 - No error message when something after map ! (no every test)
 + multiple maps => DONE
-- Textures duplicate is not working ! => DONE (to test !)
+- Textures duplicate is not working ! => DONE
 - Think to xpm error
 - Faire fiche de compréhension pour déplacements : 
-    > Comprendre les paramètres envoyés pour se déplacer
+    > Comprendre les paramètres envoyés pour se déplacer => OK
     > Pourquoi on utilise player.dir et pas player.x ?
     > A quoi sert player.speed et pourquoi on fait pas style y-- ou x++
     comme sur so_long pour avancer et reculer ?
-    > Comment faire pour rotate ?
+    > Comment faire pour rotate ? => OK
+    > Gestion des mouvements de la souris => OK
+    > MASK mlx + codes
+    > Différentes fonctions de la mlx.
