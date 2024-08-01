@@ -12,6 +12,26 @@
 
 #include "../cub3D.h"
 
+int	are_textures_xpm(t_game *game)
+{
+	int	xpm_size;
+	int	start_position;
+	int	path_size;
+	int	i;
+
+	xpm_size = ft_strlen(".xpm");
+	i = 0;
+	while (i < 4)
+	{
+		path_size = ft_strlen(game->texture_paths[i]);
+		start_position = path_size - xpm_size;
+		if (start_position < 0 || ft_strcmp(game->texture_paths + start_position, ".xpm") != 0)
+			return (printf("Not a .xpm file\n"), 1);
+		i++;
+	}
+	return (0);
+}
+
 // Check if textures are .xpm
 int	is_file_valid(const char *file, t_game *game)
 {
@@ -24,6 +44,8 @@ int	is_file_valid(const char *file, t_game *game)
 	if (are_rgb_ids_valid(game, file) == 1)
 		return (1);
 	if (is_there_something_after_map(file, game) == 1)
+		return (1);
+	if (are_textures_xpm(game) == 1)
 		return (1);
 	// if (are_paths_textures_valid(game) == 1)
 	// {
