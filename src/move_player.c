@@ -113,21 +113,21 @@ void rotate_player(t_game *game, double angle)
     double	old_plane_x;
 	double	old_plane_y;
 
-	printf("Before rotation:\n");
-    printf("Direction: dir_x = %f, dir_y = %f\n", game->player.dir_x, game->player.dir_y);
-    printf("Plane: plane_x = %f, plane_y = %f\n", game->player.plane_x, game->player.plane_y);
+	// printf("Before rotation:\n");
+    // printf("Direction: dir_x = %f, dir_y = %f\n", game->player.dir_x, game->player.dir_y);
+    // printf("Plane: plane_x = %f, plane_y = %f\n", game->player.plane_x, game->player.plane_y);
 	old_dir_x = game->player.dir_x;
 	old_dir_y = game->player.dir_y;
 	old_plane_x = game->player.plane_x;
 	old_plane_y = game->player.plane_y;
+    angle *= game->player.rot_speed; // Appliquer la vitesse de rotation
     // Calculer les nouvelles valeurs directionnelles
     game->player.dir_x = old_dir_x * cos(angle) - old_dir_y * sin(angle);
     game->player.dir_y = old_dir_x * sin(angle) + old_dir_y * cos(angle);
     // Calculer les nouvelles valeurs du plan caméra
     game->player.plane_x = old_plane_x * cos(angle) - old_plane_y * sin(angle);
     game->player.plane_y = old_plane_x * sin(angle) + old_plane_y * cos(angle);
-
-	printf("After rotation:\n");
-    printf("Direction: dir_x = %f, dir_y = %f\n", game->player.dir_x, game->player.dir_y);
-    printf("Plane: plane_x = %f, plane_y = %f\n", game->player.plane_x, game->player.plane_y);
+// 	printf("After rotation:\n");
+//     printf("Direction: dir_x = %f, dir_y = %f\n", game->player.dir_x, game->player.dir_y);
+//     printf("Plane: plane_x = %f, plane_y = %f\n", game->player.plane_x, game->player.plane_y);
 }

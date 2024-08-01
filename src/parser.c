@@ -12,6 +12,7 @@
 
 #include "../cub3D.h"
 
+// Check if textures are .xpm
 int	is_file_valid(const char *file, t_game *game)
 {
 	if (is_file_extension_valid(file) == 1)

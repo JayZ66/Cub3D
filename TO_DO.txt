@@ -59,7 +59,7 @@ haut, bas, gauche, droite.
 - Gérer erreur pas de ligne entre les éléments du file (check sujet) => DONE
 - Fonctions de déplacement => DONE
 - Fonction de rotation => DONE
-- Gestion mouvements souris
+- Gestion mouvements souris => DONE
 - Modifier code keys => DONE
 - Finir norme => DONE 
 - Test map filling to be sure ! => DONE

@@ -42,7 +42,7 @@ void	init_input(t_input *input)
 	// }
 	input->mouse_x = 0;
 	input->mouse_y = 0;
-	input->last_mouse_x = 0;
+	input->last_mouse_x = -1;
 	input->last_mouse_y = 0;
 	input->mouse_left_pressed = 0;
 }
