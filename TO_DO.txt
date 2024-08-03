@@ -69,7 +69,7 @@ haut, bas, gauche, droite.
 - No error message when something after map ! (no every test)
 + multiple maps => DONE
 - Textures duplicate is not working ! => DONE
-- Think to xpm error
+- Think to xpm error => DONE
 - Faire fiche de compréhension pour déplacements : 
     > Comprendre les paramètres envoyés pour se déplacer => OK
     > Pourquoi on utilise player.dir et pas player.x ?

@@ -25,8 +25,9 @@ int	are_textures_xpm(t_game *game)
 	{
 		path_size = ft_strlen(game->texture_paths[i]);
 		start_position = path_size - xpm_size;
-		if (start_position < 0 || ft_strcmp(game->texture_paths + start_position, ".xpm") != 0)
-			return (printf("Not a .xpm file\n"), 1);
+		if (start_position < 0
+			|| ft_strcmp(game->texture_paths[i] + start_position, ".xpm") != 0)
+			return (printf("Not a .xpm file: %s\n", game->texture_paths[i]), 1);
 		i++;
 	}
 	return (0);

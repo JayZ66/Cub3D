@@ -28,7 +28,13 @@ void	init_player(t_player *player)
 // memset(game->texture_paths, 0, sizeof(game->texture_paths));
 void	init_game(t_game *game)
 {
-	// int	i;
+	game->win = NULL;
+	game->win_height = 0;
+	game->win_width = 0;
+	game->map.map = NULL;
+	game->running = 1;
+}
+// int	i;
 
 	// i = 0;
 	// while (i < 4)
@@ -36,12 +42,6 @@ void	init_game(t_game *game)
 	// 	game->texture_paths[i] = NULL;
 	// 	i++;
 	// }
-	game->win = NULL;
-	game->win_height = 0;
-	game->win_width = 0;
-	game->map.map = NULL;
-	game->running = 1;
-}
 
 void	init_map(t_map *map)
 {

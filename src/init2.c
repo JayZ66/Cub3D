@@ -30,9 +30,7 @@ void	init_texture(t_texture *texture)
 	texture->height = 0;
 }
 
-void	init_input(t_input *input)
-{
-	// int	i;
+// int	i;
 
 	// i = 0;
 	// while (i < 256)
@@ -40,6 +38,8 @@ void	init_input(t_input *input)
 	// 	input->keys[i] = 0;
 	// 	i++;
 	// }
+void	init_input(t_input *input)
+{
 	input->mouse_x = 0;
 	input->mouse_y = 0;
 	input->last_mouse_x = -1;

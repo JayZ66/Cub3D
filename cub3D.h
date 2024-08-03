@@ -194,6 +194,7 @@ int		check_textures_and_rgb(t_game *game, char *line,
 void	check_nb_of_rgb_textures(int rgb, int textures, t_game *game, int fd);
 void	init_ceiling_colors(t_game *game, int r, int g, int b);
 void	init_floor_colors(t_game *game, int r, int g, int b);
+int		are_textures_xpm(t_game *game);
 
 // EVENTS MANAGEMENT
 int		mouse_move(int x, int y, t_input *input);

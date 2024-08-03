@@ -21,24 +21,29 @@
 // 	return (0);
 // }
 
+// if (keycode == KEY_UP)
+	// 	move_forward(game);
+	// else if (keycode == KEY_DOWN)
+	// 	move_backward(game);
 int	manage_keypress(int keycode, t_game *game)
 {
 	if (keycode == KEY_ESC)
 		free_all2(game);
-	// if (keycode == KEY_UP)
-	// 	move_forward(game);
-	// else if (keycode == KEY_DOWN)
-	// 	move_backward(game);
 	else if (keycode == KEY_W)
 	{
 		printf("LOL\n");
-        update_position(game, game->player.dir_x * game->player.speed, game->player.dir_y * game->player.speed);	}
+		update_position(game, game->player.dir_x * game->player.speed,
+			game->player.dir_y * game->player.speed);
+	}
 	else if (keycode == KEY_A)
-	    update_position(game, game->player.dir_y * game->player.speed, -game->player.dir_x * game->player.speed);
+		update_position(game, game->player.dir_y * game->player.speed,
+			-game->player.dir_x * game->player.speed);
 	else if (keycode == KEY_S)
-	    update_position(game, -game->player.dir_x * game->player.speed, -game->player.dir_y * game->player.speed);
+		update_position(game, -game->player.dir_x * game->player.speed,
+			-game->player.dir_y * game->player.speed);
 	else if (keycode == KEY_D)
-		update_position(game, -game->player.dir_y * game->player.speed, game->player.dir_x * game->player.speed);
+		update_position(game, -game->player.dir_y * game->player.speed,
+			game->player.dir_x * game->player.speed);
 	else if (keycode == KEY_LEFT)
 		rotate_player(game, game->player.rot_speed);
 	else if (keycode == KEY_RIGHT)
@@ -47,46 +52,38 @@ int	manage_keypress(int keycode, t_game *game)
 	return (0);
 }
 
+// if (keycode >= 0 && keycode < 256)
+	// 	game->input.keys[keycode] = 0;
+	// printf("Key released: %d\n", keycode);
 int	manage_keyrelease(int keycode, t_game *game)
 {
 	(void)keycode;
 	(void)game;
-	// if (keycode >= 0 && keycode < 256)
-	// 	game->input.keys[keycode] = 0;
-	// printf("Key released: %d\n", keycode);
 	return (0);
 }
 
 int	manage_mouse_movement(int x, int y, t_game *game)
 {
-	double		angle;
-	int			dx;
+	double	angle;
+	int		dx;
 
 	(void)y;
 	if (x == game->input.last_mouse_x)
 		game->input.last_mouse_x = x;
-	dx = x - game->input.last_mouse_x; // Diff. de position de la souris.
+	dx = x - game->input.last_mouse_x;
 	game->input.last_mouse_x = x;
-	// Ajuster l'angle de rotation basé sur la différence de position de la souris
 	angle = dx * 0.003;
 	printf("Before rotation:\n");
-    printf("Mouse dx = %d, Angle = %f\n", dx, angle);
-    printf("Direction: dir_x = %f, dir_y = %f\n", game->player.dir_x, game->player.dir_y);
-    printf("Plane: plane_x = %f, plane_y = %f\n", game->player.plane_x, game->player.plane_y);
+	printf("Mouse dx = %d, Angle = %f\n", dx, angle);
+	printf("Direction: dir_x = %f, dir_y = %f\n", game->player.dir_x, game->player.dir_y);
+	printf("Plane: plane_x = %f, plane_y = %f\n", game->player.plane_x, game->player.plane_y);
 	rotate_player(game, angle);
 	printf("After rotation:\n");
-    printf("Mouse dx = %d, Angle = %f\n", dx, angle);
-    printf("Direction: dir_x = %f, dir_y = %f\n", game->player.dir_x, game->player.dir_y);
-    printf("Plane: plane_x = %f, plane_y = %f\n", game->player.plane_x, game->player.plane_y);
+	printf("Mouse dx = %d, Angle = %f\n", dx, angle);
+	printf("Direction: dir_x = %f, dir_y = %f\n", game->player.dir_x, game->player.dir_y);
+	printf("Plane: plane_x = %f, plane_y = %f\n", game->player.plane_x, game->player.plane_y);
 	return (0);
 }
-
-// int	game_loop(t_game *game)
-// {
-// 	handle_input(game);
-// 	// render_frame(game);
-// 	return (0);
-// }
 
 // void	render_frame(t_game *game)
 // {
