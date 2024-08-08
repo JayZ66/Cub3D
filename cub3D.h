@@ -44,6 +44,18 @@
 # define SZ 32
 # define ON_DESTROY 17
 
+# define PI 3.14159265335879323846
+
+# define W_INDEX 0
+# define A_INDEX 1
+# define S_INDEX 2
+# define D_INDEX 3
+# define LEFT_INDEX 4
+# define RIGHT_INDEX 5
+# define UP_INDEX 6
+# define DOWN_INDEX 7
+
+
 // #define KEY_ESC     65307  // Échap (Escape)
 // #define KEY_UP      65362  // Flèche haut
 // #define KEY_DOWN    65364  // Flèche bas
@@ -127,6 +139,7 @@ typedef struct s_game
 	t_input		input;
 	char		*texture_paths[4];
 	int			running;
+	int			touch_state[6];
 }	t_game;
 
 // UTILS
@@ -204,12 +217,16 @@ int		game_loop(t_game *game);
 int		handle_input(t_game *game);
 int		manage_keyrelease(int keycode, t_game *game);
 int		manage_keypress(int keycode, t_game *game);
+void	is_action(t_game *game);
 
 // PLAYER POSITION
 void	update_position(t_game *game, double move_x, double move_y);
 int		is_outside(t_game *game, double x, double y);
 void	check_map_path(double x, double y, t_game *game);
 void	rotate_player(t_game *game, double angle);
-int	manage_mouse_movement(int x, int y, t_game *game);
+int		manage_mouse_movement(int x, int y, t_game *game);
+
+// DISPLAY
+int		render_frame(t_game *game);
 
 #endif

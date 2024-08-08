@@ -49,19 +49,24 @@ int	is_outside(t_game *game, double x, double y)
 	// If pas de collision pour le nouveau y
 		// on attribue la nouvelle valeur a y
 
-// void	update_position(t_game *game, double x, double y)
+// void	update_position(t_game *game, double move_x, double move_y)
 // {
-// 	double	tmp_x;
-// 	double	tmp_y;
+// 	double	new_x;
+// 	double	new_y;
 
-// 	tmp_x = game->player.x + x;
-// 	tmp_y = game->player.y + y;
-// 	printf("Position x : %f\n", game->player.x);
-// 	printf("Position y : %f\n", game->player.y);
-// 	if (is_outside(game, tmp_x, tmp_y) == 0)
+// 	new_x = game->player.x + move_x;
+// 	new_y = game->player.y + move_y;
+// 	if (!is_outside(game, new_x, new_y))
 // 	{
-// 		game->player.x = tmp_x;
-// 		game->player.y = tmp_y;
+// 		game->player.x = new_x;
+// 		game->player.y = new_y;
+// 	}
+// 	else
+// 	{
+// 		if (!is_outside(game, new_x, game->player.y))
+// 			game->player.x = new_x;
+// 		if (!is_outside(game, game->player.x, new_y))
+// 			game->player.y = new_y;
 // 	}
 // 	printf("New position x : %f\n", game->player.x);
 // 	printf("New position y : %f\n", game->player.y);
@@ -72,8 +77,8 @@ void	update_position(t_game *game, double move_x, double move_y)
 	double	new_x;
 	double	new_y;
 
-	new_x = game->player.x + move_x;
-	new_y = game->player.y + move_y;
+	new_x = game->player.x + move_x * game->player.speed;
+	new_y = game->player.y + move_y * game->player.speed;
 	if (!is_outside(game, new_x, new_y))
 	{
 		game->player.x = new_x;
@@ -89,19 +94,6 @@ void	update_position(t_game *game, double move_x, double move_y)
 	printf("New position x : %f\n", game->player.x);
 	printf("New position y : %f\n", game->player.y);
 }
-
-// void    move_forward(t_game *game)
-// {
-//     double	tmp_x;
-//     double	tmp_y;
-
-// 	tmp_x = game->player.x;
-// 	tmp_y = game->player.y;
-// 	tmp_y--;
-// 	if (tmp_x >= 0 && tmp_x < game->map.width && tmp_y >= 0
-//		&& tmp_y < game->map.height)
-// 		check_map_path();
-// }
 
 // printf("Before rotation:\n");
 	// printf("Direction: dir_x = %f, dir_y = %f\n", game->player.dir_x,
@@ -130,3 +122,9 @@ void	rotate_player(t_game *game, double angle)
 //		game->player.dir_y);
 //     printf("Plane: plane_x = %f, plane_y = %f\n", game->player.plane_x,
 //		game->player.plane_y);
+
+int	render_frame(t_game *game)
+{
+	is_action(game);
+	return (0);
+}

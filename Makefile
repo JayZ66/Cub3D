@@ -29,6 +29,7 @@ SRCS = src/main.c src/parser.c src/init.c src/utils.c src/map_errors.c \
 LIBFT = Libft/libft.a
 GETNEXTLINE = get_next_line/get_next_line.c get_next_line/get_next_line_utils.c
 PRINTF = ft_printf/libftprintf.a
+MINILIBX = minilibx/libmlx.a
 
 LIBRARY:= -Lminilibx -lmlx -L/usr/X11R6/lib -lXext -lX11 -lbsd
 OBJS = $(SRCS:.c=.o)
@@ -48,8 +49,11 @@ $(LIBFT):
 $(PRINTF):
 	make -C ft_printf
 
+$(MINILIBX):
+	make -C minilibx
+
 # Regle pour creer l'executable en liant les objets.
-$(NAME): $(OBJS) $(LIBFT) $(PRINTF) $(GETNEXTLINE_OBJ)
+$(NAME): $(OBJS) $(LIBFT) $(PRINTF) $(GETNEXTLINE_OBJ) $(MINILIBX)
 	$(CC) $(CFLAGS) $(OBJS) $(LIBRARY) $(GETNEXTLINE_OBJ) $(LIBFT) $(PRINTF) -o $(NAME) -lm
 
 # $(NAME): $(OBJS)
@@ -61,12 +65,14 @@ clean:
 	$(RM) $(GETNEXTLINE_OBJ)
 	make clean -C Libft
 	make clean -C ft_printf
+	make clean -C minilibx
 
 # Regle pour nettoyer les fichiers objets et l'executable.
 fclean: clean
 	$(RM) $(NAME)
 	make fclean -C Libft
 	make fclean -C ft_printf
+	make clean -C minilibx
 
 # Regle pour reconstruire le projet (clean, puis all)
 re: author fclean all

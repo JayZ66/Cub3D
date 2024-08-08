@@ -33,6 +33,7 @@ void	init_game(t_game *game)
 	game->win_width = 0;
 	game->map.map = NULL;
 	game->running = 1;
+	memset(game->touch_state, 0, sizeof(game->touch_state));
 }
 // int	i;
 

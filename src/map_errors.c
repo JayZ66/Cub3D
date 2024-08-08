@@ -47,14 +47,25 @@ void	set_up_player_position(t_game *game, int i, int j)
 	game->player.x = j;
 	game->player.y = i;
 	if (game->map.map[i][j] == 'N')
+	{
 		game->player.dir_x = 0;
+		game->player.dir_y = -1;
+	}
 	else if (game->map.map[i][j] == 'E')
+	{
 		game->player.dir_x = 1;
+		game->player.dir_y = 0;
+	}
 	else if (game->map.map[i][j] == 'W')
-		game->player.dir_x = 2;
+	{
+		game->player.dir_x = -1;
+		game->player.dir_y = 0;
+	}
 	else if (game->map.map[i][j] == 'S')
-		game->player.dir_x = 3;
-	game->player.dir_y = 1;
+	{
+		game->player.dir_x = 0;
+		game->player.dir_y = 1;
+	}
 }
 
 // printf("Map : %c\n", game->map.map[i][j]);
