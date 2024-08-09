@@ -45,6 +45,8 @@
 # define ON_DESTROY 17
 
 # define PI 3.14159265335879323846
+# define M_SIZE 12 // Taille mini-map (en nb de tuiles)
+# define T_SIZE 8 // Taille d'une tuile (en pixels)
 
 # define W_INDEX 0
 # define A_INDEX 1
@@ -223,10 +225,20 @@ void	is_action(t_game *game);
 void	update_position(t_game *game, double move_x, double move_y);
 int		is_outside(t_game *game, double x, double y);
 void	check_map_path(double x, double y, t_game *game);
-void	rotate_player(t_game *game, double angle);
+// void	rotate_player(t_game *game, double angle);
+void	rotate_player(t_game *game, int direction);
 int		manage_mouse_movement(int x, int y, t_game *game);
 
 // DISPLAY
 int		render_frame(t_game *game);
+
+// MANAGE MINI_MAP
+void	render_mini_map(t_game *game, t_texture *frame);
+void    draw_mini_map(t_game *game, t_texture *mini_map);
+void    draw(t_texture *img, int x, int y, int color);
+void    draw_player(t_game *game, t_texture *mini_map);
+void    draw_view_direction(t_game *game, t_texture *mini_map);
+void my_mlx_pixel_put(t_texture *img, int x, int y, int color);
+
 
 #endif

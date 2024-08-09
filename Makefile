@@ -24,6 +24,7 @@ SRCS = src/main.c src/parser.c src/init.c src/utils.c src/map_errors.c \
 		src/file_errors.c src/events.c src/init2.c src/utils2.c src/fill_map.c \
 		src/map_utils.c src/parser_description_file.c src/eof_error.c \
 		src/valid_file.c src/map_walls.c src/file_utils.c src/move_player.c \
+		src/mini_map.c \
 		
 
 LIBFT = Libft/libft.a

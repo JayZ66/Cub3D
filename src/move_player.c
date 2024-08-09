@@ -100,31 +100,56 @@ void	update_position(t_game *game, double move_x, double move_y)
 	//	game->player.dir_y);
 	// printf("Plane: plane_x = %f, plane_y = %f\n", game->player.plane_x,
 	//	game->player.plane_y);
-void	rotate_player(t_game *game, double angle)
-{
-	double	old_dir_x;
-	double	old_dir_y;
-	double	old_plane_x;
-	double	old_plane_y;
 
-	old_dir_x = game->player.dir_x;
-	old_dir_y = game->player.dir_y;
-	old_plane_x = game->player.plane_x;
-	old_plane_y = game->player.plane_y;
-	angle *= game->player.rot_speed;
-	game->player.dir_x = old_dir_x * cos(angle) - old_dir_y * sin(angle);
-	game->player.dir_y = old_dir_x * sin(angle) + old_dir_y * cos(angle);
-	game->player.plane_x = old_plane_x * cos(angle) - old_plane_y * sin(angle);
-	game->player.plane_y = old_plane_x * sin(angle) + old_plane_y * cos(angle);
-}
+// void	rotate_player(t_game *game, double angle)
+// {
+// 	double	old_dir_x;
+// 	double	old_dir_y;
+// 	double	old_plane_x;
+// 	double	old_plane_y;
+
+// 	old_dir_x = game->player.dir_x;
+// 	old_dir_y = game->player.dir_y;
+// 	old_plane_x = game->player.plane_x;
+// 	old_plane_y = game->player.plane_y;
+// 	angle *= game->player.rot_speed;
+// 	game->player.dir_x = old_dir_x * cos(angle) - old_dir_y * sin(angle);
+// 	game->player.dir_y = old_dir_x * sin(angle) + old_dir_y * cos(angle);
+// 	game->player.plane_x = old_plane_x * cos(angle) - old_plane_y * sin(angle);
+// 	game->player.plane_y = old_plane_x * sin(angle) + old_plane_y * cos(angle);
+// }
 // 	printf("After rotation:\n");
 //     printf("Direction: dir_x = %f, dir_y = %f\n", game->player.dir_x,
 //		game->player.dir_y);
 //     printf("Plane: plane_x = %f, plane_y = %f\n", game->player.plane_x,
 //		game->player.plane_y);
 
+void	rotate_player(t_game *game, int direction)
+{
+    double old_dir_x;
+    double old_plane_x;
+    double rotation_speed;
+
+    old_dir_x = game->player.dir_x;
+    old_plane_x = game->player.plane_x;
+    rotation_speed = direction * game->player.rot_speed
+    game->player.dir_x = game->player.dir_x * cos(rotation_speed) - game->player.dir_y * sin(rotation_speed);
+    game->player.dir_y = old_dir_x * sin(rotation_speed) + game->player.dir_y * cos(rotation_speed);
+    game->player.plane_x = game->player.plane_x * cos(rotation_speed) - game->player.plane_y * sin(rotation_speed);
+    game->player.plane_y = old_plane_x * sin(rotation_speed) + game->player.plane_y * cos(rotation_speed);
+}
+
 int	render_frame(t_game *game)
 {
+	t_texture frame;
+
+	frame.width = game->win_width;
+	frame.height = game->win_height;
+	frame.img = mlx_new_image(game->mlx, frame.width, frame.height);
+	frame.addr = (int *)mlx_get_data_addr(frame.img, &frame.pixel_bits, &frame.size_line, &frame.endian);
+	render_mini_map(game, &frame);
+	mlx_put_image_to_window(game->mlx, game->win, frame.img, 0, 0);
+	mlx_destroy_image(game->mlx, frame.img);
 	is_action(game);
 	return (0);
 }
