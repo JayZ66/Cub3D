@@ -45,7 +45,7 @@
 # define ON_DESTROY 17
 
 # define PI 3.14159265335879323846
-# define M_SIZE 12 // Taille mini-map (en nb de tuiles)
+# define M_SIZE 10 // Taille mini-map (en nb de tuiles)
 # define T_SIZE 8 // Taille d'une tuile (en pixels)
 
 # define W_INDEX 0
@@ -139,6 +139,7 @@ typedef struct s_game
 	t_color		floor;
 	t_color		ceiling;
 	t_input		input;
+	t_texture	mini_map;
 	char		*texture_paths[4];
 	int			running;
 	int			touch_state[6];

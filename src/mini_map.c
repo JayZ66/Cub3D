@@ -92,7 +92,8 @@ void    draw_player(t_game *game, t_texture *mini_map)
         {
             pixel_x = player_x + i;
             pixel_y = player_y + j;
-            my_mlx_pixel_put(mini_map, pixel_x, pixel_y, 0xFF0000); // Red for player
+            if (pixel_x >= 0 && pixel_x < mini_map->width && pixel_y >= 0 && pixel_y < mini_map->height)
+                my_mlx_pixel_put(mini_map, pixel_x, pixel_y, 0xFF0000); // Red for player
             j++;
         }
         i++;
@@ -100,6 +101,7 @@ void    draw_player(t_game *game, t_texture *mini_map)
     draw_view_direction(game, mini_map);
 }
 
+// printf("Drawing at pixel_x: %d, pixel_y: %d\n", pixel_x, pixel_y);
 void    draw_view_direction(t_game *game, t_texture *mini_map)
 {
     int player_x;
@@ -115,7 +117,8 @@ void    draw_view_direction(t_game *game, t_texture *mini_map)
     {
         x = player_x + i * game->player.dir_x;
         y = player_y + i * game->player.dir_y;
-        my_mlx_pixel_put(mini_map, x, y, 0xFF0000); // Red for direction
+        if (x >= 0 && x < mini_map->width && y >= 0 && y < mini_map->height)
+            my_mlx_pixel_put(mini_map, x, y, 0xFF0000); // Red for direction
         i++;
     }
 }
@@ -124,8 +127,11 @@ void my_mlx_pixel_put(t_texture *img, int x, int y, int color)
 {
     char *dst;
 
-    dst = (char *)img->addr + (y * img->size_line + x * (img->pixel_bits / 8));
-    *(unsigned int *)dst = color;
+    if (x > 0 && x <= img->width && y > 0 && y <= img->height)
+    {
+        dst = (char *)img->addr + (y * img->size_line + x * (img->pixel_bits / 8));
+        *(unsigned int *)dst = color;
+    }
 }
 
 

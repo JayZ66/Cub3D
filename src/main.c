@@ -75,7 +75,7 @@ int	main(int argc, char *argv[])
 	if (argc != 2)
 		return (printf("Wrong nb of arguments\n"), 1);
 	map = ft_strdup(argv[1]);
-	if (map == NULL)
+	if (!map)
 		return (printf("There is no map\n"), 1);
 	game.mlx = mlx_init();
 	if (!game.mlx)
