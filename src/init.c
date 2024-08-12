@@ -20,8 +20,8 @@ void	init_player(t_player *player)
 	player->dir_y = 0;
 	player->plane_x = 0;
 	player->plane_y = 0.66;
-	player->speed = 0.05;
-	player->rot_speed = 0.03;
+	player->speed = 0.01;
+	player->rot_speed = 0.005;
 }
 // speed : vitesse du player en pixels.
 

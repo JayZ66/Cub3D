@@ -6,7 +6,7 @@
 /*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 17:26:16 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/07/29 18:16:36 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/08/12 19:03:01 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,9 +79,9 @@ void	is_action(t_game *game)
 	else if (game->touch_state[D_INDEX])
 		update_position(game, game->player.plane_x, game->player.plane_y);
 	else if (game->touch_state[LEFT_INDEX])
-		rotate_player(game, -1);
-	else if (game->touch_state[RIGHT_INDEX])
 		rotate_player(game, 1);
+	else if (game->touch_state[RIGHT_INDEX])
+		rotate_player(game, -1);
 }
 
 int	manage_mouse_movement(int x, int y, t_game *game)

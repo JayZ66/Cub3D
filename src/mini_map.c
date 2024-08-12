@@ -63,8 +63,8 @@ void    draw(t_texture *img, int x, int y, int color)
         j = 0;
         while (j < T_SIZE)
         {
-            pixel_x = x * T_SIZE + i;
-            pixel_y = y * T_SIZE + j;
+            pixel_x = x * T_SIZE + j;
+            pixel_y = y * T_SIZE + i;
             if (pixel_x < img->width && pixel_y < img->height)
                 my_mlx_pixel_put(img, pixel_x, pixel_y, color);
             j++;
@@ -90,8 +90,8 @@ void    draw_player(t_game *game, t_texture *mini_map)
         j = 0;
         while (j < 4) // (width)
         {
-            pixel_x = player_x + i;
-            pixel_y = player_y + j;
+            pixel_x = player_x + j;
+            pixel_y = player_y + i;
             if (pixel_x >= 0 && pixel_x < mini_map->width && pixel_y >= 0 && pixel_y < mini_map->height)
                 my_mlx_pixel_put(mini_map, pixel_x, pixel_y, 0xFF0000); // Red for player
             j++;
@@ -100,6 +100,21 @@ void    draw_player(t_game *game, t_texture *mini_map)
     }
     draw_view_direction(game, mini_map);
 }
+
+int is_wall(t_game *game, double x, double y)
+{
+    int map_x;
+    int map_y;
+
+    map_x = (int)x;
+    map_y = (int)y;
+    if (map_x < 0 || map_x >= game->map.width || map_y < 0 || map_y >= game->map.height)
+        return (1); // Considère les bords comme des murs
+    if (game->map.map[map_y][map_x] == '1')
+        return (1); // Retourne vrai si c'est un mur
+    return (0); // Retourne faux si c'est un espace vide
+}
+
 
 // printf("Drawing at pixel_x: %d, pixel_y: %d\n", pixel_x, pixel_y);
 void    draw_view_direction(t_game *game, t_texture *mini_map)
@@ -113,12 +128,22 @@ void    draw_view_direction(t_game *game, t_texture *mini_map)
     player_x = M_SIZE / 2 * T_SIZE;
     player_y = M_SIZE / 2 * T_SIZE;
     i = 0;
-    while (i < 10)
+    while (i < 12)
     {
         x = player_x + i * game->player.dir_x;
         y = player_y + i * game->player.dir_y;
+        printf("Drawing line at: x = %d, y = %d\n", x, y);
         if (x >= 0 && x < mini_map->width && y >= 0 && y < mini_map->height)
-            my_mlx_pixel_put(mini_map, x, y, 0xFF0000); // Red for direction
+        {
+            // if (is_outside(game, x, y))
+            if (is_wall(game, x, y) == 1) // Not working with this condition ! (Without yes !!)
+            {
+                my_mlx_pixel_put(mini_map, x, y, 0xFF0000);
+                break ;
+            }
+            else
+                my_mlx_pixel_put(mini_map, x, y, 0xFF0000);
+        }
         i++;
     }
 }
@@ -127,7 +152,7 @@ void my_mlx_pixel_put(t_texture *img, int x, int y, int color)
 {
     char *dst;
 
-    if (x > 0 && x <= img->width && y > 0 && y <= img->height)
+    if (x >= 0 && x < img->width && y >= 0 && y < img->height)
     {
         dst = (char *)img->addr + (y * img->size_line + x * (img->pixel_bits / 8));
         *(unsigned int *)dst = color;

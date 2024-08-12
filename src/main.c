@@ -43,7 +43,7 @@ void	create_window(t_game *game)
 		printf("Mlx has not been set up\n");
 		return ;
 	}
-	game->win = mlx_new_window(game->mlx, 500, 500,
+	game->win = mlx_new_window(game->mlx, 800, 800,
 			"Cub3d - A portail's world");
 	if (!game->win)
 	{
@@ -57,7 +57,7 @@ void	create_window(t_game *game)
 	mlx_loop_hook(game->mlx, render_frame, game);
 	mlx_hook(game->win, MotionNotify, PointerMotionMask, manage_mouse_movement,
 		game);
-	mlx_do_key_autorepeaton(game->mlx);
+	// MLX REPEAT OFF PUIS ON A L'EXIT
 	mlx_loop(game->mlx);
 }
 //TEST WITH KeyPressMask if it works !

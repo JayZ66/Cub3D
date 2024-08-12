@@ -6,7 +6,7 @@
 /*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/29 16:54:27 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/07/29 18:30:11 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/08/12 18:52:29 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,12 +95,6 @@ void	update_position(t_game *game, double move_x, double move_y)
 	printf("New position y : %f\n", game->player.y);
 }
 
-// printf("Before rotation:\n");
-	// printf("Direction: dir_x = %f, dir_y = %f\n", game->player.dir_x,
-	//	game->player.dir_y);
-	// printf("Plane: plane_x = %f, plane_y = %f\n", game->player.plane_x,
-	//	game->player.plane_y);
-
 // void	rotate_player(t_game *game, double angle)
 // {
 // 	double	old_dir_x;
@@ -112,130 +106,113 @@ void	update_position(t_game *game, double move_x, double move_y)
 // 	old_dir_y = game->player.dir_y;
 // 	old_plane_x = game->player.plane_x;
 // 	old_plane_y = game->player.plane_y;
+// 	// printf("angle : %f\n", angle);
 // 	angle *= game->player.rot_speed;
+// 	printf("After angle : %f\n", angle);
 // 	game->player.dir_x = old_dir_x * cos(angle) - old_dir_y * sin(angle);
 // 	game->player.dir_y = old_dir_x * sin(angle) + old_dir_y * cos(angle);
 // 	game->player.plane_x = old_plane_x * cos(angle) - old_plane_y * sin(angle);
 // 	game->player.plane_y = old_plane_x * sin(angle) + old_plane_y * cos(angle);
+// 	// printf("dir_x : %f\n", game->player.dir_x);
+// 	// printf("dir_y : %f\n", game->player.dir_y);
+// 	// printf("plane_x : %f\n", game->player.plane_x);
+// 	// printf("plane_y : %f\n", game->player.plane_y);
 // }
+
+void	rotate_player(t_game *game, double angle)
+{
+	double	old_dir_x;
+	double	old_plane_x;
+
+	old_dir_x = game->player.dir_x;
+	old_plane_x = game->player.plane_x;
+
+	// Multiplier par -1 pour corriger l'inversion
+	angle *= -1 * game->player.rot_speed;
+	printf("After angle : %f\n", angle);
+
+	game->player.dir_x = old_dir_x * cos(angle) - game->player.dir_y * sin(angle);
+	game->player.dir_y = old_dir_x * sin(angle) + game->player.dir_y * cos(angle);
+
+	game->player.plane_x = old_plane_x * cos(angle) - game->player.plane_y * sin(angle);
+	game->player.plane_y = old_plane_x * sin(angle) + game->player.plane_y * cos(angle);
+}
+
+
 // 	printf("After rotation:\n");
 //     printf("Direction: dir_x = %f, dir_y = %f\n", game->player.dir_x,
 //		game->player.dir_y);
 //     printf("Plane: plane_x = %f, plane_y = %f\n", game->player.plane_x,
 //		game->player.plane_y);
 
-void	rotate_player(t_game *game, int direction)
-{
-    double old_dir_x;
-    double old_plane_x;
-    double rotation_speed;
-
-    old_dir_x = game->player.dir_x;
-    old_plane_x = game->player.plane_x;
-    rotation_speed = direction * game->player.rot_speed;
-    game->player.dir_x = game->player.dir_x * cos(rotation_speed) - game->player.dir_y * sin(rotation_speed);
-    game->player.dir_y = old_dir_x * sin(rotation_speed) + game->player.dir_y * cos(rotation_speed);
-    game->player.plane_x = game->player.plane_x * cos(rotation_speed) - game->player.plane_y * sin(rotation_speed);
-    game->player.plane_y = old_plane_x * sin(rotation_speed) + game->player.plane_y * cos(rotation_speed);
-}
-
-// int	render_frame(t_game *game)
+// void	rotate_player(t_game *game, int direction)
 // {
-// 	t_texture frame;
+//     double old_dir_x;
+//     double old_plane_x;
+//     double rotation_speed;
 
-// 	frame.width = game->win_width;
-// 	frame.height = game->win_height;
-// 	frame.img = mlx_new_image(game->mlx, frame.width, frame.height);
-// 	if (!frame.img)
-//	{
-//     	printf("Failed to create image\n");
-//     	return (1);
-// 	}
-// 	frame.addr = (int *)mlx_get_data_addr(frame.img, &frame.pixel_bits, &frame.size_line, &frame.endian);
-// 	if (!frame.addr)
-//	{
-//    	printf("Failed to get data address\n");
-//     	mlx_destroy_image(game->mlx, frame.img);
-//     	return (1);
-// 	}
-// 	draw_mini_map(game, &game->mini_map);
-// 	draw_player(game, &game->mini_map);
-// 	if (mlx_put_image_to_window(game->mlx, game->win, game->mini_map.img, 10, 10) < 0)
-//	{
-//         printf("Error: mlx_put_image_to_window failed for mini_map\n");
-//         mlx_destroy_image(game->mlx, frame.img);
-//         return (1);
-//  }
+//     old_dir_x = game->player.dir_x;
+//     old_plane_x = game->player.plane_x;
+//     rotation_speed = direction * game->player.rot_speed;
+//     game->player.dir_x = game->player.dir_x * cos(rotation_speed) - game->player.dir_y * sin(rotation_speed);
+//     game->player.dir_y = old_dir_x * sin(rotation_speed) + game->player.dir_y * cos(rotation_speed);
+//     game->player.plane_x = game->player.plane_x * cos(rotation_speed) - game->player.plane_y * sin(rotation_speed);
+//     game->player.plane_y = old_plane_x * sin(rotation_speed) + game->player.plane_y * cos(rotation_speed);
+// }
+
+int	render_frame(t_game *game)
+{
+	t_texture frame;
+
+	frame.width = game->win_width;
+	frame.height = game->win_height;
+	frame.img = mlx_new_image(game->mlx, frame.width, frame.height);
+	if (!frame.img)
+	{
+    	printf("Failed to create image\n");
+    	return (1);
+	}
+	frame.addr = (int *)mlx_get_data_addr(frame.img, &frame.pixel_bits, &frame.size_line, &frame.endian);
+	if (!frame.addr)
+	{
+   	printf("Failed to get data address\n");
+    	mlx_destroy_image(game->mlx, frame.img);
+    	return (1);
+	}
+	draw_mini_map(game, &game->mini_map);
+	draw_player(game, &game->mini_map);
+	if (mlx_put_image_to_window(game->mlx, game->win, game->mini_map.img, 10, 10) < 0)
+	{
+        printf("Error: mlx_put_image_to_window failed for mini_map\n");
+        mlx_destroy_image(game->mlx, frame.img);
+        return (1);
+ }
 //  if (mlx_put_image_to_window(game->mlx, game->win, frame.img, 0, 0) < 0)
-//	{
+// 	{
 //         printf("Error: mlx_put_image_to_window failed for frame\n");
 //         mlx_destroy_image(game->mlx, frame.img);
 //         return (1);
 //   }
-// 	// render_mini_map(game, &frame);
-// 	// if (mlx_put_image_to_window(game->mlx, game->win, frame.img, 0, 0) < 0)
-//     //     printf("Error: mlx_put_image_to_window failed\n");
-// 	mlx_destroy_image(game->mlx, frame.img);
-// 	is_action(game);
-// 	return (0);
-// }
-
-int render_frame(t_game *game)
-{
-    if (game->mini_map.img == NULL)
-        // init_mini_map(game);
-    draw_mini_map(game, &game->mini_map);
-    draw_player(game, &game->mini_map);
-
-    // Display mini-map
-    if (mlx_put_image_to_window(game->mlx, game->win, game->mini_map.img, 10, 10) < 0)
-	{
-        printf("Error: mlx_put_image_to_window failed for mini_map\n");
-        return (1);
-    }
-    return (0);
+	// render_mini_map(game, &frame);
+	// if (mlx_put_image_to_window(game->mlx, game->win, frame.img, 0, 0) < 0)
+    //     printf("Error: mlx_put_image_to_window failed\n");
+	mlx_destroy_image(game->mlx, frame.img);
+	is_action(game);
+	return (0);
 }
-
 
 // int render_frame(t_game *game)
 // {
-//     t_texture frame;
-
 //     if (game->mini_map.img == NULL)
 //         // init_mini_map(game);
-//     frame.width = game->win_width;
-//     frame.height = game->win_height;
-//     frame.img = mlx_new_image(game->mlx, frame.width, frame.height);
-//     if (!frame.img)
-//		{
-//         printf("Failed to create frame image\n");
-//         return (1);
-//     }
-//     frame.addr = (int *)mlx_get_data_addr(frame.img, &frame.pixel_bits, &frame.size_line, &frame.endian);
-//     if (!frame.addr)
-//	   {
-//         printf("Failed to get data address for frame image\n");
-//         mlx_destroy_image(game->mlx, frame.img);
-//         return (1);
-//     }
-//     // Dessinez la mini-map
 //     draw_mini_map(game, &game->mini_map);
 //     draw_player(game, &game->mini_map);
-//     // Affichez la mini-map
+
+//     // Display mini-map
 //     if (mlx_put_image_to_window(game->mlx, game->win, game->mini_map.img, 10, 10) < 0)
-//	   {
+// 	{
 //         printf("Error: mlx_put_image_to_window failed for mini_map\n");
-//         mlx_destroy_image(game->mlx, frame.img);
 //         return (1);
 //     }
-//     // Affichez le contenu principal (frame)
-//     if (mlx_put_image_to_window(game->mlx, game->win, frame.img, 0, 0) < 0)
-//	   {
-//         printf("Error: mlx_put_image_to_window failed for frame\n");
-//         mlx_destroy_image(game->mlx, frame.img);
-//         return (1);
-//     }
-//     mlx_destroy_image(game->mlx, frame.img);
-//     is_action(game);
 //     return (0);
 // }

@@ -6,7 +6,7 @@
 /*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 17:26:00 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/07/29 15:52:24 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/08/12 12:43:07 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,9 @@ void	set_up_player_position(t_game *game, int i, int j)
 		game->player.plane_x = -0.66;
 		game->player.plane_y = 0;
 	}
+	printf("Player Position: x = %f, y = %f\n", game->player.x, game->player.y);
+	printf("Player Direction: dir_x = %f, dir_y = %f\n", game->player.dir_x, game->player.dir_y);
+	printf("Player Plane: plane_x = %f, plane_y = %f\n", game->player.plane_x, game->player.plane_y);
 }
 
 // printf("Map : %c\n", game->map.map[i][j]);
