@@ -48,15 +48,6 @@
 # define M_SIZE 12 // Taille mini-map (en nb de tuiles)
 # define T_SIZE 10 // Taille d'une tuile (en pixels)
 
-# define W_INDEX 0
-# define A_INDEX 1
-# define S_INDEX 2
-# define D_INDEX 3
-# define LEFT_INDEX 4
-# define RIGHT_INDEX 5
-# define UP_INDEX 6
-# define DOWN_INDEX 7
-
 
 // #define KEY_ESC     65307  // Échap (Escape)
 // #define KEY_UP      65362  // Flèche haut
@@ -78,6 +69,18 @@ typedef enum s_texture_index
 	WEST = 2,
 	SOUTH = 3
 }	t_texture_index;
+
+typedef enum s_keys_index
+{
+	W_INDEX = 0,
+	A_INDEX = 1,
+	S_INDEX = 2,
+	D_INDEX = 3,
+	LEFT_INDEX = 4,
+	RIGHT_INDEX = 5,
+	UP_INDEX = 6,
+	DOWN_INDEX = 7
+}	t_keys_index;
 
 typedef struct s_input
 {
@@ -238,6 +241,7 @@ void	render_mini_map(t_game *game, t_texture *frame);
 void    draw_mini_map(t_game *game, t_texture *mini_map);
 void    draw(t_texture *img, int x, int y, int color);
 void    draw_player(t_game *game, t_texture *mini_map);
+int		is_wall(t_game *game, int map_x, int map_y);
 void    draw_view_direction(t_game *game, t_texture *mini_map);
 void my_mlx_pixel_put(t_texture *img, int x, int y, int color);
 

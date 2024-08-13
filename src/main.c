@@ -57,6 +57,7 @@ void	create_window(t_game *game)
 	mlx_loop_hook(game->mlx, render_frame, game);
 	mlx_hook(game->win, MotionNotify, PointerMotionMask, manage_mouse_movement,
 		game);
+	mlx_do_key_autorepeatoff(game->mlx);
 	// MLX REPEAT OFF PUIS ON A L'EXIT
 	mlx_loop(game->mlx);
 }
