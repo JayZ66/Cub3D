@@ -1,27 +1,10 @@
 
 #include "../cub3D.h"
 
-void    render_mini_map(t_game *game, t_texture *frame)
-{
-    t_texture mini_map;
-
-    (void)frame;
-    mini_map.width = M_SIZE * T_SIZE;
-    mini_map.height = M_SIZE * T_SIZE;
-    mini_map.img = mlx_new_image(game->mlx, mini_map.width, mini_map.height);
-    mini_map.addr = (int *)mlx_get_data_addr(mini_map.img, &mini_map.pixel_bits, &mini_map.size_line, &mini_map.endian);
-
-    draw_mini_map(game, &mini_map);
-    draw_player(game, &mini_map);
-
-    mlx_put_image_to_window(game->mlx, game->win, mini_map.img, 10, 10); // Positionne la mini-map
-    mlx_destroy_image(game->mlx, mini_map.img);
-}
-
 void    draw_mini_map(t_game *game, t_texture *mini_map)
 {
-    int x;
-    int y;
+    double  x;
+    double  y;
     double map_x;
     double map_y;
 
@@ -40,12 +23,12 @@ void    draw_mini_map(t_game *game, t_texture *mini_map)
                 else if (game->map.map[(int)map_y][(int)map_x] == '0' || game->map.map[(int)map_y][(int)map_x] == 'N'
                     || game->map.map[(int)map_y][(int)map_x] == 'E' || game->map.map[(int)map_y][(int)map_x] == 'W'
                     || game->map.map[(int)map_y][(int)map_x] == 'S')
-                    draw(mini_map, x, y, 0x888888);
+                    draw(mini_map, (int)x, (int)y, 0x888888);
                 else
-                    draw(mini_map, x, y, 0x000000);
+                    draw(mini_map, (int)x, (int)y, 0x000000);
             }
             else
-                draw(mini_map, x, y, 0x555555); // Outside of map
+                draw(mini_map, (int)x, (int)y, 0x555555); // Outside of map
             x++;
         }
         y++;
@@ -56,8 +39,8 @@ void    draw(t_texture *img, int x, int y, int color)
 {
     int i;
     int j;
-    int pixel_x;
-    int pixel_y;
+    double pixel_x;
+    double pixel_y;
 
     i = 0;
     while (i < T_SIZE)
@@ -68,7 +51,7 @@ void    draw(t_texture *img, int x, int y, int color)
             pixel_x = x * T_SIZE + j;
             pixel_y = y * T_SIZE + i;
             if (pixel_x < img->width && pixel_y < img->height)
-                my_mlx_pixel_put(img, pixel_x, pixel_y, color);
+                my_mlx_pixel_put(img, (int)pixel_x, (int)pixel_y, color);
             j++;
         }
         i++;
@@ -79,8 +62,8 @@ void    draw_player(t_game *game, t_texture *mini_map)
 {
     double player_x;
     double player_y;
-    int pixel_x;
-    int pixel_y;
+    double pixel_x;
+    double pixel_y;
     int i;
     int j;
 
@@ -92,16 +75,17 @@ void    draw_player(t_game *game, t_texture *mini_map)
         j = 0;
         while (j < 4) // (width)
         {
-            pixel_x = (int)player_x + j;
-            pixel_y = (int)player_y + i;
+            pixel_x = player_x + j;
+            pixel_y = player_y + i;
             if (pixel_x >= 0 && pixel_x < mini_map->width && pixel_y >= 0 && pixel_y < mini_map->height)
-                my_mlx_pixel_put(mini_map, pixel_x, pixel_y, 0xFF0000); // Red for player
+                my_mlx_pixel_put(mini_map, (int)pixel_x, (int)pixel_y, 0xFF0000); // Red for player
             j++;
         }
         i++;
     }
     draw_view_direction(game, mini_map);
 }
+
 
 int is_wall(t_game *game, int map_x, int map_y)
 {
@@ -126,7 +110,7 @@ void    draw_view_direction(t_game *game, t_texture *mini_map)
     i = 0;
     player_x = M_SIZE / 2 * T_SIZE; // As the position of player in MP is the center, it'll also be the start position of the ray.
     player_y = M_SIZE / 2 * T_SIZE;
-    while (i < 12)
+    while (i < 40)
     {
         x = player_x + i * game->player.dir_x;
         y = player_y + i * game->player.dir_y;

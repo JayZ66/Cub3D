@@ -20,8 +20,8 @@ void	init_player(t_player *player)
 	player->dir_y = 0;
 	player->plane_x = 0;
 	player->plane_y = 0.66;
-	player->speed = 0.04;
-	player->rot_speed = 0.03;
+	player->speed = 0.1;
+	player->rot_speed = 0.1;
 }
 // speed : vitesse du player en pixels.
 
@@ -75,8 +75,6 @@ void init_mini_map(t_game *game)
         free_all2(game);
     }
 }
-
-
 
 void	init_cub(t_game *game)
 {

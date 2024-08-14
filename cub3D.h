@@ -44,7 +44,6 @@
 # define SZ 32
 # define ON_DESTROY 17
 
-# define PI 3.14159265335879323846
 # define M_SIZE 12 // Taille mini-map (en nb de tuiles)
 # define T_SIZE 10 // Taille d'une tuile (en pixels)
 
@@ -234,7 +233,7 @@ void	rotate_player(t_game *game, double angle);
 int		manage_mouse_movement(int x, int y, t_game *game);
 
 // DISPLAY
-int		render_frame(t_game *game);
+int	display_each_frame(t_game *game);
 
 // MANAGE MINI_MAP
 void	render_mini_map(t_game *game, t_texture *frame);
