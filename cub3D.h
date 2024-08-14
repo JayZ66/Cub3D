@@ -45,7 +45,7 @@
 # define ON_DESTROY 17
 
 # define M_SIZE 12 // Taille mini-map (en nb de tuiles)
-# define T_SIZE 10 // Taille d'une tuile (en pixels)
+# define T_SIZE 6 // Taille d'une tuile (en pixels)
 
 
 // #define KEY_ESC     65307  // Échap (Escape)

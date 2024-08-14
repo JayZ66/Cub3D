@@ -70,10 +70,10 @@ void    draw_player(t_game *game, t_texture *mini_map)
     player_x = M_SIZE / 2 * T_SIZE;
     player_y = M_SIZE / 2 * T_SIZE;
     i = 0;
-    while (i < 4) // Parcourir 4 pixels pour former le square (height)
+    while (i < 6) // Parcourir 6 pixels pour former le square (height)
     {
         j = 0;
-        while (j < 4) // (width)
+        while (j < 6) // (width)
         {
             pixel_x = player_x + j;
             pixel_y = player_y + i;
