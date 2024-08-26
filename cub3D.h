@@ -47,6 +47,8 @@
 # define M_SIZE 12 // Taille mini-map (en nb de tuiles)
 # define T_SIZE 6 // Taille d'une tuile (en pixels)
 
+#define MINIMAP_WIDTH 100
+#define MINIMAP_HEIGHT 100
 
 // #define KEY_ESC     65307  // Échap (Escape)
 // #define KEY_UP      65362  // Flèche haut
@@ -142,6 +144,9 @@ typedef struct s_game
 	t_color		ceiling;
 	t_input		input;
 	t_texture	mini_map;
+	t_texture	portal_gun;
+	int			gun_shot;
+	int			shot_frame;
 	char		*texture_paths[4];
 	int			running;
 	int			touch_state[6];
@@ -222,6 +227,7 @@ int		game_loop(t_game *game);
 int		handle_input(t_game *game);
 int		manage_keyrelease(int keycode, t_game *game);
 int		manage_keypress(int keycode, t_game *game);
+int		manage_mouse_click(int button, t_game *game);
 void	is_action(t_game *game);
 
 // PLAYER POSITION
@@ -237,12 +243,16 @@ int	display_each_frame(t_game *game);
 
 // MANAGE MINI_MAP
 void	render_mini_map(t_game *game, t_texture *frame);
-void    draw_mini_map(t_game *game, t_texture *mini_map);
+void    draw_mini_map(t_game *game);
 void    draw(t_texture *img, int x, int y, int color);
 void    draw_player(t_game *game, t_texture *mini_map);
-int		is_wall(t_game *game, int map_x, int map_y);
+int		is_wall(t_game *game, double map_x, double map_y);
 void    draw_view_direction(t_game *game, t_texture *mini_map);
-void my_mlx_pixel_put(t_texture *img, int x, int y, int color);
+void	my_mlx_pixel_put(t_texture *img, int x, int y, int color);
+
+// SPRITES
+void    load_portal_gun(t_game *game);
+void	display_portal_gun(t_game *game);
 
 
 #endif

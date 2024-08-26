@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   events.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jedurand <jedurand@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 17:26:16 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/08/12 19:03:01 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/08/26 00:44:03 by jedurand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,21 +68,77 @@ int	manage_keyrelease(int keycode, t_game *game)
 // 		rotate_player(game, 1);
 // }
 
-void	is_action(t_game *game)
+// Function to try moving the player and handle collisions
+void try_move(t_game *game, double move_x, double move_y)
 {
-	if (game->touch_state[W_INDEX])
-		update_position(game, game->player.dir_x, game->player.dir_y);
-	else if (game->touch_state[A_INDEX])
-		update_position(game, -game->player.plane_x, -game->player.plane_y);
-	else if (game->touch_state[S_INDEX])
-		update_position(game, -game->player.dir_x, -game->player.dir_y);
-	else if (game->touch_state[D_INDEX])
-		update_position(game, game->player.plane_x, game->player.plane_y);
-	else if (game->touch_state[LEFT_INDEX])
-		rotate_player(game, 1);
-	else if (game->touch_state[RIGHT_INDEX])
-		rotate_player(game, -1);
+    double new_x = game->player.x + move_x;
+    double new_y = game->player.y + move_y;
+
+    // Check collision at the player's center
+    if (!is_wall(game, new_x, game->player.y)) // Move along X axis if no collision
+    {
+        game->player.x = new_x;
+    }
+    if (!is_wall(game, game->player.x, new_y)) // Move along Y axis if no collision
+    {
+        game->player.y = new_y;
+    }
 }
+
+void is_action(t_game *game)
+{
+    double move_x = 0;
+    double move_y = 0;
+
+    // Reduce movement speed by using smaller increments
+    double movement_speed = game->player.speed * 0.05; // Adjust this value to reduce speed
+
+    if (game->touch_state[W_INDEX]) // Move forward
+    {
+        move_x += game->player.dir_x * movement_speed;
+        move_y += game->player.dir_y * movement_speed;
+    }
+    if (game->touch_state[S_INDEX]) // Move backward
+    {
+        move_x -= game->player.dir_x * movement_speed;
+        move_y -= game->player.dir_y * movement_speed;
+    }
+    if (game->touch_state[A_INDEX]) // Strafe left
+    {
+        move_x -= game->player.plane_x * movement_speed;
+        move_y -= game->player.plane_y * movement_speed;
+    }
+    if (game->touch_state[D_INDEX]) // Strafe right
+    {
+        move_x += game->player.plane_x * movement_speed;
+        move_y += game->player.plane_y * movement_speed;
+    }
+
+    // Check for wall collisions
+    try_move(game, move_x, move_y);
+}
+
+
+
+// events.c
+// int	manage_mouse_movement(int x, t_game *game)
+// {
+//     int dx;
+
+// 	//TODO this was to stop fonction from working
+//     return 0;  // Prevent using uninitialized or null values
+
+
+//     // Calcul du déplacement de la souris en X
+//     dx = x - game->input.last_mouse_x;
+//     game->input.last_mouse_x = x;
+
+//     // Appliquer la rotation en fonction du déplacement de la souris
+//     if (dx != 0) {
+//         rotate_player(game, -dx * 0.003);  // Ajuster la sensibilité de la souris si nécessaire
+//     }
+//     return (0);
+// }
 
 int	manage_mouse_movement(int x, int y, t_game *game)
 {
@@ -95,14 +151,19 @@ int	manage_mouse_movement(int x, int y, t_game *game)
 	dx = x - game->input.last_mouse_x;
 	game->input.last_mouse_x = x;
 	angle = dx * 0.003;
-	printf("Before rotation:\n");
-	printf("Mouse dx = %d, Angle = %f\n", dx, angle);
-	printf("Direction: dir_x = %f, dir_y = %f\n", game->player.dir_x, game->player.dir_y);
-	printf("Plane: plane_x = %f, plane_y = %f\n", game->player.plane_x, game->player.plane_y);
 	rotate_player(game, angle);
-	printf("After rotation:\n");
-	printf("Mouse dx = %d, Angle = %f\n", dx, angle);
-	printf("Direction: dir_x = %f, dir_y = %f\n", game->player.dir_x, game->player.dir_y);
-	printf("Plane: plane_x = %f, plane_y = %f\n", game->player.plane_x, game->player.plane_y);
 	return (0);
+}
+
+int manage_mouse_click(int button, t_game *game)
+{
+    if (button == 1 || button == 2) // Clic gauche ou droit
+    {
+        if (game->gun_shot == 0) // Si pas de tir en cours
+        {
+            game->gun_shot = 1;
+            game->shot_frame = 0;
+        }
+    }
+    return (0);
 }

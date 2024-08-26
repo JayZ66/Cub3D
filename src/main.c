@@ -47,23 +47,19 @@ void	create_window(t_game *game)
 			"Cub3d - A portail's world");
 	if (!game->win)
 	{
-		mlx_destroy_display(game->mlx);
 		printf("Could not create mlx window\n");
 		return ;
 	}
 	mlx_hook(game->win, 2, 1L << 0, manage_keypress, game);
 	mlx_hook(game->win, 3, 1L << 1, manage_keyrelease, game);
+	mlx_hook(game->win, 4, 1L << 2, manage_mouse_click, game);
 	mlx_hook(game->win, 17, KeyPressMask, free_all2, game);
 	mlx_loop_hook(game->mlx, display_each_frame, game);
 	mlx_hook(game->win, MotionNotify, PointerMotionMask, manage_mouse_movement,
 		game);
 	mlx_do_key_autorepeatoff(game->mlx);
-	// MLX REPEAT OFF PUIS ON A L'EXIT
 	mlx_loop(game->mlx);
 }
-//TEST WITH KeyPressMask if it works !
-// mlx_hook(game->win, KeyPress, KeyPressMask, manage_keypress, game);
-// Manage Keypress
 
 // Init structures
 // Create map
