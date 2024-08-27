@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   events.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jedurand <jedurand@student.42perpignan.    +#+  +:+       +#+        */
+/*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 17:26:16 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/08/26 00:44:03 by jedurand         ###   ########.fr       */
+/*   Updated: 2024/08/27 19:48:30 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,14 +155,17 @@ int	manage_mouse_movement(int x, int y, t_game *game)
 	return (0);
 }
 
-int manage_mouse_click(int button, t_game *game)
+int manage_mouse_click(int button, int x, int y, t_game *game)
 {
-    if (button == 1 || button == 2) // Clic gauche ou droit
+    (void)x;
+    (void)y;
+    if (button == 1 || button == 3) // Clic gauche ou droit
     {
         if (game->gun_shot == 0) // Si pas de tir en cours
         {
             game->gun_shot = 1;
             game->shot_frame = 0;
+            // create_ball(game, button);
         }
     }
     return (0);

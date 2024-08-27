@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   move_player.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jedurand <jedurand@student.42perpignan.    +#+  +:+       +#+        */
+/*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/29 16:54:27 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/08/26 00:51:06 by jedurand         ###   ########.fr       */
+/*   Updated: 2024/08/27 19:48:35 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,6 +148,8 @@ int display_each_frame(t_game *game)
     frame.img = mlx_new_image(game->mlx, frame.width, frame.height);
     frame.addr = (int *)mlx_get_data_addr(frame.img, &frame.pixel_bits, &frame.size_line, &frame.endian);
 
+    // update_balls(game); // Met à jour la position des boules
+    // draw_ball(game);
     // Draw the minimap and player on the frame
     draw_mini_map(game);
 

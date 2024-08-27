@@ -12,7 +12,7 @@
 
 #include "../cub3D.h"
 
-void	create_images(t_game *game)
+void	create_textures(t_game *game)
 {
 	int	i;
 
@@ -78,11 +78,11 @@ int	main(int argc, char *argv[])
 	if (!game.mlx)
 		return (printf("Could not start mlx\n"), 1);
 	init_cub(&game);
-	// create_images(&game);
 	read_map(&game, map);
 	malloc_map(&game);
 	fill_map(&game, map);
 	manage_errors(&game, map);
+	// create_textures(&game);
 	create_window(&game);
 	mlx_loop(game.mlx);
 	free(map);

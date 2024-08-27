@@ -33,21 +33,19 @@ void	init_game(t_game *game)
 	game->win_width = 600;
 	game->map.map = NULL;
 	game->running = 1;
+	game->orientation = 0;
 	memset(game->touch_state, 0, sizeof(game->touch_state));
 	game->portal_gun.img = NULL;
     game->portal_gun.addr = NULL;
     game->portal_gun.pixel_bits = 0;
     game->portal_gun.size_line = 0;
     game->portal_gun.endian = 0;
+	game->gun_shot = 0;
+	game->shot_frame = 0;
+	init_textures(game);
+	init_ball(game);
+	load_portal_gun(game);
 }
-// int	i;
-
-	// i = 0;
-	// while (i < 4)
-	// {
-	// 	game->texture_paths[i] = NULL;
-	// 	i++;
-	// }
 
 void	init_map(t_map *map)
 {
@@ -81,6 +79,49 @@ void init_mini_map(t_game *game)
     }
 }
 
+void	init_ball(t_game *game)
+{
+	int	i;
+
+	i = 0;
+	while (i < 2)
+	{
+		game->ball[i].texture.img = NULL;
+		game->ball[i].texture.addr = NULL;
+		game->ball[i].texture.pixel_bits = 0;
+		game->ball[i].texture.size_line = 0;
+		game->ball[i].texture.endian = 0;
+		game->ball[i].texture.width = 64;
+		game->ball[i].texture.height = 64;
+		game->ball[i].x = 0;
+		game->ball[i].y = 0;
+		game->ball[i].direction_x = 0;
+		game->ball[i].direction_y = 0;
+		game->ball[i].active = 0; 
+		i++;
+	}
+	load_ball_textures(game);
+
+}
+
+void	init_textures(t_game *game)
+{
+	int	i;
+
+	i = 0;
+	while (i < 4)
+	{
+		game->textures[i].addr = NULL;
+		game->textures[i].img = NULL;
+		game->textures[i].pixel_bits = 0;
+		game->textures[i].size_line = 0;
+		game->textures[i].endian = 0;
+		game->textures[i].width = 0;
+		game->textures[i].height = 0;
+		i++;
+	}
+}
+
 void	init_cub(t_game *game)
 {
 	init_game(game);
@@ -91,5 +132,4 @@ void	init_cub(t_game *game)
 	init_map(&game->map);
 	init_input(&game->input);
 	init_mini_map(game);
-	load_portal_gun(game);
 }
