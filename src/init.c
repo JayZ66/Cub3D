@@ -30,7 +30,7 @@ void	init_game(t_game *game)
 {
 	game->win = NULL;
 	game->win_height = 800;
-	game->win_width = 600;
+	game->win_width = 800;
 	game->map.map = NULL;
 	game->running = 1;
 	game->orientation = 0;
@@ -45,6 +45,8 @@ void	init_game(t_game *game)
 	init_textures(game);
 	init_ball(game);
 	load_portal_gun(game);
+	game->frame_count = 0;
+	game->walk_offset = 0;
 }
 
 void	init_map(t_map *map)
@@ -97,7 +99,7 @@ void	init_ball(t_game *game)
 		game->ball[i].y = 0;
 		game->ball[i].direction_x = 0;
 		game->ball[i].direction_y = 0;
-		game->ball[i].active = 0; 
+		game->ball[i].active = 0;
 		i++;
 	}
 	load_ball_textures(game);

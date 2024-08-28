@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   events.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jedurand <jedurand@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 17:26:16 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/08/27 19:48:30 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/08/27 23:07:20 by jedurand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,6 @@ void try_move(t_game *game, double move_x, double move_y)
         game->player.y = new_y;
     }
 }
-
 void is_action(t_game *game)
 {
     double move_x = 0;
@@ -93,30 +92,50 @@ void is_action(t_game *game)
     // Reduce movement speed by using smaller increments
     double movement_speed = game->player.speed * 0.05; // Adjust this value to reduce speed
 
+    int is_moving = 0;
+
     if (game->touch_state[W_INDEX]) // Move forward
     {
         move_x += game->player.dir_x * movement_speed;
         move_y += game->player.dir_y * movement_speed;
+        is_moving = 1;
     }
     if (game->touch_state[S_INDEX]) // Move backward
     {
         move_x -= game->player.dir_x * movement_speed;
         move_y -= game->player.dir_y * movement_speed;
+        is_moving = 1;
     }
     if (game->touch_state[A_INDEX]) // Strafe left
     {
         move_x -= game->player.plane_x * movement_speed;
         move_y -= game->player.plane_y * movement_speed;
+        is_moving = 1;
     }
     if (game->touch_state[D_INDEX]) // Strafe right
     {
         move_x += game->player.plane_x * movement_speed;
         move_y += game->player.plane_y * movement_speed;
+        is_moving = 1;
     }
 
     // Check for wall collisions
     try_move(game, move_x, move_y);
+
+    // Adjust the walk offset if the player is moving
+    if (is_moving)
+    {
+        game->frame_count++;
+        game->walk_offset = (int)(sin(game->frame_count * 0.1) * 10); // Adjust the multiplier (10) for stronger effect
+    }
+    else
+    {
+        // Reset walk offset if the player stops moving
+        game->walk_offset = 0;
+        game->frame_count = 0; // Optionally reset the frame count when stopping
+    }
 }
+
 
 
 
@@ -165,8 +184,8 @@ int manage_mouse_click(int button, int x, int y, t_game *game)
         {
             game->gun_shot = 1;
             game->shot_frame = 0;
-            // create_ball(game, button);
         }
+        create_ball(game, button);
     }
     return (0);
 }

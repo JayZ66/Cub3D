@@ -162,6 +162,8 @@ typedef struct s_game
 	char		*texture_paths[4];
 	int			running;
 	int			touch_state[6];
+	int         walk_offset;   // Variable to simulate the walk effect
+	int         frame_count;   // Frame counter to animate walk effect
 }	t_game;
 
 // UTILS
@@ -177,6 +179,7 @@ int		only_space2(char *line);
 int		is_description_line(const char *line);
 int		error(t_game *game, char *str);
 int		open_file(const char *file, int fd, t_game *game);
+void	draw_center_circle(t_game *game, int radius);
 
 // INITIALIZATION OF STRUCTURES
 void	init_cub(t_game *game);
@@ -252,9 +255,6 @@ void	rotate_player(t_game *game, double angle);
 // void	rotate_player(t_game *game, int direction);
 int		manage_mouse_movement(int x, int y, t_game *game);
 
-// DISPLAY
-int	display_each_frame(t_game *game);
-
 // MANAGE MINI_MAP
 void	render_mini_map(t_game *game, t_texture *frame);
 void    draw_mini_map(t_game *game);
@@ -264,7 +264,8 @@ int		is_wall(t_game *game, double map_x, double map_y);
 void    draw_view_direction(t_game *game, t_texture *mini_map);
 void	my_mlx_pixel_put(t_texture *img, int x, int y, int color);
 
-// SPRITES
+// SPRITES - DISPLAY
+int		display_each_frame(t_game *game);
 void    load_portal_gun(t_game *game);
 void	display_portal_gun(t_game *game);
 void 	create_ball(t_game *game, int button);
@@ -272,4 +273,9 @@ void 	update_balls(t_game *game);
 void	move_ball_towards_center(t_game *game, t_ball *ball);
 void	load_ball_textures(t_game *game);
 void 	draw_ball(t_game *game);
+void overlay_img(t_texture fg, t_texture bg, t_game *game, int pos_x, int pos_y);
+
+// RENDERING FUNCTIONS
+void render_scene(t_game *game, t_texture *frame);
+
 #endif
