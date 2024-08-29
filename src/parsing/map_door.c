@@ -6,7 +6,7 @@
 /*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 14:52:26 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/08/29 14:52:39 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/08/29 18:21:26 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,7 @@ int	check_door(t_game *game, int i, int j)
 
 int	door_error(t_game *game, int door, int value)
 {
-	if (door == 0)
-		return (printf("There is no door\n"), free_all2(game));
-	else if (door > 1)
+    if (door > 1)
 		return (printf("There are too many doors\n"), free_all2(game));
 	else if (value == 1)
 		return (0);
