@@ -6,7 +6,7 @@
 /*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 11:52:19 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/07/29 16:21:27 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/08/29 15:54:59 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,13 @@ void	free_everything(t_game *game)
 }
 
 // printf("Line %s\n", game->map.map[i]);
+// for (i = 0; i < 4; i++)
+// {
+//     if (game->textures[i].img)
+//         mlx_destroy_image(game->mlx, game->textures[i].img);
+// }
+// if (game->portal_gun.img)
+//     mlx_destroy_image(game->mlx, game->portal_gun.img);
 int	free_all2(t_game *game)
 {
 	int	i;
@@ -54,17 +61,8 @@ int	free_all2(t_game *game)
 		}
 		free(game->map.map);
 	}
-	// for (i = 0; i < 4; i++)
-    // {
-    //     if (game->textures[i].img)
-    //         mlx_destroy_image(game->mlx, game->textures[i].img);
-    // }
-    // if (game->portal_gun.img)
-    //     mlx_destroy_image(game->mlx, game->portal_gun.img);
-    if (game->mini_map.img)
-	{
-        mlx_destroy_image(game->mlx, game->mini_map.img);
-	}
+	if (game->mini_map.img)
+		mlx_destroy_image(game->mlx, game->mini_map.img);
 	free_everything(game);
 	exit(EXIT_SUCCESS);
 	return (0);

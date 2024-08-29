@@ -180,6 +180,7 @@ int		is_description_line(const char *line);
 int		error(t_game *game, char *str);
 int		open_file(const char *file, int fd, t_game *game);
 void	draw_center_circle(t_game *game, int radius);
+int		it_is_out(t_game *game, int x, int y);
 
 // INITIALIZATION OF STRUCTURES
 void	init_cub(t_game *game);
@@ -210,12 +211,23 @@ void	am_i_going_to_far(t_game *game, char *line, int i);
 void	increment_if_digit(char **line);
 char	*error_line(char *line);
 int		check_map(char *line, int fd, int map_ended);
+int		is_door_valid(t_game *game);
+void	set_up_north(t_game *game);
+void	set_up_east(t_game *game);
+void	set_up_west(t_game *game);
+void	set_up_south(t_game *game);
+
 
 // FILE ERRORS
 int		is_file_valid(const char *file, t_game *game);
 int		parse_rgb(char *line, int *r, int *g, int *b);
 int		is_rgb_code(t_game *game, char *line);
 int		is_path_textures(t_game *game, char *line);
+void	north_path(t_game *game, char *line);
+void	south_path(t_game *game, char *line);
+void	west_path(t_game *game, char *line);
+void	east_path(t_game *game, char *line);
+void	invalid_texture(t_game *game);
 int		are_file_textures_valid(t_game *game);
 int		is_file_full(const char *file, t_game *game);
 int		are_paths_textures_valid(t_game *game);
@@ -269,11 +281,12 @@ int		display_each_frame(t_game *game);
 void    load_portal_gun(t_game *game);
 void	display_portal_gun(t_game *game);
 void 	create_ball(t_game *game, int button);
+t_ball	*set_up_ball(t_ball *ball, t_game *game, int button);
 void 	update_balls(t_game *game);
 void	move_ball_towards_center(t_game *game, t_ball *ball);
 void	load_ball_textures(t_game *game);
 void 	draw_ball(t_game *game);
-void overlay_img(t_texture fg, t_texture bg, t_game *game, int pos_x, int pos_y);
+void	overlay_img(t_texture fg, t_texture bg, t_game *game, int pos_x, int pos_y);
 
 // RENDERING FUNCTIONS
 void render_scene(t_game *game, t_texture *frame);

@@ -6,7 +6,7 @@
 /*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/29 15:33:07 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/08/27 11:49:31 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/08/29 11:03:05 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	check_map_line(char *line)
 	while (*line)
 	{
 		if (*line == '1' || *line == '0' || *line == 'N' || *line == 'S'
-			|| *line == 'W' || *line == 'E')
+			|| *line == 'W' || *line == 'E' || *line == 'D')
 			has_valid_char = 1;
 		else if (*line != ' ' && *line != '\t' && *line != '\n' && *line != '\r'
 			&& is_description_line(line) == 0)

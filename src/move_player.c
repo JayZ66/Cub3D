@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   move_player.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jedurand <jedurand@student.42perpignan.    +#+  +:+       +#+        */
+/*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/29 16:54:27 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/08/27 23:26:04 by jedurand         ###   ########.fr       */
+/*   Updated: 2024/08/29 15:53:33 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,18 +70,18 @@ int	is_outside(t_game *game, double x, double y)
 
 void update_position(t_game *game, double move_x, double move_y)
 {
-    double new_x = game->player.x + move_x;
-    double new_y = game->player.y + move_y;
+	double new_x = game->player.x + move_x;
+	double new_y = game->player.y + move_y;
 
-    // Check for wall collisions and update player position accordingly
-    if (!is_wall(game, new_x, game->player.y))
-    {
-        game->player.x = new_x;
-    }
-    if (!is_wall(game, game->player.x, new_y))
-    {
-        game->player.y = new_y;
-    }
+	// Check for wall collisions and update player position accordingly
+	if (!is_wall(game, new_x, game->player.y))
+	{
+		game->player.x = new_x;
+	}
+	if (!is_wall(game, game->player.x, new_y))
+	{
+		game->player.y = new_y;
+	}
 
 	printf("Updated Player Position: x = %f, y = %f\n", game->player.x, game->player.y);
 }
@@ -113,16 +113,16 @@ void update_position(t_game *game, double move_x, double move_y)
 
 void rotate_player(t_game *game, double angle)
 {
-    double old_dir_x = game->player.dir_x;
-    double old_plane_x = game->player.plane_x;
+	double old_dir_x = game->player.dir_x;
+	double old_plane_x = game->player.plane_x;
 
-    // Apply rotation using cosine and sine for smooth rotation
-    game->player.dir_x = old_dir_x * cos(angle) - game->player.dir_y * sin(angle);
-    game->player.dir_y = old_dir_x * sin(angle) + game->player.dir_y * cos(angle);
+	// Apply rotation using cosine and sine for smooth rotation
+	game->player.dir_x = old_dir_x * cos(angle) - game->player.dir_y * sin(angle);
+	game->player.dir_y = old_dir_x * sin(angle) + game->player.dir_y * cos(angle);
 
-    game->player.plane_x = old_plane_x * cos(angle) - game->player.plane_y * sin(angle);
-    game->player.plane_y = old_plane_x * sin(angle) + game->player.plane_y * cos(angle);
-    // mlx_mouse_move(game->mlx, game->win, game->win_width / 2, game->win_height / 2);
+	game->player.plane_x = old_plane_x * cos(angle) - game->player.plane_y * sin(angle);
+	game->player.plane_y = old_plane_x * sin(angle) + game->player.plane_y * cos(angle);
+	// mlx_mouse_move(game->mlx, game->win, game->win_width / 2, game->win_height / 2);
 }
 
 // void    display_mini_map(t_game *game, t_texture *frame)
@@ -142,70 +142,59 @@ void rotate_player(t_game *game, double angle)
 
 void draw_center_circle(t_game *game, int radius)
 {
-    int center_x;
-    int center_y;
-    int pixel_x;
-    int pixel_y;
-    int x;
-    int y;
+	int center_x;
+	int center_y;
+	int pixel_x;
+	int pixel_y;
+	int x;
+	int y;
 
-    center_y = game->win_height / 2;
-    center_x = game->win_width / 2;
-    y = -radius;
-    while (y <= radius)
-    {
-        x = -radius;
-        while (x <= radius)
-        {
-            if ((x * x + y * y) <= (radius * radius)) // Vérifie si le pixel est dans le cercle
-            {
-                pixel_x = center_x + x;
-                pixel_y = center_y + y;
-
-                if (pixel_x >= 0 && pixel_x < game->win_width && pixel_y >= 0 && pixel_y < game->win_height)
-                {
-                    mlx_pixel_put(game->mlx, game->win, pixel_x, pixel_y, 0x000000);
-                }
-            }
-            x++;
-        }
-        y++;
-    }
+	center_y = game->win_height / 2;
+	center_x = game->win_width / 2;
+	y = -radius - 1;
+	while (++y <= radius)
+	{
+		x = -radius;
+		while (x <= radius)
+		{
+			if ((x * x + y * y) <= (radius * radius)) // Vérifie si le pixel est dans le cercle
+			{
+				pixel_x = center_x + x;
+				pixel_y = center_y + y;
+				if (pixel_x >= 0 && pixel_x < game->win_width && pixel_y >= 0 && pixel_y < game->win_height)
+					mlx_pixel_put(game->mlx, game->win, pixel_x, pixel_y, 0x000000);
+			}
+			x++;
+		}
+	}
 }
 
 
 int display_each_frame(t_game *game)
 {
-    // Clear the frame
-    t_texture frame;
-    frame.width = game->win_width;
-    frame.height = game->win_height;
-    frame.img = mlx_new_image(game->mlx, frame.width, frame.height);
-    frame.addr = (int *)mlx_get_data_addr(frame.img, &frame.pixel_bits, &frame.size_line, &frame.endian);
-
-    // Render the scene (walls, floor, ceiling) on the frame
-    render_scene(game, &frame);
-
-    // Display the rendered frame (this shows the scene)
-    mlx_put_image_to_window(game->mlx, game->win, frame.img, 0, 0);
-
-    // Draw the minimap on top of the scene
-    draw_mini_map(game);
-    mlx_put_image_to_window(game->mlx, game->win, game->mini_map.img, 10, 10);  // Minimap overlay
-
-    // Draw the center point
-    draw_center_circle(game, 5);
-    
-    // Clean up the frame resources
-    mlx_destroy_image(game->mlx, frame.img);
-
-    // Handle player movement and actions
-    is_action(game);
-    display_portal_gun(game);  // Handle gun display
-    update_balls(game);
-    draw_ball(game);
-
-    return 0;
+	// Clear the frame
+	t_texture frame;
+	frame.width = game->win_width;
+	frame.height = game->win_height;
+	frame.img = mlx_new_image(game->mlx, frame.width, frame.height);
+	frame.addr = (int *)mlx_get_data_addr(frame.img, &frame.pixel_bits, &frame.size_line, &frame.endian);
+	// Render the scene (walls, floor, ceiling) on the frame
+	render_scene(game, &frame);
+	// Display the rendered frame (this shows the scene)
+	mlx_put_image_to_window(game->mlx, game->win, frame.img, 0, 0);
+	// Draw the minimap on top of the scene
+	draw_mini_map(game);
+	mlx_put_image_to_window(game->mlx, game->win, game->mini_map.img, 10, 10);  // Minimap overlay
+	// Draw the center point
+	draw_center_circle(game, 5);
+	// Clean up the frame resources
+	mlx_destroy_image(game->mlx, frame.img);
+	// Handle player movement and actions
+	is_action(game);
+	display_portal_gun(game);  // Handle gun display
+	update_balls(game);
+	draw_ball(game);
+	return 0;
 }
 
 
