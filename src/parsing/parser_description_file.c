@@ -6,7 +6,7 @@
 /*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/29 15:39:43 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/08/29 14:47:39 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/08/29 17:47:08 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ int	is_rgb_code(t_game *game, char *line)
 				printf("Invalid ceiling RGB color\n");
 			else
 				printf("Invalid floor RGB color\n");
+			free(line);
 			free_all2(game);
 		}
 		if (line[0] == 'F')

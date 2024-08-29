@@ -6,7 +6,7 @@
 /*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/29 15:33:07 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/08/29 11:03:05 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/08/29 17:46:11 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,10 @@ void	loop_to_fill_map(t_game *game, int fd, int *textures, int *rgb)
 		if (line == NULL)
 			break ;
 		if (check_textures_and_rgb(game, line, textures, rgb) == 1)
+		{
+			free(line);
 			continue ;
+		}
 		else if (check_map_line(line) == 1)
 		{
 			am_i_going_to_far(game, line, i);

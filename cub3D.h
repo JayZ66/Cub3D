@@ -227,7 +227,7 @@ void	north_path(t_game *game, char *line);
 void	south_path(t_game *game, char *line);
 void	west_path(t_game *game, char *line);
 void	east_path(t_game *game, char *line);
-void	invalid_texture(t_game *game);
+void	invalid_texture(t_game *game, char *line);
 int		are_file_textures_valid(t_game *game);
 int		is_file_full(const char *file, t_game *game);
 int		are_paths_textures_valid(t_game *game);

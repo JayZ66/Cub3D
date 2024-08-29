@@ -6,14 +6,26 @@
 /*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 11:52:19 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/08/29 15:54:59 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/08/29 17:15:11 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3D.h"
 
-// game->texture_paths && game->texture_paths[i]
-void	free_everything(t_game *game)
+/*
+TO FREE : 
+- mlx => DONE
+- Win => DONE
+- game->map.map
+- game->portal_gun.img => DONE
+- game->mini_map.img => DONE
+- game->game->ball[2].texture.img => DONE
+=> mlx_destroy_image(game->mlx, game->ball[0].texture.img)
+- map du main
+- 
+*/
+
+void	free_textures(t_game *game)
 {
 	int	i;
 
@@ -24,6 +36,19 @@ void	free_everything(t_game *game)
 			free(game->texture_paths[i]);
 		i++;
 	}
+	if (game->ball[0].texture.img)
+        mlx_destroy_image(game->mlx, game->ball[0].texture.img);
+	if (game->ball[1].texture.img)
+        mlx_destroy_image(game->mlx, game->ball[1].texture.img);
+	if (game->portal_gun.img)
+		mlx_destroy_image(game->mlx, game->portal_gun.img);
+	if (game->mini_map.img)
+		mlx_destroy_image(game->mlx, game->mini_map.img);
+}
+
+// game->texture_paths && game->texture_paths[i]
+void	free_everything(t_game *game)
+{
 	if (game->win != NULL)
 	{
 		mlx_destroy_window(game->mlx, game->win);
@@ -53,16 +78,14 @@ int	free_all2(t_game *game)
 	if (game->map.map)
 	{
 		i = 0;
-		while (i < game->map.height)
+		while (game->map.map[i])
 		{
-			if (game->map.map[i] != NULL)
-				free(game->map.map[i]);
+			free(game->map.map[i]);
 			i++;
 		}
 		free(game->map.map);
 	}
-	if (game->mini_map.img)
-		mlx_destroy_image(game->mlx, game->mini_map.img);
+	free_textures(game);
 	free_everything(game);
 	exit(EXIT_SUCCESS);
 	return (0);
