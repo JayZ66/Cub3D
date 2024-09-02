@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_errors.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jedurand <jedurand@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 17:26:00 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/08/29 12:19:57 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/09/01 03:58:26 by jedurand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,8 @@ int	is_player_here(int player)
 
 void	set_up_player_position(t_game *game, int i, int j)
 {
-	game->player.x = j;
-	game->player.y = i;
+	game->player.x = j + 0.5;
+	game->player.y = i + 0.5;
 	if (game->map.map[i][j] == 'N')
 		set_up_north(game);
 	else if (game->map.map[i][j] == 'E')

@@ -50,7 +50,7 @@ void	create_window(t_game *game)
 		printf("Could not create mlx window\n");
 		return ;
 	}
-	mlx_mouse_hide(game->mlx, game->win); // Cacher la souris au démarrage
+	mlx_mouse_hide(game->mlx, game->win);
 	mlx_hook(game->win, 2, 1L << 0, manage_keypress, game);
 	mlx_hook(game->win, 3, 1L << 1, manage_keyrelease, game);
 	mlx_hook(game->win, 4, 1L << 2, manage_mouse_click, game);
@@ -83,8 +83,7 @@ int	main(int argc, char *argv[])
 	malloc_map(&game);
 	fill_map(&game, map);
 	manage_errors(&game, map);
-	free(map);
-	// create_textures(&game);
+	create_textures(&game);
 	create_window(&game);
 	mlx_loop(game.mlx);
 	free(map);

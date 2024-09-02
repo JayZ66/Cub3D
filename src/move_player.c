@@ -6,7 +6,7 @@
 /*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/29 16:54:27 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/08/29 15:53:33 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/09/02 13:38:06 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,18 +70,18 @@ int	is_outside(t_game *game, double x, double y)
 
 void update_position(t_game *game, double move_x, double move_y)
 {
-	double new_x = game->player.x + move_x;
-	double new_y = game->player.y + move_y;
+    double new_x = game->player.x + move_x;
+    double new_y = game->player.y + move_y;
 
-	// Check for wall collisions and update player position accordingly
-	if (!is_wall(game, new_x, game->player.y))
-	{
-		game->player.x = new_x;
-	}
-	if (!is_wall(game, game->player.x, new_y))
-	{
-		game->player.y = new_y;
-	}
+    // Check for wall collisions and update player position accordingly
+    if (!is_wall(game, new_x, game->player.y))
+    {
+        game->player.x = new_x;
+    }
+    if (!is_wall(game, game->player.x, new_y))
+    {
+        game->player.y = new_y;
+    }
 
 	printf("Updated Player Position: x = %f, y = %f\n", game->player.x, game->player.y);
 }
@@ -113,16 +113,20 @@ void update_position(t_game *game, double move_x, double move_y)
 
 void rotate_player(t_game *game, double angle)
 {
-	double old_dir_x = game->player.dir_x;
-	double old_plane_x = game->player.plane_x;
+	game->skip_mouse_event = 1;
+    double old_dir_x = game->player.dir_x;
+    double old_plane_x = game->player.plane_x;
 
-	// Apply rotation using cosine and sine for smooth rotation
-	game->player.dir_x = old_dir_x * cos(angle) - game->player.dir_y * sin(angle);
-	game->player.dir_y = old_dir_x * sin(angle) + game->player.dir_y * cos(angle);
+    // Apply rotation using cosine and sine for smooth rotation
+    game->player.dir_x = old_dir_x * cos(angle) - game->player.dir_y * sin(angle);
+    game->player.dir_y = old_dir_x * sin(angle) + game->player.dir_y * cos(angle);
 
-	game->player.plane_x = old_plane_x * cos(angle) - game->player.plane_y * sin(angle);
-	game->player.plane_y = old_plane_x * sin(angle) + game->player.plane_y * cos(angle);
-	// mlx_mouse_move(game->mlx, game->win, game->win_width / 2, game->win_height / 2);
+    game->player.plane_x = old_plane_x * cos(angle) - game->player.plane_y * sin(angle);
+    game->player.plane_y = old_plane_x * sin(angle) + game->player.plane_y * cos(angle);
+
+	//TO DO fix
+	//mlx_mouse_move(game->mlx, game->win, game->win_width / 2, game->win_height / 2);
+	game->skip_mouse_event = 0;
 }
 
 // void    display_mini_map(t_game *game, t_texture *frame)
@@ -180,6 +184,8 @@ int display_each_frame(t_game *game)
 	frame.addr = (int *)mlx_get_data_addr(frame.img, &frame.pixel_bits, &frame.size_line, &frame.endian);
 	// Render the scene (walls, floor, ceiling) on the frame
 	render_scene(game, &frame);
+	update_balls(game);
+	draw_ball(game, &frame);
 	// Display the rendered frame (this shows the scene)
 	mlx_put_image_to_window(game->mlx, game->win, frame.img, 0, 0);
 	// Draw the minimap on top of the scene
@@ -192,8 +198,6 @@ int display_each_frame(t_game *game)
 	// Handle player movement and actions
 	is_action(game);
 	display_portal_gun(game);  // Handle gun display
-	update_balls(game);
-	draw_ball(game);
 	return 0;
 }
 

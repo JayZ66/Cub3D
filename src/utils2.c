@@ -6,26 +6,14 @@
 /*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 11:52:19 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/08/29 17:15:11 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/09/02 13:38:58 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3D.h"
 
-/*
-TO FREE : 
-- mlx => DONE
-- Win => DONE
-- game->map.map
-- game->portal_gun.img => DONE
-- game->mini_map.img => DONE
-- game->game->ball[2].texture.img => DONE
-=> mlx_destroy_image(game->mlx, game->ball[0].texture.img)
-- map du main
-- 
-*/
-
-void	free_textures(t_game *game)
+// game->texture_paths && game->texture_paths[i]
+void	free_everything(t_game *game)
 {
 	int	i;
 
@@ -36,19 +24,6 @@ void	free_textures(t_game *game)
 			free(game->texture_paths[i]);
 		i++;
 	}
-	if (game->ball[0].texture.img)
-        mlx_destroy_image(game->mlx, game->ball[0].texture.img);
-	if (game->ball[1].texture.img)
-        mlx_destroy_image(game->mlx, game->ball[1].texture.img);
-	if (game->portal_gun.img)
-		mlx_destroy_image(game->mlx, game->portal_gun.img);
-	if (game->mini_map.img)
-		mlx_destroy_image(game->mlx, game->mini_map.img);
-}
-
-// game->texture_paths && game->texture_paths[i]
-void	free_everything(t_game *game)
-{
 	if (game->win != NULL)
 	{
 		mlx_destroy_window(game->mlx, game->win);
@@ -62,30 +37,34 @@ void	free_everything(t_game *game)
 }
 
 // printf("Line %s\n", game->map.map[i]);
-// for (i = 0; i < 4; i++)
-// {
-//     if (game->textures[i].img)
-//         mlx_destroy_image(game->mlx, game->textures[i].img);
-// }
-// if (game->portal_gun.img)
-//     mlx_destroy_image(game->mlx, game->portal_gun.img);
 int	free_all2(t_game *game)
 {
 	int	i;
 
 	printf("OK free \n");
-	mlx_do_key_autorepeatoff(game->mlx);
+	mlx_do_key_autorepeaton(game->mlx);
 	if (game->map.map)
 	{
 		i = 0;
-		while (game->map.map[i])
+		while (i < game->map.height)
 		{
-			free(game->map.map[i]);
+			if (game->map.map[i] != NULL)
+				free(game->map.map[i]);
 			i++;
 		}
 		free(game->map.map);
 	}
-	free_textures(game);
+	// for (i = 0; i < 4; i++)
+    // {
+    //     if (game->textures[i].img)
+    //         mlx_destroy_image(game->mlx, game->textures[i].img);
+    // }
+    // if (game->portal_gun.img)
+    //     mlx_destroy_image(game->mlx, game->portal_gun.img);
+    if (game->mini_map.img)
+	{
+        mlx_destroy_image(game->mlx, game->mini_map.img);
+	}
 	free_everything(game);
 	exit(EXIT_SUCCESS);
 	return (0);

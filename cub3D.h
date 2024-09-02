@@ -109,8 +109,13 @@ typedef struct s_ball
 {
 	double		x;
 	double		y;
+	double		wx;
+	double		wy;
 	double		direction_x;
 	double		direction_y;
+	double		speed;
+	int			stage;
+	int			size;
 	int			active;
 	t_texture	texture;
 }	t_ball;
@@ -164,6 +169,7 @@ typedef struct s_game
 	int			touch_state[6];
 	int         walk_offset;   // Variable to simulate the walk effect
 	int         frame_count;   // Frame counter to animate walk effect
+	int skip_mouse_event;
 }	t_game;
 
 // UTILS
@@ -281,11 +287,11 @@ int		display_each_frame(t_game *game);
 void    load_portal_gun(t_game *game);
 void	display_portal_gun(t_game *game);
 void 	create_ball(t_game *game, int button);
-t_ball	*set_up_ball(t_ball *ball, t_game *game, int button);
+t_ball	*set_up_ball(t_game *game, int button);
 void 	update_balls(t_game *game);
 void	move_ball_towards_center(t_game *game, t_ball *ball);
 void	load_ball_textures(t_game *game);
-void 	draw_ball(t_game *game);
+void	draw_ball(t_game *game, t_texture *frame);
 void	overlay_img(t_texture fg, t_texture bg, t_game *game, int pos_x, int pos_y);
 
 // RENDERING FUNCTIONS
