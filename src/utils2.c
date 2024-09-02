@@ -6,13 +6,12 @@
 /*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 11:52:19 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/09/02 13:38:58 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/09/02 15:25:31 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3D.h"
 
-// game->texture_paths && game->texture_paths[i]
 void	free_everything(t_game *game)
 {
 	int	i;
@@ -61,9 +60,9 @@ int	free_all2(t_game *game)
     // }
     // if (game->portal_gun.img)
     //     mlx_destroy_image(game->mlx, game->portal_gun.img);
-    if (game->mini_map.img)
+	if (game->mini_map.img)
 	{
-        mlx_destroy_image(game->mlx, game->mini_map.img);
+		mlx_destroy_image(game->mlx, game->mini_map.img);
 	}
 	free_everything(game);
 	exit(EXIT_SUCCESS);

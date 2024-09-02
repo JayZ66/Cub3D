@@ -6,7 +6,7 @@
 /*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 12:20:16 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/08/29 12:27:47 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/09/02 14:45:24 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,4 +46,14 @@ void	set_up_south(t_game *game)
 	game->player.plane_x = -0.66;
 	game->player.plane_y = 0;
 	game->orientation = 4;
+}
+
+void	invalid_rgb(char *line, t_game *game)
+{
+	if (line[0] == 'C')
+		printf("Invalid ceiling RGB color\n");
+	else
+		printf("Invalid floor RGB color\n");
+	free(line);
+	free_all2(game);
 }

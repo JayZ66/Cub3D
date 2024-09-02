@@ -47,8 +47,8 @@
 # define M_SIZE 12 // Taille mini-map (en nb de tuiles)
 # define T_SIZE 6 // Taille d'une tuile (en pixels)
 
-#define MINIMAP_WIDTH 100
-#define MINIMAP_HEIGHT 100
+# define MINIMAP_WIDTH 100
+# define MINIMAP_HEIGHT 100
 
 // #define KEY_ESC     65307  // Échap (Escape)
 // #define KEY_UP      65362  // Flèche haut
@@ -85,8 +85,6 @@ typedef enum s_keys_index
 
 typedef struct s_input
 {
-	// int	keys[256];
-	// int	keys[65536];
 	int	mouse_left_pressed;
 	int	mouse_x;
 	int	mouse_y;
@@ -167,9 +165,9 @@ typedef struct s_game
 	char		*texture_paths[4];
 	int			running;
 	int			touch_state[6];
-	int         walk_offset;   // Variable to simulate the walk effect
-	int         frame_count;   // Frame counter to animate walk effect
-	int skip_mouse_event;
+	int			walk_offset;// Variable to simulate the walk effect
+	int			frame_count;// Frame counter to animate walk effect
+	int			skip_mouse_event;
 }	t_game;
 
 // UTILS
@@ -223,7 +221,6 @@ void	set_up_east(t_game *game);
 void	set_up_west(t_game *game);
 void	set_up_south(t_game *game);
 
-
 // FILE ERRORS
 int		is_file_valid(const char *file, t_game *game);
 int		parse_rgb(char *line, int *r, int *g, int *b);
@@ -235,6 +232,7 @@ void	west_path(t_game *game, char *line);
 void	east_path(t_game *game, char *line);
 void	invalid_texture(t_game *game, char *line);
 int		are_file_textures_valid(t_game *game);
+void	invalid_rgb(char *line, t_game *game);
 int		is_file_full(const char *file, t_game *game);
 int		are_paths_textures_valid(t_game *game);
 int		are_rgb_ids_valid(t_game *game, const char *file);
@@ -275,26 +273,27 @@ int		manage_mouse_movement(int x, int y, t_game *game);
 
 // MANAGE MINI_MAP
 void	render_mini_map(t_game *game, t_texture *frame);
-void    draw_mini_map(t_game *game);
-void    draw(t_texture *img, int x, int y, int color);
-void    draw_player(t_game *game, t_texture *mini_map);
+void	draw_mini_map(t_game *game);
+void	draw(t_texture *img, int x, int y, int color);
+void	draw_player(t_game *game, t_texture *mini_map);
 int		is_wall(t_game *game, double map_x, double map_y);
-void    draw_view_direction(t_game *game, t_texture *mini_map);
+void	draw_view_direction(t_game *game, t_texture *mini_map);
 void	my_mlx_pixel_put(t_texture *img, int x, int y, int color);
 
 // SPRITES - DISPLAY
 int		display_each_frame(t_game *game);
-void    load_portal_gun(t_game *game);
+void	load_portal_gun(t_game *game);
 void	display_portal_gun(t_game *game);
-void 	create_ball(t_game *game, int button);
+void	create_ball(t_game *game, int button);
 t_ball	*set_up_ball(t_game *game, int button);
-void 	update_balls(t_game *game);
+void	update_balls(t_game *game);
 void	move_ball_towards_center(t_game *game, t_ball *ball);
 void	load_ball_textures(t_game *game);
 void	draw_ball(t_game *game, t_texture *frame);
-void	overlay_img(t_texture fg, t_texture bg, t_game *game, int pos_x, int pos_y);
+// void	overlay_img(t_texture fg, t_texture bg, t_game *game,
+// 			int pos_x, int pos_y);
 
 // RENDERING FUNCTIONS
-void render_scene(t_game *game, t_texture *frame);
+void	render_scene(t_game *game, t_texture *frame);
 
 #endif
