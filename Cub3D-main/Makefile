@@ -6,7 +6,7 @@
 #    By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/03 18:59:35 by jeza              #+#    #+#              #
-#    Updated: 2024/09/04 16:10:57 by jeguerin         ###   ########.fr        #
+#    Updated: 2024/09/05 17:18:21 by jeguerin         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,6 +29,9 @@ SRCS = src/main.c src/events.c src/init.c src/utils.c src/graphic.c \
 	   src/parsing/set_up_direction.c src/parsing/set_up_textures_path.c \
 	   src/parsing/map_door.c src/sprites/gun_shot.c src/parsing/portal_parsing.c \
 	   src/manage_mouse.c src/init3.c src/draw_mini_map.c src/is_moving.c \
+	   src/parsing/process_map.c src/teleport.c src/utils_teleport.c src/render.c \
+	   src/sprites/manage_ball.c src/sprites/draw_ball.c src/sprites/ball_utils.c \
+	   src/sprites/manage_portal.c \
 
 
 LIBFT = Libft/libft.a

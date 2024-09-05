@@ -6,27 +6,19 @@
 /*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/29 15:45:33 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/09/04 19:06:26 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/09/05 16:38:22 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../cub3D.h"
 
-int	process_map(char *line, int fd, int map_ended)
-{
-	if (map_ended)
-	{
-		if (is_end_of_map(line, fd) == 1)
-			return (-1);
-	}
-	else
-	{
-		map_ended = check_map(line, fd, map_ended);
-		if (map_ended == -1)
-			return (-1);
-	}
-	return (map_ended);
-}
+int		process_map(char *line, int fd, int map_ended);
+int		is_end_of_file(int map_started, int description);
+void	init_map_processing(t_map_processing *mprocess);
+int		is_map_ended(char *line, int fd, int map_ended);
+int		handle_map_start(char *line, t_map_processing *mprocess);
+int		process_line(char *line, int fd, t_map_processing *mprocess);
+int		end_of_file_loop(int fd, t_map_processing *mprocess);
 
 int	is_end_of_file(int map_started, int description)
 {
@@ -44,61 +36,52 @@ void	init_var(int *fd, int *map_ended, int *description, int *map_started)
 	*map_started = 0;
 }
 
-int	is_map_ended(char *line, int fd, int map_ended)
+int	open_file2(const char *file)
 {
-	map_ended = process_map(line, fd, map_ended);
-	if (map_ended == -1)
-		return (1);
+	int	fd;
+
+	fd = open(file, O_RDONLY);
+	return (fd);
+}
+
+int	process_line(char *line, int fd, t_map_processing *mprocess)
+{
+	if (!mprocess->map_started)
+	{
+		return (handle_map_start(line, mprocess));
+	}
+	else
+	{
+		if (is_map_ended(line, fd, mprocess->map_ended) == 1)
+		{
+			return (1);
+		}
+	}
 	return (0);
 }
 
-int	end_of_file_loop(int map_ended, int description, int fd)
+int	end_of_file_loop(int fd, t_map_processing *mprocess)
 {
 	char	*line;
-	int		map_started;
 
-	map_started = 0;
 	while (1)
 	{
 		line = get_next_line(fd);
 		if (line == NULL)
 			break ;
-		if (!map_started)
+		if (process_line(line, fd, mprocess) == 1)
 		{
-			if (is_description_line(line))
-				description = 1;
-			else if (check_map_line(line))
+			free(line);
+			line = get_next_line(fd);
+			while (line != NULL)
 			{
-				map_started = is_end_of_file(map_started, description);
-				if (map_started == -1)
-				{
-					free(line);
-					return (1);
-				}
+				free(line);
+				line = get_next_line(fd);
 			}
+			free(line);
+			return (1);
 		}
-		else
-			if (is_map_ended(line, fd, map_ended) == 1)
-				return (free(line), 1);
-		free (line);
+		free(line);
 	}
-	return (0);
-}
-
-int	is_there_something_after_map(const char *file, t_game *game)
-{
-	int		fd;
-	int		map_started;
-	int		map_ended;
-	int		description;
-
-	(void)game;
-	init_var(&fd, &map_ended, &description, &map_started);
-	fd = open_file(file, fd);
-	if (fd == -1)
-		return (1);
-	if (end_of_file_loop(map_ended, description, fd) == 1)
-		return (close(fd), 1);
-	close(fd);
 	return (0);
 }
