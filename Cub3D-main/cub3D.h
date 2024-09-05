@@ -430,5 +430,12 @@ void	place_portal(t_game *game);
 void	init_dda(t_game *game, t_ball *ball);
 int		perform_dda_step(t_game *game);
 void	deactivate_portal(t_game *game, int portal_index);
+void	determine_wall_texture(t_game *game);
+void	determine_overlay_texture(t_game *game);
+void	calc_wall_x(t_game *game);
+void	calc_step_side_dist_x(t_game *game);
+void	calc_wall_dist(t_game *game);
+void	draw_wall_pixel(t_game *game, t_texture *frame, int x);
+void	calc_tex_y(t_game *game);
 
 #endif
